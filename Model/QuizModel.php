@@ -39,4 +39,18 @@ class QuizModel {
 		return $this->questions;
 	}
 
+	public function countQuestions() {
+		return count($this->questions);
+	}
+
+	public function validateQuiz($userAnswers) {
+		$score = 0;
+
+		foreach ($this->questions as $questionNr => $value) {
+			if ($userAnswers[$questionNr] == $value['CorrectAnswer']) {
+				$score++;
+			}
+		}
+		return $score;
+	}
 }

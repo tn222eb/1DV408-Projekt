@@ -4,14 +4,16 @@ require_once("Model/QuizModel.php");
 
 class QuizView {
 
+	private $submitQuizLocation = 'submitQuiz';
 	private $quizModel;
+	private $userAnswers = array();
 
 	public function __construct() {
 		$this->quizModel = new QuizModel();
 	}
 
-	public function hasUserSubmittedAnswers () {
-		if (isset($_POST['answers'])) {
+	public function hasUserSubmitQuiz () {
+		if (isset($_POST[$this->submitQuizLocation])) {
 			return true;
 		}
 		return false;
@@ -22,6 +24,10 @@ class QuizView {
 			return true;
 		}
 		return false;
+	}
+
+	public function getUserAnswers() {
+		return $_POST['answers'];
 	}
 
 
@@ -46,8 +52,16 @@ class QuizView {
 		}
 
 		return $html .= "</br>
-		<input type='submit' value='Skicka quiz' />
+		<input type='submit' name='$this->submitQuizLocation' value='Skicka quiz' />
 		</form>";
+	}
+
+	public function showScore ($score = 0) {
+		return $html = "<a href='?	' >Gå tillbaka</a>
+		</br>
+		</br>
+		Resultat: $score/" . $this->quizModel->countQuestions(). "
+		";
 	}
 
 }

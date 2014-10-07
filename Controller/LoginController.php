@@ -14,6 +14,7 @@ require_once("Model/Dao/UserRepository.php");
 require_once("View/QuizView.php");
 require_once("Settings.php");
 require_once("Model/User.php");
+require_once("Controller/QuizController.php");
 
 class LoginController {
     private $registerView;
@@ -31,6 +32,7 @@ class LoginController {
     private $validatePassword;
     private $hash;
     private $quizView;
+    private $quizController;
     private $showPlayQuizPage = false;
 
     public function __construct() {
@@ -44,6 +46,7 @@ class LoginController {
         $this->userRepository = new UserRepository();
         $this->hash = new Hash();
         $this->quizView = new QuizView();
+        $this->quizController = new QuizController();
     }
 
     /**
@@ -206,7 +209,7 @@ class LoginController {
     public function renderPage(){
         if($this->showLoggedInPage) {
             if($this->showPlayQuizPage) {
-                $this->htmlView->echoHTML($this->quizView->showQuiz());
+                $this->quizController->playQuiz();
             }
             else {
                 $this->htmlView->echoHTML($this->loggedInView->showLoggedInPage());  
