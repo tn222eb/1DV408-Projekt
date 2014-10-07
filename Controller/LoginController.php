@@ -33,7 +33,7 @@ class LoginController {
     private $hash;
     private $quizView;
     private $quizController;
-    private $showPlayQuizPage = false;
+    private $showAllQuizPage = false;
 
     public function __construct() {
         $this->loginView = new LoginView();
@@ -55,7 +55,7 @@ class LoginController {
     public function doControll() {
         try {
             $this->doGoToRegisterPage();
-            $this->doPlayQuizPage();
+            $this->doShowAllQuizPage();
             $this->registerNewUser();
             $this->doReturnToLoginPage();
             $this->doLogInCookie();
@@ -86,9 +86,9 @@ class LoginController {
         }
     }
 
-    public function doPlayQuizPage() {
-        if ($this->quizView->didUserPressReturnToPlayQuiz()) {
-            $this->showPlayQuizPage = true;
+    public function doShowAllQuizPage() {
+        if ($this->quizView->didUserPressGoToChoiceQuiz()) {
+            $this->showAllQuizPage = true;
         }
     }
 
@@ -208,7 +208,8 @@ class LoginController {
      */
     public function renderPage(){
         if($this->showLoggedInPage) {
-            if($this->showPlayQuizPage) {
+            if($this->showAllQuizPage || $this->quizView->getChosenQuiz()) {
+                $this->quizController->showAllQuiz();
                 $this->quizController->playQuiz();
             }
             else {

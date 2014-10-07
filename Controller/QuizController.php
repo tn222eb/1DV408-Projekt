@@ -12,14 +12,23 @@ class QuizController {
 		$this->quizModel = new QuizModel();
 	}
 
-	public function playQuiz() {
-		if ($this->quizView->hasUserSubmitQuiz()) {
-			$userAnswers = $this->quizView->getUserAnswers();
-			$score = $this->quizModel->validateQuiz($userAnswers);
-			$this->htmlView->echoHTML($this->quizView->showScore($score));
+	public function showAllQuiz() {
+		if ($this->quizView->getChosenQuiz() == false) {
+			$this->htmlView->echoHTML($this->quizView->showAllQuiz());
 		}
-		else {
-			$this->htmlView->echoHTML($this->quizView->showQuiz());
+	}
+
+	public function playQuiz() {
+		if ($this->quizView->getChosenQuiz() == true) {
+			if ($this->quizView->hasUserSubmitQuiz()) {
+				$chosenQuiz = $this->quizView->getChosenQuiz();
+				$userAnswers = $this->quizView->getUserAnswers();
+				$score = $this->quizModel->validateQuiz($userAnswers, $chosenQuiz);
+				$this->htmlView->echoHTML($this->quizView->showScore($score, $chosenQuiz));
+			}
+			else {
+				$this->htmlView->echoHTML($this->quizView->showQuiz($this->quizView->getChosenQuiz()));
+			}
 		}
 	}
 	

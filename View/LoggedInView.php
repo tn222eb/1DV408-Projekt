@@ -21,9 +21,10 @@ class LoggedInView{
         $this->username = $this->model->getUsername();
 
         $html = "
+            <h1>MyQuiz</h1>
             <H3>$this->username är inloggad</H3>
             $this->message
-            <a class='btn btn-default' name='Play' href='?playQuiz'>Spela Quiz</a>
+            <a class='btn btn-default' name='Play' href='?showAllQuiz'>Välj quiz att spela</a>
             </br>
             <a class='btn btn-default' name='logOut' href='?logOut'>Logga ut</a>
     ";
