@@ -24,10 +24,10 @@ class QuizController {
 				$chosenQuiz = $this->quizView->getChosenQuiz();
 				$userAnswers = $this->quizView->getUserAnswers();
 				$score = $this->quizModel->validateQuiz($userAnswers, $chosenQuiz);
-				$this->htmlView->echoHTML($this->quizView->showScore($score, $chosenQuiz));
+				$this->htmlView->echoHTML($this->quizView->showResult($score, $chosenQuiz));
 			}
 			else {
-				$this->htmlView->echoHTML($this->quizView->showQuiz($this->quizView->getChosenQuiz()));
+				$this->htmlView->echoHTML($this->quizView->showPlayQuiz($this->quizView->getChosenQuiz()));
 			}
 		}
 	}

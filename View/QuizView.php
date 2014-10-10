@@ -41,7 +41,7 @@ class QuizView {
 
 	public function showAllQuiz() {
 		$html = "
-		<a href='?'>Gå tillbaka</a>
+		<a href='?'>Tillbaka</a>
 		<h1>MyQuiz</h1>
 		<h3>Välj quiz att spela</h3>
 		<ul>";
@@ -54,10 +54,11 @@ class QuizView {
 		return $html .= "</ul>";
 	}
 
-	public function showQuiz($quizName) {
+	public function showPlayQuiz($quizName) {
 		$quiz = $this->quizModel->getQuiz($quizName);
 
-		$html = "<a href='?showAllQuiz' >Gå tillbaka</a>
+		$html = "<a href='?showAllQuiz' >Tillbaka</a>
+		<h1>$quizName</h1>
 		<form action ='' method='post'>";
 
 		foreach ($quiz as $questionNr => $value) {
@@ -79,12 +80,38 @@ class QuizView {
 		</form>";
 	}
 
-	public function showScore ($score = 0, $quizName) {
-		return $html = "<a href='?showAllQuiz' >Gå tillbaka</a>
+	public function showResult ($score = 0, $quizName) {
+
+		$userAnswers = $this->getUserAnswers();
+		$quiz = $this->quizModel->getQuiz($quizName);
+
+		$html = "<a href='?showAllQuiz' >Tillbaka</a>
+		<h1>$quizName</h1>";				
+
+		if ($userAnswers > 0) {
+		foreach ($quiz as $questionNr => $value) {
+			$html .= "<h3>$questionNr. " . $value['Question'] . "</h3>";
+
+				if ($userAnswers[$questionNr] != $value['CorrectAnswer']){
+					 $label = 'question-' . $questionNr . '-answers-'. $value['CorrectAnswer'];
+					 $html .= "<div>
+					 <input type='radio' name='answers[$questionNr]' id='$label' value='" . $value['Answers'][$userAnswers[$questionNr]] . "' disabled>
+					 <label style='color :red;' for='$label'>" . $value['CorrectAnswer'] . ") " . $value['Answers'][$userAnswers[$questionNr]] . "</label>
+				     </div>";
+        		} else {
+        			 $label = 'question-' . $questionNr . '-answers-'. $value['CorrectAnswer'];
+            		 $html .= "<div>
+					 <input type='radio' name='answers[$questionNr]' id='$label' value='" . $value['Answers'][$userAnswers[$questionNr]] . "' disabled>
+					 <label style='color: green;' for='$label'>" . $value['CorrectAnswer'] . ") " . $value['Answers'][$userAnswers[$questionNr]] . "</label>
+					 </div>";
+        		}
+			}
+		}
+
+		return $html .= "
 		</br>
 		</br>
 		Resultat: $score/" . $this->quizModel->countQuiz($quizName) . "
 		";
 	}
-
 }

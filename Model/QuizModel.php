@@ -72,9 +72,10 @@ class QuizModel {
 		        'Answers' => array(
 		            'A' => 'Entrecote',
 		            'B' => 'Ryggbiff',
-		            'C' => 'Högrev'
+		            'C' => 'Högrev',
+		            'D' => 'Karre'
 		        ),
-		        'CorrectAnswer' => 'A'
+		        'CorrectAnswer' => 'D'
 		    ),
 	    ),
 	);
