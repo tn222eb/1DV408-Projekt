@@ -11,10 +11,7 @@ require_once("Model/Validation/ValidatePassword.php");
 require_once("Model/Validation/ValidateUsername.php");
 require_once("Model/Hash.php");
 require_once("Model/Dao/UserRepository.php");
-require_once("View/QuizView.php");
-require_once("Settings.php");
 require_once("Model/User.php");
-require_once("Controller/QuizController.php");
 
 class LoginController {
     private $registerView;
@@ -31,9 +28,6 @@ class LoginController {
     private $validateUsername;
     private $validatePassword;
     private $hash;
-    private $quizView;
-    private $quizController;
-    private $showAllQuizPage = false;
 
     public function __construct() {
         $this->loginView = new LoginView();
@@ -45,17 +39,13 @@ class LoginController {
         $this->validatePassword = new ValidatePassword();
         $this->userRepository = new UserRepository();
         $this->hash = new Hash();
-        $this->quizView = new QuizView();
-        $this->quizController = new QuizController();
     }
 
     /**
      *Call controlfunctions
      */
     public function doControll() {
-        try {
             $this->doGoToRegisterPage();
-            $this->doShowAllQuizPage();
             $this->registerNewUser();
             $this->doReturnToLoginPage();
             $this->doLogInCookie();
@@ -63,15 +53,6 @@ class LoginController {
             $this->doLogOut();
             $this->doLogIn();
             $this->renderPage();
-        }
-        catch (Exception $e){
-            if(Settings::$DO_DEBUG) {
-                throw $e;
-            }
-            else {
-                die("An unknown error has ocurred");
-            }
-        }
     }
 
     public function doGoToRegisterPage() {
@@ -83,12 +64,6 @@ class LoginController {
     public function doReturnToLoginPage() {
         if ($this->registerView->didUserPressReturnToLoginPage()) {
             $this->showRegisterPage = false;
-        }
-    }
-
-    public function doShowAllQuizPage() {
-        if ($this->quizView->didUserPressGoToChoiceQuiz()) {
-            $this->showAllQuizPage = true;
         }
     }
 
@@ -208,13 +183,7 @@ class LoginController {
      */
     public function renderPage(){
         if($this->showLoggedInPage) {
-            if($this->showAllQuizPage || $this->quizView->getChosenQuiz()) {
-                $this->quizController->showAllQuiz();
-                $this->quizController->playQuiz();
-            }
-            else {
-                $this->htmlView->echoHTML($this->loggedInView->showLoggedInPage());  
-            }   
+            $this->htmlView->echoHTML($this->loggedInView->showLoggedInPage());    
         }
 
         else {

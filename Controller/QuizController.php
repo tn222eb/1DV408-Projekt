@@ -19,7 +19,6 @@ class QuizController {
 	}
 
 	public function playQuiz() {
-		if ($this->quizView->getChosenQuiz() == true) {
 			if ($this->quizView->hasUserSubmitQuiz()) {
 				$chosenQuiz = $this->quizView->getChosenQuiz();
 				$userAnswers = $this->quizView->getUserAnswers();
@@ -29,7 +28,6 @@ class QuizController {
 			else {
 				$this->htmlView->echoHTML($this->quizView->showPlayQuiz($this->quizView->getChosenQuiz()));
 			}
-		}
 	}
 	
 }

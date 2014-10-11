@@ -19,7 +19,7 @@ class QuizView {
 		return false;
 	}
 
-	public function didUserPressGoToChoiceQuiz() {
+	public function didUserPressGoToShowAllQuiz() {
 		if (isset($_GET['showAllQuiz'])) {
 			return true;
 		}
@@ -36,6 +36,12 @@ class QuizView {
 		if (isset($_GET['playQuiz'])) {
 			return $_GET['playQuiz'];
 		}
+	}
+
+	public function hasChosenQuiz() {
+		if (isset($_GET['playQuiz'])) {
+			return true;
+		}		
 		return false;
 	}
 
@@ -92,7 +98,7 @@ class QuizView {
 		foreach ($quiz as $questionNr => $value) {
 			$html .= "<h3>$questionNr. " . $value['Question'] . "</h3>";
 
-				if ($userAnswers[$questionNr] != $value['CorrectAnswer']){
+				if ($userAnswers[$questionNr] != $value['CorrectAnswer']) {
 					 $label = 'question-' . $questionNr . '-answers-'. $value['CorrectAnswer'];
 					 $html .= "<div>
 					 <input type='radio' name='answers[$questionNr]' id='$label' value='" . $value['Answers'][$userAnswers[$questionNr]] . "' disabled>
@@ -109,7 +115,6 @@ class QuizView {
 		}
 
 		return $html .= "
-		</br>
 		</br>
 		Resultat: $score/" . $this->quizModel->countQuiz($quizName) . "
 		";

@@ -1,11 +1,9 @@
 <?php
 
-require_once("View/HTMLView.php");
-require_once("View/LoginView.php");
-require_once('Controller/LoginController.php');
+require_once('Controller/MasterController.php');
 
 session_start();
 
-$loginController = new LoginController();
-$loginController->doControll();
+$masterController = new MasterController();
+$masterController->doControll();
 
