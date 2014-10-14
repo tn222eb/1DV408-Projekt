@@ -1,122 +1,104 @@
 <?php
 
-require_once("Model/QuizModel.php");
-
 class QuizView {
 
-	private $submitQuizLocation = 'submitQuiz';
-	private $quizModel;
-	private $userAnswers = array();
+	public function showCreateQuizForm() {
+		$html = "<a href='?' name='returnToPage'>Tillbaka</a> <h1>MyQuiz</h1> <h3>Skapa quiz</h3>";
+		$html .= "<form action='?createQuiz' method='post'>";
+		$html .= "<input type='text' name='quiz'/>";
+		$html .= "</br> </br> <input type='submit' name='createQuiz' value='Skapa quiz' />";
+		$html .= "</form>";
 
-	public function __construct() {
-		$this->quizModel = new QuizModel();
+		return $html;
 	}
 
-	public function hasUserSubmitQuiz () {
-		if (isset($_POST[$this->submitQuizLocation])) {
-			return true;
-		}
-		return false;
-	}
-
-	public function didUserPressGoToShowAllQuiz() {
+	public function didUserPressToShowAllQuiz() {
 		if (isset($_GET['showAllQuiz'])) {
 			return true;
 		}
 		return false;
 	}
 
-	public function getUserAnswers() {
-		if(isset($_POST['answers'])) {
-			return $_POST['answers'];
+	public function showAll(QuizList $quizList) {	
+		$html = "<a href='?' name='returnToPage'>Tillbaka</a> <h1>MyQuiz</h1> <h3>Lista av alla quiz</h3>";
+		$html .= "<ul>";
+		foreach ($quizList->toArray() as $quiz) {
+			$html .= "<li><a href='?showQuiz&id=" .
+			urlencode($quiz->getQuizId()) . "'>" .
+			$quiz->getName() . "</a></li>";
+		}
+		$html .= "</ul>";
+		return $html;
+	}	
+
+	public function getQuizName() {
+		if(isset($_POST['quiz'])) {
+			return $_POST['quiz'];
 		}
 	}
 
-	public function getChosenQuiz() {
-		if (isset($_GET['playQuiz'])) {
-			return $_GET['playQuiz'];
-		}
-	}
-
-	public function hasChosenQuiz() {
-		if (isset($_GET['playQuiz'])) {
+	public function didUserPressToSubmitCreateQuiz() {
+		if (isset($_POST['createQuiz'])) {
 			return true;
-		}		
+		}
 		return false;
 	}
 
-	public function showAllQuiz() {
-		$html = "
-		<a href='?'>Tillbaka</a>
-		<h1>MyQuiz</h1>
-		<h3>Välj quiz att spela</h3>
-		<ul>";
-
-		$arrayOfQuizNames = $this->quizModel->getAllQuiz();
-		foreach ($arrayOfQuizNames as $quizName) {
-			$html .= "<li><a href='?playQuiz=$quizName'>$quizName</a></li>";
+	public function didUserPressGoToCreateQuiz() {
+		if(isset($_GET['createQuiz'])) {
+			return true;
 		}
-
-		return $html .= "</ul>";
+		return false;
 	}
 
-	public function showPlayQuiz($quizName) {
-		$quiz = $this->quizModel->getQuiz($quizName);
-
-		$html = "<a href='?showAllQuiz' >Tillbaka</a>
-		<h1>$quizName</h1>
-		<form action ='' method='post'>";
-
-		foreach ($quiz as $questionNr => $value) {
-			$html .= "<h3>$questionNr. " . $value['Question'] . "</h3>";
-
-			foreach ($value['Answers'] as $char => $answer) {
-				$label = 'question-' . $questionNr . '-answers-'. $char;
-
-				$html .=
-				"<div>
-				<input type='radio' name='answers[$questionNr]' id='$label' value='$char'> 
-				<label for='$label'>$char) $answer</label>
-				</div>";
-			}
+	public function didUserPressToShowQuiz() {
+		if(isset($_GET['showQuiz'])) {
+			return true;
 		}
-
-		return $html .= "</br>
-		<input type='submit' name='$this->submitQuizLocation' value='Skicka quiz' />
-		</form>";
+		return false;		
 	}
 
-	public function showResult ($score = 0, $quizName) {
+	public function didUserPressToRemoveQuiz() {
+		if (isset($_POST['removeQuiz'])) {
+			return true;
+		}
+		return false;
+	}
 
-		$userAnswers = $this->getUserAnswers();
-		$quiz = $this->quizModel->getQuiz($quizName);
+	public function didUserPressToEditQuiz() {
+		if (isset($_POST['editQuiz'])) {
+			return true;
+		}
+		return false;
+	}
 
-		$html = "<a href='?showAllQuiz' >Tillbaka</a>
-		<h1>$quizName</h1>";				
+	public function showQuiz(Quiz $quiz) {
+		$html = "<form action='' method='post'>
+		<a href='?showAllQuiz' name='returnToPage'>Tillbaka</a> </br>";
 
-		if ($userAnswers > 0) {
-		foreach ($quiz as $questionNr => $value) {
-			$html .= "<h3>$questionNr. " . $value['Question'] . "</h3>";
-
-				if ($userAnswers[$questionNr] != $value['CorrectAnswer']) {
-					 $label = 'question-' . $questionNr . '-answers-'. $value['CorrectAnswer'];
-					 $html .= "<div>
-					 <input type='radio' name='answers[$questionNr]' id='$label' value='" . $value['Answers'][$userAnswers[$questionNr]] . "' disabled>
-					 <label style='color :red;' for='$label'>" . $value['CorrectAnswer'] . ") " . $value['Answers'][$userAnswers[$questionNr]] . "</label>
-				     </div>";
-        		} else {
-        			 $label = 'question-' . $questionNr . '-answers-'. $value['CorrectAnswer'];
-            		 $html .= "<div>
-					 <input type='radio' name='answers[$questionNr]' id='$label' value='" . $value['Answers'][$userAnswers[$questionNr]] . "' disabled>
-					 <label style='color: green;' for='$label'>" . $value['CorrectAnswer'] . ") " . $value['Answers'][$userAnswers[$questionNr]] . "</label>
-					 </div>";
-        		}
-			}
+		$html .= "<h1>Quiz " . $quiz->getName() . "</h1>";
+		$html .= "<input type='submit' name='editQuiz' value='Redigera " . $quiz->getName() . "'> <input type='submit' name='removeQuiz' value='Radera " . $quiz->getName() . "'>";
+		$html .= "<h2>Frågor</h2>";
+		$html .= "<ul>";
+		foreach($quiz->getQuestions()->toArray() as $question) {
+			$html .= "<li>". $question->getName() ."</li>";
 		}
 
-		return $html .= "
-		</br>
-		Resultat: $score/" . $this->quizModel->countQuiz($quizName) . "
-		";
+		$html .= "</ul>" . $this->getQuizMenu($quiz->getQuizId());
+		$html .= "</form>";
+		return $html;		
 	}
+
+	public function getQuizMenu($id) {
+		return $html = "
+		<a href='?addQuestion&	id=$id'>Lägg till fråga</a>";
+	}
+
+	public function getId() {
+		if (isset($_GET['id'])) {
+			return $_GET['id'];
+		}
+		return NULL;
+	}
+	
 }

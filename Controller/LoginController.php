@@ -3,7 +3,7 @@
 require_once("View/LoginView.php");
 require_once("View/LoggedInView.php");
 require_once("View/HTMLView.php");
-require_once("View/Message.php");
+require_once("View/LoginMessage.php");
 require_once("Model/LoginModel.php");
 require_once("Helper/UserAgent.php");
 require_once("View/RegisterView.php");
@@ -201,7 +201,7 @@ class LoginController {
     }
 
     public function setMessage(){
-        $message = new Message($this->model->getMessage());
+        $message = new LoginMessage($this->model->getMessage());
 
         if (!$this->model->isLoggedIn()) {
             if ($this->showRegisterPage) {
@@ -217,6 +217,13 @@ class LoginController {
     public function setUsername(){
         $this->username = $this->loginView->getUsername();
 
+    }
+
+    public function isAdmin() {
+        if ($this->model->isAdmin()) {
+            return true;
+        }
+        return false;
     }
 
     public function setPassword(){

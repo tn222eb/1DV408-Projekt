@@ -8,6 +8,8 @@ class LoginModel{
     private $messageId;
     private $cookieExpireTime;
     private $userRepository;
+    private $role;
+    private $roleNr = 1;
 
     public function __construct() {
         $this->userRepository = new userRepository();
@@ -138,16 +140,29 @@ class LoginModel{
         return base64_encode($pwd);
     }
 
-    public function decryptPassword($pwd){
+    public function decryptPassword($pwd) {
         return base64_decode($pwd);
     }
 
-    public function writeCookieExpireTimeToFile(){
+    public function writeCookieExpireTimeToFile() {
         file_put_contents("expire.txt", $this->cookieExpireTime);
     }
 
-    public function getCookieExpireTimeFromFile(){
+    public function getCookieExpireTimeFromFile() {
         return file_get_contents("expire.txt");
+    }
+
+    public function setAdmin() {
+        if(isset($_SESSION['admin']) == false) {
+            $_SESSION['admin'] = $this->role;
+        }        
+    }
+
+    public function isAdmin() {
+        if(isset($_SESSION['admin'])) {
+            return true;
+        }
+        return false;
     }
 
     public function get($username) {
@@ -155,6 +170,11 @@ class LoginModel{
 
         $this->username = $data[1];
         $this->hash = $data[2];
+        $this->role = $data[3];
+
+        if ($this->role == $this->roleNr) {
+            $this->setAdmin();
+        }
     }
 
 }

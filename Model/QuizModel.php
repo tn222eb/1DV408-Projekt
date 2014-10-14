@@ -1,7 +1,10 @@
 <?php 
 
+require_once("Model/Dao/QuizRepository.php");
+
 class QuizModel {
-	
+
+	private $quizRepository;	
 	private $quiz = array(
 		'Basket' => array(
 		    1 => array(
@@ -80,6 +83,11 @@ class QuizModel {
 	    ),
 	);
 
+
+	public function __construct() {
+		$this->quizRepository = new QuizRepository();
+	}
+
 	public function getAllQuiz() {
 		$arrayOfQuizNames = array();
 
@@ -108,5 +116,13 @@ class QuizModel {
 			}
 		}
 		return $score;
+	}
+
+	public function addQuiz(Quiz $quiz) {
+		$this->quizRepository->addQuiz($quiz);
+	}
+
+	public function removeQuiz(Quiz $quiz) {
+		$this->quizRepository->removeQuiz($quiz);
 	}
 }

@@ -20,12 +20,18 @@ class LoggedInView{
     public function showLoggedInPage(){
         $this->username = $this->model->getUsername();
 
+        if ($this->model->isAdmin()) {
+            $this->menu .= "<a class='btn btn-default' name='Play' href='?showAllQuiz'>Visa alla quiz</a> </br>
+            <a class='btn btn-default' name='Play' href='?createQuiz'>Skapa quiz</a> </br>";
+        }
+
         $html = "
             <h1>MyQuiz</h1>
             <H3>$this->username är inloggad</H3>
             $this->message
-            <a class='btn btn-default' name='Play' href='?showAllQuiz'>Visa alla quiz</a>
+            <a class='btn btn-default' name='Play' href='?showAllQuizToPlay'>Välj quiz att spela</a>
             </br>
+            $this->menu
             <a class='btn btn-default' name='logOut' href='?logOut'>Logga ut</a>
     ";
         return $html;

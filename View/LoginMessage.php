@@ -1,6 +1,6 @@
 <?php
 
-class Message{
+class LoginMessage {
     private $messageId;
     private $messages = array('Användarnamn saknas', 'Lösenord saknas', "Felaktigt användarnamn och/eller lösenord",
                               "Felaktig information i cookie", 'Användarnamnet innehåller ogiltiga tecken',
