@@ -5,7 +5,7 @@ class QuizView {
 	public function showCreateQuizForm() {
 		$html = "<a href='?' name='returnToPage'>Tillbaka</a> <h1>MyQuiz</h1> <h3>Skapa quiz</h3>";
 		$html .= "<form action='?createQuiz' method='post'>";
-		$html .= "<input type='text' name='quiz'/>";
+		$html .= "<input type='text' name='quizName'/>";
 		$html .= "</br> </br> <input type='submit' name='createQuiz' value='Skapa quiz' />";
 		$html .= "</form>";
 
@@ -32,8 +32,8 @@ class QuizView {
 	}	
 
 	public function getQuizName() {
-		if(isset($_POST['quiz'])) {
-			return $_POST['quiz'];
+		if(isset($_POST['quizName'])) {
+			return $_POST['quizName'];
 		}
 	}
 
@@ -72,26 +72,43 @@ class QuizView {
 		return false;
 	}
 
+	public function didUserPressToSaveEditQuiz() {
+		if (isset($_POST['saveEditQuiz'])) {
+			return true;
+		}
+		return false;
+	}
+
+	public function showEditQuizForm(Quiz $quiz) {
+		return $html = "<a href='?showQuiz&id=" . $quiz->getQuizId() . "' name='returnToPage'>Tillbaka</a>
+		</br>
+		</br>
+		<h1>Redigera " 	. $quiz->getName() . "</1>
+		<form action='' method='post'>
+		<input type='text' name='quizName' value='" . $quiz->getName() . "'>
+		<input type='submit' name='saveEditQuiz' value='Spara'>
+		</form>
+		 ";
+	}
+
 	public function showQuiz(Quiz $quiz) {
 		$html = "<form action='' method='post'>
-		<a href='?showAllQuiz' name='returnToPage'>Tillbaka</a> </br>";
-
-		$html .= "<h1>Quiz " . $quiz->getName() . "</h1>";
-		$html .= "<input type='submit' name='editQuiz' value='Redigera " . $quiz->getName() . "'> <input type='submit' name='removeQuiz' value='Radera " . $quiz->getName() . "'>";
-		$html .= "<h2>Frågor</h2>";
-		$html .= "<ul>";
+		<a href='?showAllQuiz' name='returnToPage'>Tillbaka</a> </br> 
+		<h1>" . $quiz->getName() . "</h1>
+		<input type='submit' name='editQuiz' value='Redigera " . $quiz->getName() . "'> <input type='submit' name='removeQuiz' value='Radera " . $quiz->getName() . "'>
+		<h3>Frågor</h3>
+		<ul>";
 		foreach($quiz->getQuestions()->toArray() as $question) {
-			$html .= "<li>". $question->getName() ."</li>";
+			$html .= "<li><a href='?showQuestion&id=" . $question->getQuestionId() . "'>". $question->getName() ."</a></li>";
 		}
 
-		$html .= "</ul>" . $this->getQuizMenu($quiz->getQuizId());
-		$html .= "</form>";
+		$html .= "</ul>" . $this->getQuizMenu($quiz->getQuizId()) . "</form>";
 		return $html;		
 	}
 
 	public function getQuizMenu($id) {
 		return $html = "
-		<a href='?addQuestion&	id=$id'>Lägg till fråga</a>";
+		<a href='?addQuestion&id=$id'>Lägg till fråga</a>";
 	}
 
 	public function getId() {
@@ -100,5 +117,4 @@ class QuizView {
 		}
 		return NULL;
 	}
-	
 }

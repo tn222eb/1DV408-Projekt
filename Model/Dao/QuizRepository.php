@@ -8,6 +8,7 @@ class QuizRepository extends Repository{
 	private $quizList;
 	private $quizName = 'QuizName';
 	private $db;
+	private $questionTable = "question";
 
 	public function __construct() {
 		$this->dbTable = 'quiz';
@@ -29,6 +30,13 @@ class QuizRepository extends Repository{
 		$query->execute($params);
 	}
 
+	public function saveEditQuiz(Quiz $quiz) {
+			$sql = "UPDATE $this->dbTable SET " . $this->quizName . " = ? WHERE QuizId = ?";
+			$params = array($quiz->getName(), $quiz->getQuizId());
+			$query = $this->db->prepare($sql);
+			$query->execute($params);	
+	}
+
 	public function getQuizList() {
 		$sql = "SELECT * FROM $this->dbTable";
 		$query = $this->db->prepare($sql);
@@ -44,7 +52,6 @@ class QuizRepository extends Repository{
 		return $this->quizList;
 	}
 
-
 	public function getQuiz($quizId) {
 		$sql = "SELECT * FROM $this->dbTable WHERE QuizId = ?";
 		$params = array($quizId);
@@ -53,9 +60,19 @@ class QuizRepository extends Repository{
 		$result = $query->fetch();
 
 		if ($result) {
-			return $quiz = new Quiz($result['QuizName'], $result['QuizId']);
-		}
+			$quiz = new Quiz($result['QuizName'], $result['QuizId']);
 
+			$sql = "SELECT * FROM " . $this->questionTable . " WHERE QuizId = ?";
+			$query = $this->db->prepare($sql);
+			$query->execute (array($result['QuizId']));
+			$questions = $query->fetchAll();
+
+			foreach($questions as $question) {
+				$question = new Question($question['QuestionName'], $question['QuizId'], $question['QuestionId']);
+				$quiz->add($question);
+			}
+			return $quiz;			
+		}
 		return NULL;
 	}
 }

@@ -28,6 +28,11 @@ class QuizController {
 		}
 	}
 
+	public function saveEditQuiz() {
+		$quiz = new Quiz($this->quizView->getQuizName(), $this->quizView->getId());
+		$this->quizModel->saveEditQuiz($quiz);
+	}
+
 	public function removeQuiz() {
 		$quiz = $this->quizRepository->getQuiz($this->quizView->getId());
 		$this->quizModel->removeQuiz($quiz);
@@ -35,6 +40,10 @@ class QuizController {
 
 	public function showAllQuiz() {
 		$this->htmlView->echoHTML($this->quizView->showAll($this->quizRepository->getQuizList()));
+	}
+
+	public function editQuiz(Quiz $quiz) {
+		$this->htmlView->echoHTML($this->quizView->showEditQuizForm($quiz));
 	}
 
 	public function createQuiz() {

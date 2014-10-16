@@ -125,4 +125,8 @@ class QuizModel {
 	public function removeQuiz(Quiz $quiz) {
 		$this->quizRepository->removeQuiz($quiz);
 	}
+
+	public function saveEditQuiz(Quiz $quiz) {
+		$this->quizRepository->saveEditQuiz($quiz);
+	}
 }

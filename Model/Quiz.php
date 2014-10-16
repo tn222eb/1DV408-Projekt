@@ -31,8 +31,4 @@ class Quiz {
 	public function getQuestions() {
 		return $this->questions;
 	}
-
-	public function equals(Quiz $other) {
-		return $this->getName() == $other->getName() && $this->getUnique() == $other->getUnique();
-	}
 }
