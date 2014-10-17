@@ -4,13 +4,16 @@ require_once("Model/QuizModel.php");
 
 class PlayQuizView {
 
+	private $alphabets = array('A', 'B', 'C');
 	private $submitQuizLocation = 'submitQuiz';
 	private $quizModel;
 	private $userAnswers = array();
 	private $showAllQuizToPlay = 'showAllQuizToPlay';
+	private $questionModel;
 
 	public function __construct() {
 		$this->quizModel = new QuizModel();
+		$this->questionModel = new QuestionModel();
 	}
 
 	public function hasUserSubmitQuiz () {
@@ -53,34 +56,45 @@ class PlayQuizView {
 		<h3>Välj quiz att spela</h3>
 		<ul>";
 
-		$arrayOfQuizNames = $this->quizModel->getAllQuiz();
-		foreach ($arrayOfQuizNames as $quizName) {
-			$html .= "<li><a href='?playQuiz=$quizName'>$quizName</a></li>";
+		$quizList = $this->quizModel->getAllQuiz();
+		foreach ($quizList->ToArray() as $quiz) {
+			$html .= "<li><a href='?playQuiz=" . $quiz->getQuizId() . "'>" . $quiz->getName() . "</a></li>";
 		}
 
 		return $html .= "</ul>";
 	}
 
-	public function showPlayQuiz($quizName) {
-		$quiz = $this->quizModel->getQuiz($quizName);
+	public function showPlayQuiz($quizId) {
+		$quiz = $this->quizModel->getQuiz($quizId);
+		$questions = $quiz->getQuestions();
+		$questionNr = 1;
 
 		$html = "<a href='?$this->showAllQuizToPlay' >Tillbaka</a>
-		<h1>$quizName</h1>
+		<h1>" . $quiz->getName() . "</h1>
 		<form action ='' method='post'>";
 
-		foreach ($quiz as $questionNr => $value) {
-			$html .= "<h3>$questionNr. " . $value['Question'] . "</h3>";
+			foreach ($questions->ToArray() as $question) {
+				$html .= "<h3>$questionNr. " . $question->getName() . "</h3>";
+				$question = $this->questionModel->getQuestion($question->getQuestionId());
 
-			foreach ($value['Answers'] as $char => $answer) {
-				$label = 'question-' . $questionNr . '-answers-'. $char;
 
-				$html .=
-				"<div>
-				<input type='radio' name='answers[$questionNr]' id='$label' value='$char'> 
-				<label for='$label'>$char) $answer</label>
-				</div>";
+				foreach ($question->toArray() as $answer) {
+					$foo = 0;
+
+					foreach ($answer->getAnswers() as $answerName) {
+						$label = 'question-' . $questionNr . '-answers-'. $this->alphabets[$foo];
+
+						$html .=
+						"<div>
+						<input type='radio' name='answers[$questionNr]' id='$label' value='" . $this->alphabets[$foo] . "'> 
+						<label for='$label'>" . $this->alphabets[$foo] . ") " . $answerName . "</label>
+						</div>";
+						
+						$foo++;
+					}
+				}
+				$questionNr++;
 			}
-		}
 
 		return $html .= "</br>
 		<input type='submit' name='$this->submitQuizLocation' value='Skicka quiz' />

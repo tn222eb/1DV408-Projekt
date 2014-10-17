@@ -3,7 +3,7 @@
 class QuizView {
 
 	public function showCreateQuizForm() {
-		$html = "<a href='?' name='returnToPage'>Tillbaka</a> <h1>MyQuiz</h1> <h3>Skapa quiz</h3>";
+		$html = "<a href='?showAllQuiz' name='returnToPage'>Tillbaka</a> <h1>MyQuiz</h1> <h3>Skapa quiz</h3>";
 		$html .= "<form action='?createQuiz' method='post'>";
 		$html .= "<input type='text' name='quizName'/>";
 		$html .= "</br> </br> <input type='submit' name='createQuiz' value='Skapa quiz' />";
@@ -27,7 +27,7 @@ class QuizView {
 			urlencode($quiz->getQuizId()) . "'>" .
 			$quiz->getName() . "</a></li>";
 		}
-		$html .= "</ul>";
+		$html .= "</ul> <a class='btn btn-default' name='CreateQuiz' href='?createQuiz'>Skapa quiz</a> </br>";
 		return $html;
 	}	
 

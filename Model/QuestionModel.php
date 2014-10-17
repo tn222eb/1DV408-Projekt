@@ -14,4 +14,8 @@ class QuestionModel {
 	public function addQuestion(Question $question) {
 		$this->questionRepository->addQuestion($question);
 	}
+
+	public function getQuestion($questionId) {
+		return $this->questionRepository->getQuestion($questionId);
+	}
 }

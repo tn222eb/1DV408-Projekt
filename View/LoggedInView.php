@@ -21,8 +21,7 @@ class LoggedInView{
         $this->username = $this->model->getUsername();
 
         if ($this->model->isAdmin()) {
-            $this->menu .= "<a class='btn btn-default' name='Play' href='?showAllQuiz'>Visa alla quiz</a> </br>
-            <a class='btn btn-default' name='Play' href='?createQuiz'>Skapa quiz</a> </br>";
+            $this->menu .= "<a class='btn btn-default' name='ShowAllQuiz' href='?showAllQuiz'>Visa alla quiz</a> </br>";
         }
 
         $html = "

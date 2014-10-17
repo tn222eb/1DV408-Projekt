@@ -44,9 +44,8 @@ class QuestionRepository extends Repository {
 
 				$question->add($answers);
 			}
-			return $question;			
+			return $question;
 		}
-
 		return NULL;
 	}	
 }
