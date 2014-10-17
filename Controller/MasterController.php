@@ -9,6 +9,8 @@ require_once("View/QuizView.php");
 require_once("View/QuestionView.php");
 require_once("View/AnswerView.php");
 require_once("Controller/AnswerController.php");
+require_once("Model/Dao/QuestionRepository.php");
+require_once("Model/Dao/QuizRepository.php");
 
 class MasterController {
 	private $loginController;
@@ -24,6 +26,7 @@ class MasterController {
         $this->playQuizView = new PlayQuizView();
         $this->quizView = new QuizView();
         $this->quizRepository = new QuizRepository();
+        $this->questionRepository = new QuestionRepository();
         $this->questionView = new QuestionView();
         $this->questionController = new QuestionController();
         $this->answerView = new AnswerView();
@@ -35,7 +38,7 @@ class MasterController {
 	public function doControll() {
         try {	
             if ($this->playQuizView->didUserPressGoToShowAllQuizToPlay() || $this->playQuizView->hasChosenQuiz()) {
-                if ($this->playQuizView->hasChosenQuiz()) {
+                if ($this->playQuizView->hasChosenQuiz() && $this->quizRepository->isValidQuizId($this->playQuizView->getChosenQuiz())) {
                     $this->quizController->playQuiz();
                 }
                 else {
@@ -68,20 +71,21 @@ class MasterController {
                 $this->quizController->showAllQuiz();
             }
 
-            else if ($this->quizView->didUserPressToShowQuiz() && $this->loginController->isAdmin()) {
-                // TODO: URL Manipulation With ID
+            else if ($this->quizView->didUserPressToShowQuiz() && $this->loginController->isAdmin() && $this->quizRepository->isValidQuizId($this->quizView->getId())) {
                 // TODO: Redirect when remove or add
                 // TODO: Validation for input
-                $quiz = $this->quizRepository->getQuiz($this->quizView->getId());
-                $this->quizController->showQuiz($quiz);
+                    $quiz = $this->quizRepository->getQuiz($this->quizView->getId());
+                    $this->quizController->showQuiz($quiz);
             }
 
-            else if ($this->questionView->didUserPressToShowQuestion() && $this->loginController->isAdmin()) {
+            else if ($this->questionView->didUserPressToShowQuestion() && $this->loginController->isAdmin() && $this->questionRepository->isValidQuestionId($this->questionView->getId())) {
                 $this->questionController->showQuestion();
             }
 
-            else if ($this->answerView->didUserPressToAddAnswers() && $this->loginController->isAdmin() && $this->answerController->hasNoAnswers()) {
-                $this->answerController->addAnswers();
+            else if ($this->answerView->didUserPressToAddAnswers() && $this->loginController->isAdmin() && $this->questionRepository->isValidQuestionId($this->answerView->getId())) {
+                if ($this->answerController->hasNoAnswers()) {
+                    $this->answerController->addAnswers();
+                }
             }
 
             else {

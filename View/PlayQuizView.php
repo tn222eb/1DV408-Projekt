@@ -152,6 +152,6 @@ class PlayQuizView {
 
 		return $html .= "
 		</br>
-		Resultat: $score/" . count($questions->ToArray()) . "";
+		Du fick $score rätt svar av " . count($questions->ToArray());
 	}
 }

@@ -23,9 +23,7 @@ class QuizController {
 	}
 
 	public function showAllQuizToPlay() {
-		if ($this->playQuizView->getChosenQuiz() == false) {
 			$this->htmlView->echoHTML($this->playQuizView->showAllQuizToPlay());
-		}
 	}
 
 	public function saveEditQuiz() {

@@ -16,6 +16,20 @@ class QuestionRepository extends Repository {
 		$this->db = $this->connection();
 	}
 
+	public function isValidQuestionId($id) {
+			$sql = "SELECT * FROM $this->dbTable WHERE QuestionId = ?";
+			$params = array($id);
+			$query = $this->db->prepare($sql);
+			$query->execute($params);
+
+			$results = $query->fetch();
+
+			if ($results == false) {
+				return false;
+			}
+			return true;
+	}		
+
 	public function addQuestion(Question $question) {
 		$sql = "INSERT INTO $this->dbTable (" . $this->questionName . ", " . $this->quizId .") VALUES (?,?)";
 		$params = array($question->getName(), $question->getQuizId());
