@@ -16,6 +16,20 @@ class PlayQuizView {
 		$this->questionModel = new QuestionModel();
 	}
 
+	public function getNumber($string) {
+		if ($string == 'A') {
+			return 0;
+		}	
+
+		if ($string == 'B') {
+		    return 1;
+		}	
+
+		if ($string == 'C') {
+		    return 2;
+		}		
+	}	
+
 	public function hasUserSubmitQuiz () {
 		if (isset($_POST[$this->submitQuizLocation])) {
 			return true;
@@ -77,7 +91,6 @@ class PlayQuizView {
 				$html .= "<h3>$questionNr. " . $question->getName() . "</h3>";
 				$question = $this->questionModel->getQuestion($question->getQuestionId());
 
-
 				foreach ($question->toArray() as $answer) {
 					$foo = 0;
 
@@ -101,37 +114,44 @@ class PlayQuizView {
 		</form>";
 	}
 
-	public function showResult ($score = 0, $quizName) {
-
+	public function showResult ($score = 0, $quizId) {
 		$userAnswers = $this->getUserAnswers();
-		$quiz = $this->quizModel->getQuiz($quizName);
+		$quiz = $this->quizModel->getQuiz($quizId);
+		$questions = $quiz->getQuestions();		
+		$questionNr = 1;
 
-		$html = "<a href='?$this->showAllQuizToPlay' >Tillbaka</a>
-		<h1>$quizName</h1>";				
+		$html = "<a href='?playQuiz=$quizId' >Tillbaka</a>
+		<h1>" . $quiz->getName() . "</h1>";				
 
 		if ($userAnswers > 0) {
-		foreach ($quiz as $questionNr => $value) {
-			$html .= "<h3>$questionNr. " . $value['Question'] . "</h3>";
+			foreach ($questions->ToArray() as $questionObj) {
+				if (isset($userAnswers[$questionNr])) {	
+					$html .= "<h3>$questionNr. " . $questionObj->getName() . "</h3>";
+					$question = $this->questionModel->getQuestion($questionObj->getQuestionId());
 
-				if ($userAnswers[$questionNr] != $value['CorrectAnswer']) {
-					 $label = 'question-' . $questionNr . '-answers-'. $value['CorrectAnswer'];
-					 $html .= "<div>
-					 <input type='radio' name='answers[$questionNr]' id='$label' value='" . $value['Answers'][$userAnswers[$questionNr]] . "' disabled>
-					 <label style='color :red;' for='$label'>" . $value['CorrectAnswer'] . ") " . $value['Answers'][$userAnswers[$questionNr]] . "</label>
-				     </div>";
-        		} else {
-        			 $label = 'question-' . $questionNr . '-answers-'. $value['CorrectAnswer'];
-            		 $html .= "<div>
-					 <input type='radio' name='answers[$questionNr]' id='$label' value='" . $value['Answers'][$userAnswers[$questionNr]] . "' disabled>
-					 <label style='color: green;' for='$label'>" . $value['CorrectAnswer'] . ") " . $value['Answers'][$userAnswers[$questionNr]] . "</label>
-					 </div>";
-        		}
+					foreach ($question->toArray() as $answer) {
+						$num = $this->getNumber($userAnswers[$questionNr]);
+						if ($userAnswers[$questionNr] != $answer->getRightAnswer()) {
+						 	$label = 'question-' . $questionNr . '-answers-'. $answer->getRightAnswer();
+						 	$html .= "<div>
+						 	<input type='radio' name='answers[$questionNr]' id='$label' value='" . $answer->getAnswer($num) . "' disabled>
+						 	<label style='color :red;' for='$label'>" . $userAnswers[$questionNr] . ") " . $answer->getAnswer($num) .  "</label>
+					     	</div>";
+	        			} else {
+	        			 	$label = 'question-' . $questionNr . '-answers-'.  $answer->getRightAnswer();
+	            		 	$html .= "<div>
+					 		<input type='radio' name='answers[$questionNr]' id='$label' value='" . $answer->getAnswer($num) . "' disabled>
+					 		<label style='color: green;' for='$label'>" . $userAnswers[$questionNr] . ") " . $answer->getAnswer($num) .  "</label>
+					 		</div>";
+	        			}
+					}
+					$questionNr++;
+				}
 			}
 		}
 
 		return $html .= "
 		</br>
-		Resultat: $score/" . $this->quizModel->countQuiz($quizName) . "
-		";
+		Resultat: $score/" . count($questions->ToArray()) . "";
 	}
 }

@@ -1,6 +1,7 @@
 <?php 
 
 require_once("Model/Dao/QuizRepository.php");
+require_once("Model/QuestionModel.php");
 
 class QuizModel {
 
@@ -8,6 +9,7 @@ class QuizModel {
 
 	public function __construct() {
 		$this->quizRepository = new QuizRepository();
+		$this->questionModel = new QuestionModel();
 	}
 
 	public function getAllQuiz() {
@@ -22,16 +24,25 @@ class QuizModel {
 		return count($this->quiz[$quizName]);
 	}
 
-	public function validateQuiz($userAnswers, $quizName) {
+	public function validateQuiz($userAnswers, $quizId) {
 		$score = 0;
+		$quiz = $this->getQuiz($quizId);
+		$questions = $quiz->getQuestions();		
+		$questionNr = 1;
 
-		foreach ($this->quiz[$quizName] as $questionNr => $value) {
-			if (isset($userAnswers[$questionNr]) == true) {
-				if ($userAnswers[$questionNr] == $value['CorrectAnswer']) {
-					$score++;
+		foreach ($questions->toArray() as $questionObj) {
+			$question = $this->questionModel->getQuestion($questionObj->getQuestionId());
+
+			foreach ($question->toArray() as $answer) {
+				if (isset($userAnswers[$questionNr]) == true) {
+					if ($userAnswers[$questionNr] == $answer->getRightAnswer()) {
+						$score++;
+					}
 				}
 			}
+			$questionNr++;
 		}
+
 		return $score;
 	}
 
