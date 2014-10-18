@@ -46,7 +46,7 @@ class MasterController {
                 }
             }
 
-            else if ($this->questionView->didUserPressToAddQuestion() && $this->loginController->isAdmin()) {
+            else if ($this->questionView->didUserPressToAddQuestion() && $this->loginController->isAdmin() && $this->quizRepository->isValidQuizId($this->quizView->getId())) {
                 $this->questionController->addQuestion();
             }
 

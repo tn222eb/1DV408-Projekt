@@ -28,7 +28,21 @@ class QuestionRepository extends Repository {
 				return false;
 			}
 			return true;
-	}		
+	}	
+
+	public function questionExists($questionName) {
+			$sql = "SELECT * FROM $this->dbTable WHERE QuestionName = ?";
+			$params = array($questionName);
+			$query = $this->db->prepare($sql);
+			$query->execute($params);
+
+			$results = $query->fetch();
+
+			if ($results == false) {
+				return false;
+			}
+			return true;
+	}
 
 	public function addQuestion(Question $question) {
 		$sql = "INSERT INTO $this->dbTable (" . $this->questionName . ", " . $this->quizId .") VALUES (?,?)";

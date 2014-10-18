@@ -7,7 +7,7 @@ abstract class Repository {
     protected $dbTable;
 
     protected function connection() {
-    	if($this->dbConnection == null) {
+    	if ($this->dbConnection == null) {
             $this->dbConnection = new \PDO(Settings::$DB_CONNECTION, Settings::$DB_USERNAME, Settings::$DB_PASSWORD);
         
         $this->dbConnection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);

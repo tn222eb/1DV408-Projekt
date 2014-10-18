@@ -5,7 +5,7 @@ require_once("View/LoggedInView.php");
 require_once("View/HTMLView.php");
 require_once("View/LoginMessage.php");
 require_once("Model/LoginModel.php");
-require_once("Helper/UserAgent.php");
+require_once("helper/UserAgent.php");
 require_once("View/RegisterView.php");
 require_once("Model/Validation/ValidatePassword.php");
 require_once("Model/Validation/ValidateUsername.php");

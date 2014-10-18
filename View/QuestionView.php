@@ -1,12 +1,21 @@
 <?php
 
 require_once("Model/Quiz.php");
+require_once("View/QuizView.php");
+require_once("helper/CookieStorage.php");
 
 class QuestionView {
 
 	private $alphabets = array('A', 'B', 'C');
 
+	public function __construct() {
+		$this->quizView = new QuizView();
+		$this->cookieStorage = new CookieStorage();
+	}
+
 	public function showAddQuestionForm(Quiz $quiz) {
+		$message = $this->cookieStorage->load($this->quizView->getMessageLocation());
+		$this->quizView->unsetMessage($this->quizView->getMessageLocation());		
 		$userUnique = $quiz->getQuizId();
 		$html = "
 		<a href='?showQuiz&id=" . $quiz->getQuizId() . "' name='returnToPage'>Tillbaka</a>
@@ -15,7 +24,7 @@ class QuestionView {
 		<form action='' method='post'>
 		<input type='text' name='questionName' />
 		<input type='submit' name='addQuestion' value='Lägg till' />
-		</form>";
+		</form> $message";
 		return $html;
 	}
 

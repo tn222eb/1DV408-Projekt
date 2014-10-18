@@ -1,22 +1,49 @@
 <?php
 
+require_once("Model/Validation/ValidateInput.php");
 require_once("View/AnswerView.php");
 require_once("Model/Dao/QuestionRepository.php");
 require_once("View/HTMLView.php");
 require_once("Model/Answers.php");
 require_once("Model/AnswerModel.php");
+require_once("View/QuizMessage.php");
 
 class AnswerController {
 
 	private $answerView;
 	private $questionRepository;
+	private $quizMessage;
+	private $quizView;
+	private $validateInput;
 
 	public function __construct() {
 		$this->answerView = new AnswerView();
 		$this->questionRepository = new QuestionRepository();
 		$this->htmlView = new HTMLView();
 		$this->answerModel = new AnswerModel();
+		$this->quizView = new QuizView;
+		$this->validateInput = new ValidateInput();		
 	}
+
+	public function validate($string) {
+		if ($this->validateInput->validateLength($string) == false) {
+				$this->quizMessage = new QuizMessage(12);
+				$message = $this->quizMessage->getMessage();
+				$this->quizView->saveMessage($message);
+				$this->answerView->redirectToAddAnswer($this->answerView->getId());		
+				return false;
+		}
+
+		if ($this->validateInput->validateCharacters($string) == false) {
+				$this->quizMessage = new QuizMessage(13);
+				$message = $this->quizMessage->getMessage();
+				$this->quizView->saveMessage($message);
+				$this->answerView->redirectToAddAnswer($this->answerView->getId());	
+				return false;
+		}	
+
+		return true;
+	}	
 
 	public function addAnswers() {
 		if ($this->answerView->hasSubmitAddAnswers() == false) {
@@ -24,8 +51,28 @@ class AnswerController {
 			$this->htmlView->echoHTML($this->answerView->showAddAnswersForm($question));			
 		}
 		else {
-			$answers = new Answers($this->answerView->getAnswerA(), $this->answerView->getAnswerB(), $this->answerView->getAnswerC(), $this->answerView->getRightAnswerCheckBox() ,$this->answerView->getId());
-			$this->answerModel->addAnswers($answers);
+			$answerA = $this->answerView->getAnswerA();
+			$answerB = $this->answerView->getAnswerB();
+			$answerC = $this->answerView->getAnswerC();
+
+			if ($this->validate($answerA) && $this->validate($answerB) && $this->validate($answerC)) {
+				$foo = $this->answerView->getRightAnswerCheckBox();
+				if (empty($foo)) {
+					$this->quizMessage = new QuizMessage(11);
+					$message = $this->quizMessage->getMessage();
+					$this->quizView->saveMessage($message);
+					$this->answerView->redirectToAddAnswer($this->answerView->getId());	
+				} 
+				else {
+					$answers = new Answers($answerA, $answerB, $answerC, $this->answerView->getRightAnswerCheckBox(), $this->answerView->getId());
+					$this->answerModel->addAnswers($answers);
+					$this->quizMessage = new QuizMessage(4);
+					$message = $this->quizMessage->getMessage();
+					$this->quizView->saveMessage($message);
+					$question = $this->questionRepository->getQuestion($this->answerView->getId());
+					$this->quizView->redirectToShowQuiz($question->getQuizId());	
+				}
+			}			
 		}
 	}
 

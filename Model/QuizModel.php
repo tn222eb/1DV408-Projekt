@@ -20,6 +20,10 @@ class QuizModel {
 		return $this->quizRepository->getQuiz($quizId);
 	}
 
+	public function quizExists($quizName) {
+		return $this->quizRepository->quizExists($quizName);
+	}
+
 	public function validateQuiz($userAnswers, $quizId) {
 		$score = 0;
 		$quiz = $this->getQuiz($quizId);

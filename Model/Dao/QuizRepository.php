@@ -30,8 +30,22 @@ class QuizRepository extends Repository{
 			return true;
 	}
 
+	public function quizExists($quizName) {
+			$sql = "SELECT * FROM $this->dbTable WHERE QuizName = ?";
+			$params = array($quizName);
+			$query = $this->db->prepare($sql);
+			$query->execute($params);
+
+			$results = $query->fetch();
+
+			if ($results == false) {
+				return false;
+			}
+			return true;
+	}
+
 	public function saveQuizResult($score, $numberofQuestions, $quizId, $userId) {
-		$sql = "INSERT INTO Results (Result, NumberOfQuestions, QuizId, UserId) VALUES (?,?,?,?)";
+		$sql = "INSERT INTO results (Result, NumberOfQuestions, QuizId, UserId) VALUES (?,?,?,?)";
 		$params = array($score, $numberofQuestions, $quizId, $userId);
 		$query = $this->db->prepare($sql);
 		$query->execute($params);

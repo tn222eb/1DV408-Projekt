@@ -1,8 +1,18 @@
 <?php
 
+require_once("View/QuizView.php");
+require_once("helper/CookieStorage.php");
+
 class AnswerView {
 
+	public function __construct() {
+		$this->quizView = new QuizView();
+		$this->cookieStorage = new CookieStorage();
+	}
+
 	public function showAddAnswersForm(Question $question) {
+		$message = $this->cookieStorage->load($this->quizView->getMessageLocation());
+		$this->quizView->unsetMessage($this->quizView->getMessageLocation());			
 		$html = "
 		<a href='?showQuestion&id=" . $question->getQuestionId() . "' name='returnToPage'>Tillbaka</a>
 		<h1>MyQuiz</h1>
@@ -27,9 +37,13 @@ class AnswerView {
 		</br>	
 
 		<input type='submit' name='addAnswers' value='Lägg till' />
-		</form>";
+		</form> $message";
 		return $html;
 	}
+
+	public function redirectToAddAnswer($questionId) {
+		header("Location: ?addAnswers&id=" . $questionId);		
+	}	
 
 	public function hasSubmitAddAnswers() {
 		if (isset($_POST['addAnswers'])) {

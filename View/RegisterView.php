@@ -64,7 +64,7 @@ class RegisterView {
 					      <div class='form-group'>
 					        <label class='col-sm-2 control-label' for='$this->usernameLocation'>Användarnamn: </label>
 					        <div class='col-sm-10'>
-					          <input id='username' class='form-control' value='$username' name='$this->usernameLocation' type='text' size='20' maxlength='30'/>
+					          <input id='username' class='form-control' value='$username' name='$this->usernameLocation' type='text' size='20' maxlength='20'/>
 					        </div>
 					      </div>
 					      <div class='form-group'>
