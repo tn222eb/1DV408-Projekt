@@ -1,6 +1,5 @@
 <?php
 
-
 class CookieStorage {
 
     public function save($name, $user, $expire){
@@ -15,6 +14,5 @@ class CookieStorage {
         }
 
         return $ret;
-
     }
 }

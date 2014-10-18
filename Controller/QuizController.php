@@ -5,7 +5,9 @@ require_once("View/HTMLView.php");
 require_once("Model/QuizModel.php");
 require_once("View/QuizView.php");
 require_once("Model/Quiz.php");
+require_once("Model/Validation/ValidateInput.php");
 require_once("Model/Dao/QuizRepository.php");
+require_once("View/QuizMessage.php");
 
 class QuizController {
 
@@ -13,6 +15,8 @@ class QuizController {
 	private $htmlView;
 	private $quizModel;
 	private $quizView;
+	private $quizMessage;
+	private $cookieStorage;
 
 	public function __construct() {
 		$this->playQuizView = new PlayQuizView();
@@ -20,6 +24,7 @@ class QuizController {
 		$this->quizModel = new QuizModel();
 		$this->quizView = new QuizView();
 		$this->quizRepository = new QuizRepository();
+		$this->validateInput = new ValidateInput();
 	}
 
 	public function showAllQuizToPlay() {
@@ -29,6 +34,10 @@ class QuizController {
 	public function saveEditQuiz() {
 		$quiz = new Quiz($this->quizView->getQuizName(), $this->quizView->getId());
 		$this->quizModel->saveEditQuiz($quiz);
+		$this->quizMessage = new QuizMessage(2);
+		$message = $this->quizMessage->getMessage();
+		$this->quizView->saveMessage($message);
+		$this->quizView->redirectToShowAllQuiz();	
 	}
 
 	public function confirmRemoveQuiz() {
@@ -39,6 +48,10 @@ class QuizController {
 	public function removeQuiz() {
 		$quiz = $this->quizRepository->getQuiz($this->quizView->getId());
 		$this->quizModel->removeQuiz($quiz);
+		$this->quizMessage = new QuizMessage(1);
+		$message = $this->quizMessage->getMessage();
+		$this->quizView->saveMessage($message);
+		$this->quizView->redirectToShowAllQuiz();	
 	}
 
 	public function showAllQuiz() {
@@ -49,10 +62,47 @@ class QuizController {
 		$this->htmlView->echoHTML($this->quizView->showEditQuizForm($quiz));
 	}
 
+	public function validate($quizName) {
+		if ($this->validateInput->validateLength($quizName) == false) {
+				$this->quizMessage = new QuizMessage(6);
+				$message = $this->quizMessage->getMessage();
+				$this->quizView->saveMessage($message);
+				$this->quizView->redirectToShowCreateQuizForm();
+				return false;
+		}
+
+		if ($this->validateInput->validateCharacters($quizName) == false) {
+				$this->quizMessage = new QuizMessage(7);
+				$message = $this->quizMessage->getMessage();
+				$this->quizView->saveMessage($message);
+				$this->quizView->redirectToShowCreateQuizForm();
+				return false;
+		}		
+
+		return true;
+	}
+
 	public function createQuiz() {
 		if ($this->quizView->didUserPressToSubmitCreateQuiz()) {
-			$quiz = new Quiz($this->quizView->getQuizName());
-			$this->quizModel->addQuiz($quiz);
+			$quizName = $this->quizView->getQuizName();
+
+			if ($this->quizModel->quizExists($quizName) == false) {
+				if ($this->validate($quizName)) {
+					$quiz = new Quiz($quizName);
+					$this->quizModel->addQuiz($quiz);
+
+					$this->quizMessage = new QuizMessage(0);
+					$message = $this->quizMessage->getMessage();
+					$this->quizView->saveMessage($message);
+					$this->quizView->redirectToShowAllQuiz();
+				}
+			}
+			else {
+				$this->quizMessage = new QuizMessage(5);
+				$message = $this->quizMessage->getMessage();
+				$this->quizView->saveMessage($message);
+				$this->quizView->redirectToShowCreateQuizForm();
+			}		
 		}
 		else {
 			$this->htmlView->echoHTML($this->quizView->showCreateQuizForm());
