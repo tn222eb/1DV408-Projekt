@@ -79,6 +79,13 @@ class QuizView {
 		return false;
 	}
 
+	public function didUserConfirmToRemoveQuiz() {
+		if (isset($_POST['confirmRemoveQuiz'])) {
+			return true;
+		}
+		return false;
+	}
+
 	public function showEditQuizForm(Quiz $quiz) {
 		return $html = "<a href='?showQuiz&id=" . $quiz->getQuizId() . "' name='returnToPage'>Tillbaka</a>
 		</br>
@@ -87,6 +94,17 @@ class QuizView {
 		<form action='' method='post'>
 		<input type='text' name='quizName' value='" . $quiz->getName() . "'>
 		<input type='submit' name='saveEditQuiz' value='Spara'>
+		</form>
+		 ";
+	}
+
+	public function showConfirmToRemoveQuiz(Quiz $quiz) {
+		return $html = "<a href='?showQuiz&id=" . $quiz->getQuizId() . "' name='returnToPage'>Tillbaka</a>
+		</br>
+		</br>
+		<h1>Är du säker att du vill ta bort " . $quiz->getName() . "</1>
+		<form action='' method='post'>
+		<input type='submit' name='confirmRemoveQuiz' value='Ja, Ta bort'>
 		</form>
 		 ";
 	}

@@ -20,10 +20,6 @@ class QuizModel {
 		return $this->quizRepository->getQuiz($quizId);
 	}
 
-	public function countQuiz($quizName) {
-		return count($this->quiz[$quizName]);
-	}
-
 	public function validateQuiz($userAnswers, $quizId) {
 		$score = 0;
 		$quiz = $this->getQuiz($quizId);
@@ -56,5 +52,9 @@ class QuizModel {
 
 	public function saveEditQuiz(Quiz $quiz) {
 		$this->quizRepository->saveEditQuiz($quiz);
+	}
+
+	public function saveQuizResult($score, $numberofQuestions, $quizId, $userId) {
+		$this->quizRepository->saveQuizResult($score, $numberofQuestions, $quizId, $userId);
 	}
 }

@@ -39,7 +39,7 @@ class MasterController {
         try {	
             if ($this->playQuizView->didUserPressGoToShowAllQuizToPlay() || $this->playQuizView->hasChosenQuiz()) {
                 if ($this->playQuizView->hasChosenQuiz() && $this->quizRepository->isValidQuizId($this->playQuizView->getChosenQuiz())) {
-                    $this->quizController->playQuiz();
+                    $this->quizController->playQuiz($this->loginController->getId());
                 }
                 else {
                     $this->quizController->showAllQuizToPlay();
@@ -60,6 +60,10 @@ class MasterController {
             }
 
             else if ($this->quizView->didUserPressToRemoveQuiz() && $this->loginController->isAdmin()) {
+                $this->quizController->confirmRemoveQuiz();
+            }
+
+            else if ($this->quizView->didUserConfirmToRemoveQuiz() && $this->loginController->isAdmin()) {
                 $this->quizController->removeQuiz();
             }
 

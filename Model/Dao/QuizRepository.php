@@ -28,7 +28,14 @@ class QuizRepository extends Repository{
 				return false;
 			}
 			return true;
-	}	
+	}
+
+	public function saveQuizResult($score, $numberofQuestions, $quizId, $userId) {
+		$sql = "INSERT INTO Results (Result, NumberOfQuestions, QuizId, UserId) VALUES (?,?,?,?)";
+		$params = array($score, $numberofQuestions, $quizId, $userId);
+		$query = $this->db->prepare($sql);
+		$query->execute($params);
+	}		
 
 	public function addQuiz(Quiz $quiz) {
 		$sql = "INSERT INTO $this->dbTable (" . $this->quizName . ") VALUES (?)";

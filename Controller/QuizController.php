@@ -31,6 +31,11 @@ class QuizController {
 		$this->quizModel->saveEditQuiz($quiz);
 	}
 
+	public function confirmRemoveQuiz() {
+		$quiz = $this->quizRepository->getQuiz($this->quizView->getId());
+		$this->htmlView->echoHTML($this->quizView->showConfirmToRemoveQuiz($quiz));
+	}
+
 	public function removeQuiz() {
 		$quiz = $this->quizRepository->getQuiz($this->quizView->getId());
 		$this->quizModel->removeQuiz($quiz);
@@ -58,11 +63,16 @@ class QuizController {
  		 $this->htmlView->echoHTML($this->quizView->showQuiz($quiz));
  	}
 
-	public function playQuiz() {
+	public function playQuiz($userId) {
 			if ($this->playQuizView->hasUserSubmitQuiz()) {
 				$chosenQuiz = $this->playQuizView->getChosenQuiz();
 				$userAnswers = $this->playQuizView->getUserAnswers();
 				$score = $this->quizModel->validateQuiz($userAnswers, $chosenQuiz);
+
+				$quiz = $this->quizModel->getQuiz($chosenQuiz);
+				$questions = $quiz->getQuestions();
+
+				$this->quizModel->saveQuizResult($score, count($questions->toArray()), $chosenQuiz, $userId);
 				$this->htmlView->echoHTML($this->playQuizView->showResult($score, $chosenQuiz));
 			}
 			else {

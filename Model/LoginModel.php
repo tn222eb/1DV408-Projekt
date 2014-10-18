@@ -10,9 +10,14 @@ class LoginModel{
     private $userRepository;
     private $role;
     private $roleNr = 1;
+    private $id;
 
     public function __construct() {
         $this->userRepository = new userRepository();
+    }
+
+    public function getId() {
+        return $_SESSION['id'];
     }
 
     /**
@@ -153,21 +158,28 @@ class LoginModel{
     }
 
     public function setAdmin() {
-        if(isset($_SESSION['admin']) == false) {
+        if (isset($_SESSION['admin']) == false) {
             $_SESSION['admin'] = $this->role;
         }        
     }
 
     public function isAdmin() {
-        if(isset($_SESSION['admin'])) {
+        if (isset($_SESSION['admin'])) {
             return true;
         }
         return false;
     }
 
+    public function setId() {
+        if (isset($_SESSION['id']) == false) {
+            $_SESSION['id'] = $this->id;
+        }       
+    }
+
     public function get($username) {
         $data = $this->userRepository->get($username);
 
+        $this->id = $data[0];
         $this->username = $data[1];
         $this->hash = $data[2];
         $this->role = $data[3];
@@ -175,6 +187,8 @@ class LoginModel{
         if ($this->role == $this->roleNr) {
             $this->setAdmin();
         }
+
+        $this->setId();
     }
 
 }

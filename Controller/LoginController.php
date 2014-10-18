@@ -242,6 +242,10 @@ class LoginController {
         return $this->userAgent2;
     }
 
+    public function getId() {
+        return $this->model->getId();
+    }
+
     public function getCookieExpireTime(){
         $this->loginView->setCookieExpireTime($this->model->getCookieExpireTime());
     }
