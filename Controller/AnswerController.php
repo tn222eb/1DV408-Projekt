@@ -56,8 +56,8 @@ class AnswerController {
 			$answerC = $this->answerView->getAnswerC();
 
 			if ($this->validate($answerA) && $this->validate($answerB) && $this->validate($answerC)) {
-				$foo = $this->answerView->getRightAnswerCheckBox();
-				if (empty($foo)) {
+				$checkedStatus = $this->answerView->getRightAnswerCheckBox();
+				if (empty($checkedStatus)) {
 					$this->quizMessage = new QuizMessage(11);
 					$message = $this->quizMessage->getMessage();
 					$this->quizView->saveMessage($message);
