@@ -1,6 +1,7 @@
 <?php
 
 require_once("Settings.php");
+require_once("View/BaseView.php");
 require_once("Controller/QuizController.php");
 require_once("Controller/LoginController.php");
 require_once("Controller/QuestionController.php");
@@ -32,8 +33,6 @@ class MasterController {
         $this->answerView = new AnswerView();
         $this->answerController = new AnswerController();
 	}
-
-
 
 	public function doControll() {
         try {	
@@ -76,8 +75,6 @@ class MasterController {
             }
 
             else if ($this->quizView->didUserPressToShowQuiz() && $this->loginController->isAdmin() && $this->quizRepository->isValidQuizId($this->quizView->getId())) {
-                // TODO: Redirect when remove or add
-                // TODO: Validation for input
                     $quiz = $this->quizRepository->getQuiz($this->quizView->getId());
                     $this->quizController->showQuiz($quiz);
             }
@@ -97,11 +94,13 @@ class MasterController {
             }
         }
         catch (Exception $e) {
+            error_log($e->getMessage() . "\n", 3, Settings::$ERROR_LOG);
             if (Settings::$DO_DEBUG) {
                 throw $e;
             }
             else {
-                die("An unknown error has ocurred");
+                BaseView::redirectToErrorPage();                
+                die();
             }
         }		
 	}

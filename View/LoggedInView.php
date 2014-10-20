@@ -22,7 +22,8 @@ class LoggedInView extends BaseView {
         $this->username = $this->model->getUsername();
 
         if ($this->model->isAdmin()) {
-            $this->menu .= "<a class='btn btn-default' name='" . $this->showAllQuizLocation . "' href='?" . $this->showAllQuizLocation . "'>Visa alla quiz</a> </br>";
+            $this->menu .= "<a class='btn btn-default' name='" . $this->showAllQuizLocation . "' href='?" . $this->showAllQuizLocation . "'>Visa alla quiz</a> </br>
+            ";
         }
 
         $html = "
@@ -31,6 +32,8 @@ class LoggedInView extends BaseView {
             $this->message
             <a class='btn btn-default' name='Play' href='?". $this->showAllQuizToPlayLocation . "'>Välj quiz att spela</a>
             </br>
+             <a class='btn btn-default' name='" . $this->showResultsLocation . "' href='?" . $this->showResultsLocation . "'>Visa mina resultat</a>  
+             </br>
             $this->menu
             <a class='btn btn-default' name='logOut' href='?". $this->logOutLocation . "'>Logga ut</a>
     ";
