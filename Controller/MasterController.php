@@ -12,6 +12,7 @@ require_once("View/AnswerView.php");
 require_once("Controller/AnswerController.php");
 require_once("Model/Dao/QuestionRepository.php");
 require_once("Model/Dao/QuizRepository.php");
+require_once("View/ResultView.php");
 
 class MasterController {
 	private $loginController;
@@ -20,6 +21,7 @@ class MasterController {
     private $quizView;
     private $quizRepository;
     private $answerView;
+    private $resultView;
 
 	public function __construct() {
 		$this->loginController = new LoginController();
@@ -32,6 +34,7 @@ class MasterController {
         $this->questionController = new QuestionController();
         $this->answerView = new AnswerView();
         $this->answerController = new AnswerController();
+        $this->resultView = new ResultView();
 	}
 
 	public function doControll() {
@@ -44,6 +47,10 @@ class MasterController {
                     $this->quizController->showAllQuizToPlay();
                 }
             }
+
+            else if ($this->resultView->didUserPressGoToShowAllQuizToPlay()) {
+                $this->quizController->showMyResults($this->loginController->getId());
+            }            
 
             else if ($this->questionView->didUserPressToAddQuestion() && $this->loginController->isAdmin() && $this->quizRepository->isValidQuizId($this->quizView->getId())) {
                 $this->questionController->addQuestion();

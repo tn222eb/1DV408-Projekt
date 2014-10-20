@@ -1,6 +1,7 @@
 <?php
 
 require_once("Model/Quiz.php");
+require_once("Model/Result.php");
 require_once("Model/QuizList.php");
 require_once("Model/Dao/Repository.php");
 
@@ -8,6 +9,8 @@ class QuizRepository extends Repository{
 	private $quizList;
 	private $db;
 	private $questionTable = "question";
+	private $resultTable = "results";
+	private $results = array();
 
 	public function __construct() {
 		$this->dbTable = 'quiz';
@@ -43,11 +46,31 @@ class QuizRepository extends Repository{
 			return true;
 	}
 
-	public function saveQuizResult($score, $numberofQuestions, $quizId, $userId) {
-		$sql = "INSERT INTO results (" . $this->result . ", " . $this->numberOfQuestions . ", " . $this->quizId . ", " . $this->userId . ") VALUES (?,?,?,?)";
-		$params = array($score, $numberofQuestions, $quizId, $userId);
+	public function saveQuizResult(Result $result) {	
+		$sql = "INSERT INTO $this->resultTable (" . $this->result . ", " . $this->numberOfQuestions . ", " . $this->userId . ", " . $this->quizId . ") VALUES (?,?,?,?)";
+		$params = array($result->getScore(), $result->getNumofQuestions(), $result->getUserId(), $result->getQuizId());
 		$query = $this->db->prepare($sql);
 		$query->execute($params);
+	}
+
+	public function getQuizResults($userId) {
+		$sql = "SELECT * FROM " . $this->resultTable . " WHERE " . $this->userId . " = ?";
+		$params = array($userId);
+		$query = $this->db->prepare($sql);
+		$query->execute($params);
+
+		foreach ($query->fetchAll() as $resultObj) {
+			$score = $resultObj[$this->result];
+			$numOfQuestions = $resultObj[$this->numberOfQuestions];
+			$quizId = $resultObj[$this->quizId];
+			$userId = $resultObj[$this->userId];
+			$resultId = $resultObj[$this->resultId];
+
+			$result = new Result($score, $numOfQuestions, $userId, $quizId, $resultId);
+			$this->results[] = $result;
+		}
+
+		return $this->results;
 	}		
 
 	public function addQuiz(Quiz $quiz) {

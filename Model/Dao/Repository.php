@@ -17,6 +17,7 @@ abstract class Repository {
 	protected $numberOfQuestions = "NumberOfQuestions";
 	protected $userId = "UserId";
 	protected $quizName = "QuizName";
+	protected $resultId = "ResultId";
 
     protected function connection() {
     	if ($this->dbConnection == null) {

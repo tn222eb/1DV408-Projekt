@@ -120,9 +120,10 @@ class PlayQuizView extends BaseView {
 		$questions = $quiz->getQuestions();		
 		$questionNr = 1;
 
-		$html = "<a href='?$this->playQuizLocation=$quizId' >Tillbaka</a>
+		$html = "<a href='?$this->showAllQuizToPlayLocation' >Tillbaka</a>
+		</br>
+		<a href='?$this->playQuizLocation=$quizId' >Spela igen</a>
 		<h1>" . $quiz->getName() . "</h1>";				
-
 		if ($userAnswers > 0) {
 			foreach ($questions->ToArray() as $questionObj) {
 				if (isset($userAnswers[$questionNr])) {	
@@ -145,8 +146,8 @@ class PlayQuizView extends BaseView {
 					 		</div>";
 	        			}
 					}
-					$questionNr++;
 				}
+				$questionNr++;
 			}
 		}
 

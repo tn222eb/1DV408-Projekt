@@ -48,11 +48,12 @@ class QuizView extends BaseView {
 	public function showCreateQuizForm() {
 		$message = $this->cookieStorage->load($this->messageLocation);
 		$this->unsetMessage($this->messageLocation);
-		$html = "<a href='?" . $this->showAllQuizLocation . "' name='returnToPage'>Tillbaka</a> <h1>MyQuiz</h1> <h3>Skapa quiz</h3>";
-		$html .= "<form action='?" . $this->createQuizLocation . "' method='post'>";
-		$html .= "<input type='text' name='" . $this->quizNameLocation . "' maxlength='60'/>";
-		$html .= "</br> </br> <input type='submit' name='" . $this->createQuizLocation . "' value='Skapa quiz'/>";
-		$html .= "</form> $message";
+		
+		$html = "<a href='?" . $this->showAllQuizLocation . "' name='returnToPage'>Tillbaka</a> <h1>MyQuiz</h1> <h3>Skapa quiz</h3>
+		<form action='?" . $this->createQuizLocation . "' method='post'>
+		<input type='text' name='" . $this->quizNameLocation . "' maxlength='60'/>
+		</br> </br> <input type='submit' name='" . $this->createQuizLocation . "' value='Skapa quiz'/>
+		</form> $message";
 
 		return $html;
 	}

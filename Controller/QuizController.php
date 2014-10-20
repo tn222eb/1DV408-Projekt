@@ -8,6 +8,8 @@ require_once("Model/Quiz.php");
 require_once("Model/Validation/ValidateInput.php");
 require_once("Model/Dao/QuizRepository.php");
 require_once("View/QuizMessage.php");
+require_once("View/ResultView.php");
+require_once("Model/Result.php");
 
 class QuizController {
 
@@ -17,6 +19,7 @@ class QuizController {
 	private $quizView;
 	private $quizMessage;
 	private $cookieStorage;
+	private $resultView;
 
 	public function __construct() {
 		$this->playQuizView = new PlayQuizView();
@@ -25,6 +28,11 @@ class QuizController {
 		$this->quizView = new QuizView();
 		$this->quizRepository = new QuizRepository();
 		$this->validateInput = new ValidateInput();
+		$this->resultView = new ResultView();
+	}
+
+	public function showMyResults($userId) {
+		 $this->htmlView->echoHTML($this->resultView->showMyResults($userId)); 
 	}
 
 	public function showAllQuizToPlay() {
@@ -137,8 +145,8 @@ class QuizController {
 
 				$quiz = $this->quizModel->getQuiz($chosenQuiz);
 				$questions = $quiz->getQuestions();
-
-				$this->quizModel->saveQuizResult($score, count($questions->toArray()), $chosenQuiz, $userId);
+				$quizResult = new Result($score, count($questions->toArray()), $userId, $chosenQuiz);
+				$this->quizModel->saveQuizResult($quizResult);
 				$this->htmlView->echoHTML($this->playQuizView->showResult($score, $chosenQuiz));
 			}
 			else {

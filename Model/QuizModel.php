@@ -2,6 +2,8 @@
 
 require_once("Model/Dao/QuizRepository.php");
 require_once("Model/QuestionModel.php");
+require_once("Model/Result.php");
+require_once("Model/Quiz.php");
 
 class QuizModel {
 
@@ -58,7 +60,11 @@ class QuizModel {
 		$this->quizRepository->saveEditQuiz($quiz);
 	}
 
-	public function saveQuizResult($score, $numberofQuestions, $quizId, $userId) {
-		$this->quizRepository->saveQuizResult($score, $numberofQuestions, $quizId, $userId);
+	public function saveQuizResult(Result $result) {
+		$this->quizRepository->saveQuizResult($result);
+	}
+
+	public function getQuizResults($userId) {
+		return $this->quizRepository->getQuizResults($userId);
 	}
 }
