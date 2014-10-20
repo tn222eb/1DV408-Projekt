@@ -1,14 +1,14 @@
 <?php
 
 require_once("Model/QuizModel.php");
+require_once("View/BaseView.php");
 
-class PlayQuizView {
+class PlayQuizView extends BaseView {
 
-	private $alphabets = array('A', 'B', 'C');
 	private $submitQuizLocation = 'submitQuiz';
+	private $answersLocation = 'answers';
 	private $quizModel;
 	private $userAnswers = array();
-	private $showAllQuizToPlay = 'showAllQuizToPlay';
 	private $questionModel;
 
 	public function __construct() {
@@ -17,15 +17,15 @@ class PlayQuizView {
 	}
 
 	public function getNumber($string) {
-		if ($string == 'A') {
+		if ($string == $this->alphabets[0]) {
 			return 0;
 		}	
 
-		if ($string == 'B') {
+		if ($string == $this->alphabets[1]) {
 		    return 1;
 		}	
 
-		if ($string == 'C') {
+		if ($string == $this->alphabets[2]) {
 		    return 2;
 		}		
 	}	
@@ -38,26 +38,26 @@ class PlayQuizView {
 	}
 
 	public function didUserPressGoToShowAllQuizToPlay() {
-		if (isset($_GET[$this->showAllQuizToPlay])) {
+		if (isset($_GET[$this->showAllQuizToPlayLocation])) {
 			return true;
 		}
 		return false;
 	}
 
 	public function getUserAnswers() {
-		if(isset($_POST['answers'])) {
-			return $_POST['answers'];
+		if(isset($_POST[$this->answersLocation])) {
+			return $_POST[$this->answersLocation];
 		}
 	}
 
 	public function getChosenQuiz() {
-		if (isset($_GET['playQuiz'])) {
-			return $_GET['playQuiz'];
+		if (isset($_GET[$this->playQuizLocation])) {
+			return $_GET[$this->playQuizLocation];
 		}
 	}
 
 	public function hasChosenQuiz() {
-		if (isset($_GET['playQuiz'])) {
+		if (isset($_GET[$this->playQuizLocation])) {
 			return true;
 		}		
 		return false;
@@ -72,7 +72,7 @@ class PlayQuizView {
 
 		$quizList = $this->quizModel->getAllQuiz();
 		foreach ($quizList->ToArray() as $quiz) {
-			$html .= "<li><a href='?playQuiz=" . $quiz->getQuizId() . "'>" . $quiz->getName() . "</a></li>";
+			$html .= "<li><a href='?$this->playQuizLocation=" . $quiz->getQuizId() . "'>" . $quiz->getName() . "</a></li>";
 		}
 
 		return $html .= "</ul>";
@@ -83,7 +83,7 @@ class PlayQuizView {
 		$questions = $quiz->getQuestions();
 		$questionNr = 1;
 
-		$html = "<a href='?$this->showAllQuizToPlay' >Tillbaka</a>
+		$html = "<a href='?$this->showAllQuizToPlayLocation' >Tillbaka</a>
 		<h1>" . $quiz->getName() . "</h1>
 		<form action ='' method='post'>";
 
@@ -120,7 +120,7 @@ class PlayQuizView {
 		$questions = $quiz->getQuestions();		
 		$questionNr = 1;
 
-		$html = "<a href='?playQuiz=$quizId' >Tillbaka</a>
+		$html = "<a href='?$this->playQuizLocation=$quizId' >Tillbaka</a>
 		<h1>" . $quiz->getName() . "</h1>";				
 
 		if ($userAnswers > 0) {

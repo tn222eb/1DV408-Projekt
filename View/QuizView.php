@@ -2,10 +2,16 @@
 
 require_once("View/QuizMessage.php");
 require_once("helper/CookieStorage.php");
+require_once("View/BaseView.php");
 
-class QuizView {
+class QuizView extends BaseView {
 	private $cookieStorage;
 	private $messageLocation = "CookieMessage";
+	private $quizNameLocation = 'quizName';
+	private $removeQuizLocation = 'removeQuiz';
+	private $editQuizLocation = 'editQuiz';
+	private $saveEditQuizLocation = 'saveEditQuiz';
+	private $confirmRemoveQuizLocation = 'confirmRemoveQuiz';
 
 	public function __construct() {
 		$this->cookieStorage = new CookieStorage();		
@@ -24,35 +30,35 @@ class QuizView {
 	}
 
 	public function redirectToShowAllQuiz() {
-		header("Location: ?showAllQuiz");		
+		header("Location: ?" . $this->showAllQuizLocation . "");		
 	}
 
 	public function redirectToShowQuiz($quizId) {
-		header("Location: ?showQuiz&id=" . $quizId);		
+		header("Location: ?" . $this->showQuizLocation . "&" . $this->id . "=" . $quizId);		
 	}
 
 	public function redirectToShowCreateQuizForm() {
-		header("Location: ?createQuiz");
+		header("Location: ?" . $this->createQuizLocation . "");
 	}
 
 	public function redirectToAddQuestion($quizId) {
-		header("Location: ?addQuestion&id=" . $quizId);		
+		header("Location: ?" . $this->addQuestionLocation . "&" . $this->id . "=" . $quizId);		
 	}
 
 	public function showCreateQuizForm() {
 		$message = $this->cookieStorage->load($this->messageLocation);
 		$this->unsetMessage($this->messageLocation);
-		$html = "<a href='?showAllQuiz' name='returnToPage'>Tillbaka</a> <h1>MyQuiz</h1> <h3>Skapa quiz</h3>";
-		$html .= "<form action='?createQuiz' method='post'>";
-		$html .= "<input type='text' name='quizName' maxlength='60'/>";
-		$html .= "</br> </br> <input type='submit' name='createQuiz' value='Skapa quiz'/>";
+		$html = "<a href='?" . $this->showAllQuizLocation . "' name='returnToPage'>Tillbaka</a> <h1>MyQuiz</h1> <h3>Skapa quiz</h3>";
+		$html .= "<form action='?" . $this->createQuizLocation . "' method='post'>";
+		$html .= "<input type='text' name='" . $this->quizNameLocation . "' maxlength='60'/>";
+		$html .= "</br> </br> <input type='submit' name='" . $this->createQuizLocation . "' value='Skapa quiz'/>";
 		$html .= "</form> $message";
 
 		return $html;
 	}
 
 	public function didUserPressToShowAllQuiz() {
-		if (isset($_GET['showAllQuiz'])) {
+		if (isset($_GET[$this->showAllQuizLocation])) {
 			return true;
 		}
 		return false;
@@ -64,88 +70,88 @@ class QuizView {
 		$html = "<a href='?' name='returnToPage'>Tillbaka</a> <h1>MyQuiz</h1> <h3>Lista av alla quiz</h3>";
 		$html .= "<ul>";
 		foreach ($quizList->toArray() as $quiz) {
-			$html .= "<li><a href='?showQuiz&id=" .
+			$html .= "<li><a href='?" . $this->showQuizLocation . "&" . $this->id . "=" .
 			urlencode($quiz->getQuizId()) . "'>" .
 			$quiz->getName() . "</a></li>";
 		}
-		$html .= "</ul> <a class='btn btn-default' name='CreateQuiz' href='?createQuiz'>Skapa quiz</a> </br> $message";
+		$html .= "</ul> <a class='btn btn-default' name='" . $this->createQuizLocation . "' href='?" . $this->createQuizLocation . "'>Skapa quiz</a> </br> $message";
 		return $html;
 	}	
 
 	public function getQuizName() {
-		if(isset($_POST['quizName'])) {
-			return $_POST['quizName'];
+		if(isset($_POST[$this->quizNameLocation])) {
+			return $_POST[$this->quizNameLocation];
 		}
 	}
 
 	public function didUserPressToSubmitCreateQuiz() {
-		if (isset($_POST['createQuiz'])) {
+		if (isset($_POST[$this->createQuizLocation])) {
 			return true;
 		}
 		return false;
 	}
 
 	public function didUserPressGoToCreateQuiz() {
-		if(isset($_GET['createQuiz'])) {
+		if(isset($_GET[$this->createQuizLocation])) {
 			return true;
 		}
 		return false;
 	}
 
 	public function didUserPressToShowQuiz() {
-		if(isset($_GET['showQuiz'])) {
+		if(isset($_GET[$this->showQuizLocation])) {
 			return true;
 		}
 		return false;		
 	}
 
 	public function didUserPressToRemoveQuiz() {
-		if (isset($_POST['removeQuiz'])) {
+		if (isset($_POST[$this->removeQuizLocation])) {
 			return true;
 		}
 		return false;
 	}
 
 	public function didUserPressToEditQuiz() {
-		if (isset($_POST['editQuiz'])) {
+		if (isset($_POST[$this->editQuizLocation])) {
 			return true;
 		}
 		return false;
 	}
 
 	public function didUserPressToSaveEditQuiz() {
-		if (isset($_POST['saveEditQuiz'])) {
+		if (isset($_POST[$this->saveEditQuizLocation])) {
 			return true;
 		}
 		return false;
 	}
 
 	public function didUserConfirmToRemoveQuiz() {
-		if (isset($_POST['confirmRemoveQuiz'])) {
+		if (isset($_POST[$this->confirmRemoveQuizLocation])) {
 			return true;
 		}
 		return false;
 	}
 
 	public function showEditQuizForm(Quiz $quiz) {
-		return $html = "<a href='?showQuiz&id=" . $quiz->getQuizId() . "' name='returnToPage'>Tillbaka</a>
+		return $html = "<a href='?" . $this->showQuizLocation . "&" . $this->id . "=" . $quiz->getQuizId() . "' name='returnToPage'>Tillbaka</a>
 		</br>
 		</br>
 		<h1>Redigera " 	. $quiz->getName() . "</1>
 		<form action='' method='post'>
-		<input type='text' name='quizName' value='" . $quiz->getName() . "'>
-		<input type='submit' name='saveEditQuiz' value='Spara'>
+		<input type='text' name='" . $this->quizNameLocation . "' value='" . $quiz->getName() . "'>
+		<input type='submit' name='" . $this->saveEditQuizLocation . "' value='Spara'>
 		</form>
 		 ";
 	}
 
 	public function showConfirmToRemoveQuiz(Quiz $quiz) {
-		return $html = "<a href='?showQuiz&id=" . $quiz->getQuizId() . "' name='returnToPage'>Tillbaka</a>
+		return $html = "<a href='?" . $this->showQuizLocation . "&" . $this->id . "=" . $quiz->getQuizId() . "' name='returnToPage'>Tillbaka</a>
 		</br>
 		</br>
 		<h1>Är du säker att du vill ta bort " . $quiz->getName() . "</1>
 		<form action='' method='post'>
-		<input type='submit' name='confirmRemoveQuiz' value='Ja, Ta bort'>
+		<input type='submit' name='" . $this->confirmRemoveQuizLocation . "' value='Ja, Ta bort'>
 		</form>
 		 ";
 	}
@@ -155,13 +161,13 @@ class QuizView {
 		$this->unsetMessage($this->messageLocation);
 
 		$html = "<form action='' method='post'>
-		<a href='?showAllQuiz' name='returnToPage'>Tillbaka</a> </br> 
+		<a href='?" . $this->showAllQuizLocation . "' name='returnToPage'>Tillbaka</a> </br> 
 		<h1>" . $quiz->getName() . "</h1>
-		<input type='submit' name='editQuiz' value='Redigera " . $quiz->getName() . "'> <input type='submit' name='removeQuiz' value='Radera " . $quiz->getName() . "'>
+		<input type='submit' name='" . $this->editQuizLocation . "' value='Redigera " . $quiz->getName() . "'> <input type='submit' name='" . $this->removeQuizLocation . "' value='Radera " . $quiz->getName() . "'>
 		<h3>Frågor</h3>
 		<ul>";
 		foreach($quiz->getQuestions()->toArray() as $question) {
-			$html .= "<li><a href='?showQuestion&id=" . $question->getQuestionId() . "'>". $question->getName() ."</a></li>";
+			$html .= "<li><a href='?" . $this->showQuestionLocation . "&" . $this->id . "=" . $question->getQuestionId() . "'>". $question->getName() ."</a></li>";
 		}
 
 		$html .= "</ul>" . $this->getQuizMenu($quiz->getQuizId()) . "</form> $message";
@@ -170,12 +176,12 @@ class QuizView {
 
 	public function getQuizMenu($id) {
 		return $html = "
-		<a href='?addQuestion&id=$id'>Lägg till fråga</a>";
+		<a href='?" . $this->addQuestionLocation . "&" . $this->id . "=$id'>Lägg till fråga</a>";
 	}
 
 	public function getId() {
-		if (isset($_GET['id'])) {
-			return $_GET['id'];
+		if (isset($_GET[$this->id])) {
+			return $_GET[$this->id];
 		}
 		return NULL;
 	}

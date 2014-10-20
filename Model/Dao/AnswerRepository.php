@@ -12,7 +12,7 @@ class AnswerRepository extends Repository {
 	}
 
 	public function addAnswers(Answers $answers) {
-		$sql = "INSERT INTO $this->dbTable (AnswerA, AnswerB, AnswerC, RightAnswer, QuestionId) VALUES (?,?,?,?,?)";
+		$sql = "INSERT INTO $this->dbTable (" . $this->answerA . ", " . $this->answerB . ", " . $this->answerC . ", " . $this->rightAnswer . ", " . $this->questionId . ") VALUES (?,?,?,?,?)";
 		$params = array($answers->getAnswer(0), $answers->getAnswer(1), $answers->getAnswer(2), $answers->getRightAnswer(), $answers->getQuestionId());
 		$query = $this->db->prepare($sql);
 		$query->execute($params);

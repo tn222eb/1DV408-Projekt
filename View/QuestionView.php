@@ -3,10 +3,10 @@
 require_once("Model/Quiz.php");
 require_once("View/QuizView.php");
 require_once("helper/CookieStorage.php");
+require_once("View/BaseView.php");
 
-class QuestionView {
-
-	private $alphabets = array('A', 'B', 'C');
+class QuestionView extends BaseView{
+	private $questionName = 'questionName';
 
 	public function __construct() {
 		$this->quizView = new QuizView();
@@ -18,18 +18,18 @@ class QuestionView {
 		$this->quizView->unsetMessage($this->quizView->getMessageLocation());		
 		$userUnique = $quiz->getQuizId();
 		$html = "
-		<a href='?showQuiz&id=" . $quiz->getQuizId() . "' name='returnToPage'>Tillbaka</a>
+		<a href='?" . $this->showQuizLocation . "&" . $this->id . "=" . $quiz->getQuizId() . "' name='returnToPage'>Tillbaka</a>
 		<h1>MyQuiz</h1>
 		<h3>Lägg till fråga till " . $quiz->getName() . "</h3> 
 		<form action='' method='post'>
-		<input type='text' name='questionName' />
-		<input type='submit' name='addQuestion' value='Lägg till' />
+		<input type='text' name='" . $this->questionName . "' />
+		<input type='submit' name='" . $this->addQuestionLocation . "' value='Lägg till' />
 		</form> $message";
 		return $html;
 	}
 
 	public function didUserPressToShowQuestion() {
-		if (isset($_GET['showQuestion'])) {
+		if (isset($_GET[$this->showQuestionLocation])) {
 			return true;
 		}
 		return false;
@@ -38,7 +38,7 @@ class QuestionView {
 	public function showQuestion(Question $question) {
 		$i = 0;
 		$html = "<form action='' method='post'>
-		<a href='?showQuiz&id=" . $question->getQuizId() . "' name='returnToPage'>Tillbaka</a> </br> 
+		<a href='?" . $this->showQuizLocation . "&" . $this->id . "=" . $question->getQuizId() . "' name='returnToPage'>Tillbaka</a> </br> 
 		<h1>" . $question->getName() . "</h1>
 		<h3>Svar</h3>
 		<ul>";
@@ -65,32 +65,32 @@ class QuestionView {
 	}
 
 	public function getQuestionMenu($id) {
-		return $html = "<a href='?addAnswers&id=$id'>Lägg till svar</a>";
+		return $html = "<a href='?" . $this->addAnswersLocation . "&" . $this->id . "=$id'>Lägg till svar</a>";
 	}		
 
 	public function didUserSubmitAddQuestion() {
-		if (isset($_POST['addQuestion'])) {
+		if (isset($_POST[$this->addQuestionLocation])) {
 			return true;
 		}
 		return false;
 	}
 
 	public function getQuestionName() {
-		if (isset($_POST['questionName'])) {
-			return $_POST['questionName'];
+		if (isset($_POST[$this->questionName])) {
+			return $_POST[$this->questionName];
 		}
 	}
 
 	public function didUserPressToAddQuestion() {
-		if (isset($_GET['addQuestion'])) {
+		if (isset($_GET[$this->addQuestionLocation])) {
 			return true;
 		}
 		return false;
 	}
 
 	public function getId() {
-		if (isset($_GET['id'])) {
-			return $_GET['id'];
+		if (isset($_GET[$this->id])) {
+			return $_GET[$this->id];
 		}
 		return NULL;
 	}

@@ -1,13 +1,14 @@
 <?php
+
 require_once("./View/LoginView.php");
 require_once("./Model/LoginModel.php");
+require_once("View/BaseView.php");
 
-class LoggedInView{
+class LoggedInView extends BaseView {
     private $model;
     private $message;
     private $username;
     private $menu;
-    private $logOutLocation = 'logOut';
     private $adminNavigation;
 
     public function __construct(){
@@ -21,17 +22,17 @@ class LoggedInView{
         $this->username = $this->model->getUsername();
 
         if ($this->model->isAdmin()) {
-            $this->menu .= "<a class='btn btn-default' name='ShowAllQuiz' href='?showAllQuiz'>Visa alla quiz</a> </br>";
+            $this->menu .= "<a class='btn btn-default' name='" . $this->showAllQuizLocation . "' href='?" . $this->showAllQuizLocation . "'>Visa alla quiz</a> </br>";
         }
 
         $html = "
             <h1>MyQuiz</h1>
             <H3>$this->username är inloggad</H3>
             $this->message
-            <a class='btn btn-default' name='Play' href='?showAllQuizToPlay'>Välj quiz att spela</a>
+            <a class='btn btn-default' name='Play' href='?". $this->showAllQuizToPlayLocation . "'>Välj quiz att spela</a>
             </br>
             $this->menu
-            <a class='btn btn-default' name='logOut' href='?logOut'>Logga ut</a>
+            <a class='btn btn-default' name='logOut' href='?". $this->logOutLocation . "'>Logga ut</a>
     ";
         return $html;
     }

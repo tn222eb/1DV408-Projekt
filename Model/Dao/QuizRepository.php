@@ -6,7 +6,6 @@ require_once("Model/Dao/Repository.php");
 
 class QuizRepository extends Repository{
 	private $quizList;
-	private $quizName = 'QuizName';
 	private $db;
 	private $questionTable = "question";
 
@@ -17,7 +16,7 @@ class QuizRepository extends Repository{
 	}
 
 	public function isValidQuizId($id) {
-			$sql = "SELECT * FROM $this->dbTable WHERE QuizId = ?";
+			$sql = "SELECT * FROM $this->dbTable WHERE " . $this->quizId . " = ?";
 			$params = array($id);
 			$query = $this->db->prepare($sql);
 			$query->execute($params);
@@ -31,7 +30,7 @@ class QuizRepository extends Repository{
 	}
 
 	public function quizExists($quizName) {
-			$sql = "SELECT * FROM $this->dbTable WHERE QuizName = ?";
+			$sql = "SELECT * FROM $this->dbTable WHERE " . $this->quizName . " = ?";
 			$params = array($quizName);
 			$query = $this->db->prepare($sql);
 			$query->execute($params);
@@ -45,7 +44,7 @@ class QuizRepository extends Repository{
 	}
 
 	public function saveQuizResult($score, $numberofQuestions, $quizId, $userId) {
-		$sql = "INSERT INTO results (Result, NumberOfQuestions, QuizId, UserId) VALUES (?,?,?,?)";
+		$sql = "INSERT INTO results (" . $this->result . ", " . $this->numberOfQuestions . ", " . $this->quizId . ", " . $this->userId . ") VALUES (?,?,?,?)";
 		$params = array($score, $numberofQuestions, $quizId, $userId);
 		$query = $this->db->prepare($sql);
 		$query->execute($params);
@@ -59,14 +58,14 @@ class QuizRepository extends Repository{
 	}
 
 	public function removeQuiz(Quiz $quiz) {
-		$sql = "DELETE FROM $this->dbTable WHERE QuizId = ?";
+		$sql = "DELETE FROM $this->dbTable WHERE " . $this->quizId . " = ?";
 		$params = array($quiz->getQuizId());
 		$query = $this->db->prepare($sql);
 		$query->execute($params);
 	}
 
 	public function saveEditQuiz(Quiz $quiz) {
-			$sql = "UPDATE $this->dbTable SET " . $this->quizName . " = ? WHERE QuizId = ?";
+			$sql = "UPDATE $this->dbTable SET " . $this->quizName . " = ? WHERE " . $this->quizId . " = ?";
 			$params = array($quiz->getName(), $quiz->getQuizId());
 			$query = $this->db->prepare($sql);
 			$query->execute($params);	
@@ -78,8 +77,8 @@ class QuizRepository extends Repository{
 		$query->execute();
 
 		foreach ($query->fetchAll() as $dbQuizObj) {
-			$quizId = $dbQuizObj['QuizId'];
-			$quizName = $dbQuizObj['QuizName'];
+			$quizId = $dbQuizObj[$this->quizId];
+			$quizName = $dbQuizObj[$this->quizName];
 			$quiz = new Quiz($quizName, $quizId);
 			$this->quizList->add($quiz);
 		}
@@ -88,22 +87,22 @@ class QuizRepository extends Repository{
 	}
 
 	public function getQuiz($quizId) {
-		$sql = "SELECT * FROM $this->dbTable WHERE QuizId = ?";
+		$sql = "SELECT * FROM $this->dbTable WHERE " . $this->quizId . " = ?";
 		$params = array($quizId);
 		$query = $this->db->prepare($sql);
 		$query->execute($params);
 		$result = $query->fetch();
 
 		if ($result) {
-			$quiz = new Quiz($result['QuizName'], $result['QuizId']);
+			$quiz = new Quiz($result[$this->quizName], $result[$this->quizId]);
 
-			$sql = "SELECT * FROM " . $this->questionTable . " WHERE QuizId = ?";
+			$sql = "SELECT * FROM " . $this->questionTable . " WHERE " . $this->quizId . " = ?";
 			$query = $this->db->prepare($sql);
-			$query->execute (array($result['QuizId']));
+			$query->execute (array($result[$this->quizId]));
 			$questions = $query->fetchAll();
 
 			foreach($questions as $question) {
-				$question = new Question($question['QuestionName'], $question['QuizId'], $question['QuestionId']);
+				$question = new Question($question[$this->questionName], $question[$this->quizId], $question[$this->questionId]);
 				$quiz->add($question);
 			}
 			return $quiz;			

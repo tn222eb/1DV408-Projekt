@@ -5,8 +5,6 @@ require_once("Model/Question.php");
 require_once("Model/Dao/Repository.php");
 
 class QuestionRepository extends Repository {
-	private $questionName = 'QuestionName';
-	private $quizId = 'QuizId';
 	private $db;
 	private $answerTable = "answer";
 
@@ -17,7 +15,7 @@ class QuestionRepository extends Repository {
 	}
 
 	public function isValidQuestionId($id) {
-			$sql = "SELECT * FROM $this->dbTable WHERE QuestionId = ?";
+			$sql = "SELECT * FROM $this->dbTable WHERE " . $this->questionId . " = ?";
 			$params = array($id);
 			$query = $this->db->prepare($sql);
 			$query->execute($params);
@@ -31,7 +29,7 @@ class QuestionRepository extends Repository {
 	}	
 
 	public function questionExists($questionName) {
-			$sql = "SELECT * FROM $this->dbTable WHERE QuestionName = ?";
+			$sql = "SELECT * FROM $this->dbTable WHERE " . $this->questionName . " = ?";
 			$params = array($questionName);
 			$query = $this->db->prepare($sql);
 			$query->execute($params);
@@ -45,30 +43,30 @@ class QuestionRepository extends Repository {
 	}
 
 	public function addQuestion(Question $question) {
-		$sql = "INSERT INTO $this->dbTable (" . $this->questionName . ", " . $this->quizId .") VALUES (?,?)";
+		$sql = "INSERT INTO $this->dbTable (" . $this->questionName . ", " . $this->quizId . ") VALUES (?,?)";
 		$params = array($question->getName(), $question->getQuizId());
 		$query = $this->db->prepare($sql);
 		$query->execute($params);
 	}
 
 	public function getQuestion($questionId) {
-		$sql = "SELECT * FROM $this->dbTable WHERE QuestionId = ?";
+		$sql = "SELECT * FROM $this->dbTable WHERE " . $this->questionId . " = ?";
 		$params = array($questionId);
 		$query = $this->db->prepare($sql);
 		$query->execute($params);
 		$result = $query->fetch();
 
 		if ($result) {
-			$question = new Question($result[$this->questionName], $result['QuizId'], $result['QuestionId']);
+			$question = new Question($result[$this->questionName], $result[$this->quizId], $result[$this->questionId]);
 
-			$sql = "SELECT * FROM " . $this->answerTable . " WHERE QuestionId = ?";
+			$sql = "SELECT * FROM " . $this->answerTable . " WHERE " . $this->questionId . " = ?";
 			$query = $this->db->prepare($sql);
-			$query->execute (array($result['QuestionId']));
+			$query->execute (array($result[$this->questionId]));
 			$answersObj = $query->fetchAll();
 
 			foreach($answersObj as $answerObj) {
-				$answers = new Answers($answerObj['AnswerA'], $answerObj['AnswerB'], $answerObj['AnswerC'], $answerObj['RightAnswer'], 
-				$answerObj['QuestionId'], $answerObj['AnswerId']);
+				$answers = new Answers($answerObj[$this->answerA], $answerObj[$this->answerB], $answerObj[$this->answerC], $answerObj[$this->rightAnswer], 
+				$answerObj[$this->questionId], $answerObj[$this->answerId]);
 
 				$question->add($answers);
 			}

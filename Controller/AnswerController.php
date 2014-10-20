@@ -30,7 +30,7 @@ class AnswerController {
 				$this->quizMessage = new QuizMessage(12);
 				$message = $this->quizMessage->getMessage();
 				$this->quizView->saveMessage($message);
-				$this->answerView->redirectToAddAnswer($this->answerView->getId());		
+				$this->answerView->redirectToAddAnswers($this->answerView->getId());		
 				return false;
 		}
 
@@ -38,7 +38,7 @@ class AnswerController {
 				$this->quizMessage = new QuizMessage(13);
 				$message = $this->quizMessage->getMessage();
 				$this->quizView->saveMessage($message);
-				$this->answerView->redirectToAddAnswer($this->answerView->getId());	
+				$this->answerView->redirectToAddAnswers($this->answerView->getId());	
 				return false;
 		}	
 
@@ -61,7 +61,7 @@ class AnswerController {
 					$this->quizMessage = new QuizMessage(11);
 					$message = $this->quizMessage->getMessage();
 					$this->quizView->saveMessage($message);
-					$this->answerView->redirectToAddAnswer($this->answerView->getId());	
+					$this->answerView->redirectToAddAnswers($this->answerView->getId());	
 				} 
 				else {
 					$answers = new Answers($answerA, $answerB, $answerC, $this->answerView->getRightAnswerCheckBox(), $this->answerView->getId());
