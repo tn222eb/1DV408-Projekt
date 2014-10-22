@@ -15,6 +15,10 @@ abstract class BaseView {
     protected $addAnswersLocation = "addAnswers";
     protected $alphabets = array('A', 'B', 'C');
     protected $showResultsLocation = "showResults";
+    protected $messageLocation = "CookieMessage";
+    protected $messageALocation = "CookieValueA";
+    protected $messageBLocation = "CookieValueB";
+    protected $messageCLocation = "CookieValueC";
 
     public static function redirectToErrorPage() {
         header("Location: /". Settings::$ROOT_PATH . "/error.html");

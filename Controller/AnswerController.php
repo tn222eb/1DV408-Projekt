@@ -7,6 +7,7 @@ require_once("View/HTMLView.php");
 require_once("Model/Answers.php");
 require_once("Model/AnswerModel.php");
 require_once("View/QuizMessage.php");
+require_once("View/BaseView.php");
 
 class AnswerController {
 
@@ -15,6 +16,9 @@ class AnswerController {
 	private $quizMessage;
 	private $quizView;
 	private $validateInput;
+	private $CookieValueA = "CookieValueA";
+	private $CookieValueB = "CookieValueB";
+	private $CookieValueC = "CookieValueC";
 
 	public function __construct() {
 		$this->answerView = new AnswerView();
@@ -22,7 +26,7 @@ class AnswerController {
 		$this->htmlView = new HTMLView();
 		$this->answerModel = new AnswerModel();
 		$this->quizView = new QuizView;
-		$this->validateInput = new ValidateInput();		
+		$this->validateInput = new ValidateInput();
 	}
 
 	public function validate($string) {
@@ -43,6 +47,12 @@ class AnswerController {
 		}	
 
 		return true;
+	}
+
+	public function rememberAnswers($answerA, $answerB, $answerC) {
+		$this->quizView->saveValueMessage($this->CookieValueA, $answerA);
+		$this->quizView->saveValueMessage($this->CookieValueB, $answerB);
+		$this->quizView->saveValueMessage($this->CookieValueC, $answerC);
 	}	
 
 	public function addAnswers() {
@@ -61,6 +71,7 @@ class AnswerController {
 					$this->quizMessage = new QuizMessage(11);
 					$message = $this->quizMessage->getMessage();
 					$this->quizView->saveMessage($message);
+					$this->rememberAnswers($answerA, $answerB, $answerC);
 					$this->answerView->redirectToAddAnswers($this->answerView->getId());	
 				} 
 				else {
@@ -72,6 +83,9 @@ class AnswerController {
 					$question = $this->questionRepository->getQuestion($this->answerView->getId());
 					$this->quizView->redirectToShowQuiz($question->getQuizId());	
 				}
+			}
+			else {
+				$this->rememberAnswers($answerA, $answerB, $answerC);
 			}			
 		}
 	}

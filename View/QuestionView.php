@@ -13,9 +13,15 @@ class QuestionView extends BaseView{
 		$this->cookieStorage = new CookieStorage();
 	}
 
+	public function renderCookieMessage($string) {
+		$value = $this->cookieStorage->load($string);
+		$this->quizView->unsetMessage($string);	
+		return $value;
+	}
+
 	public function showAddQuestionForm(Quiz $quiz) {
-		$message = $this->cookieStorage->load($this->quizView->getMessageLocation());
-		$this->quizView->unsetMessage($this->quizView->getMessageLocation());		
+		$message = $this->renderCookieMessage($this->messageLocation);
+
 		$userUnique = $quiz->getQuizId();
 		$html = "
 		<a href='?" . $this->showQuizLocation . "&" . $this->id . "=" . $quiz->getQuizId() . "' name='returnToPage'>Tillbaka</a>

@@ -6,7 +6,6 @@ require_once("View/BaseView.php");
 
 class QuizView extends BaseView {
 	private $cookieStorage;
-	private $messageLocation = "CookieMessage";
 	private $quizNameLocation = 'quizName';
 	private $removeQuizLocation = 'removeQuiz';
 	private $editQuizLocation = 'editQuiz';
@@ -17,12 +16,18 @@ class QuizView extends BaseView {
 		$this->cookieStorage = new CookieStorage();		
 	}
 
-	public function getMessageLocation() {
-		return $this->messageLocation;
-	}
-
+	public function renderCookieMessage($string) {
+		$value = $this->cookieStorage->load($string);
+		$this->unsetMessage($string);	
+		return $value;
+	}	
+	
 	public function saveMessage($value) {
 		$this->cookieStorage->save($this->messageLocation, $value, time()+3600);
+	}
+
+	public function saveValueMessage($name, $value) {
+		$this->cookieStorage->save($name, $value, time()+3600);		
 	}
 
 	public function unsetMessage($name) {
@@ -46,8 +51,7 @@ class QuizView extends BaseView {
 	}
 
 	public function showCreateQuizForm() {
-		$message = $this->cookieStorage->load($this->messageLocation);
-		$this->unsetMessage($this->messageLocation);
+		$message = $this->renderCookieMessage($this->messageLocation);
 		
 		$html = "<a href='?" . $this->showAllQuizLocation . "' name='returnToPage'>Tillbaka</a> <h1>MyQuiz</h1> <h3>Skapa quiz</h3>
 		<form action='?" . $this->createQuizLocation . "' method='post'>
@@ -66,8 +70,8 @@ class QuizView extends BaseView {
 	}
 
 	public function showAll(QuizList $quizList) {	
-		$message = $this->cookieStorage->load($this->messageLocation);
-		$this->unsetMessage($this->messageLocation);
+		$message = $this->renderCookieMessage($this->messageLocation);
+
 		$html = "<a href='?' name='returnToPage'>Tillbaka</a> <h1>MyQuiz</h1> <h3>Lista av alla quiz</h3>";
 		$html .= "<ul>";
 		foreach ($quizList->toArray() as $quiz) {
@@ -158,8 +162,7 @@ class QuizView extends BaseView {
 	}
 
 	public function showQuiz(Quiz $quiz) {
-		$message = $this->cookieStorage->load($this->messageLocation);
-		$this->unsetMessage($this->messageLocation);
+		$message = $this->renderCookieMessage($this->messageLocation);
 
 		$html = "<form action='' method='post'>
 		<a href='?" . $this->showAllQuizLocation . "' name='returnToPage'>Tillbaka</a> </br> 
