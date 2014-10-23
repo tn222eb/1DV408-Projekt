@@ -28,32 +28,35 @@ class AnswerView extends BaseView {
 		$answerB = $this->renderCookieMessage($this->messageBLocation);
 		$answerC = $this->renderCookieMessage($this->messageCLocation);
 
-		$html = "
+		$html = "</br>
 		<a href='?" . $this->showQuestionLocation . "&" . $this->id . "=" . $question->getQuestionId() . "' name='returnToPage'>Tillbaka</a>
-		<h1>MyQuiz</h1>
-		<h3>Lägg till svar till " . $question->getName() . "</h3> 
+		</br> </br>
+		<legend>Lägg till svar till " . $question->getName() . "</legend> 
+		$message
 		<form action='' method='post'>
-		" . $this->alphabets[0] . ")
+		<strong>" . $this->alphabets[0] . "</strong>)
+		</br>
 		<input type='radio' name='" . self::$rightAnswerLocation . "' value='" . $this->alphabets[0] . "'>		
 		<input type='text' name='" . self::$answerA . "' value='$answerA' />
 		</br>
 		</br>
 
-		" . $this->alphabets[1] . ")
+		<strong>" . $this->alphabets[1] . "</strong>)
+		</br>
 		<input type='radio' name='" . self::$rightAnswerLocation . "' value='" . $this->alphabets[1] . "'>
 		<input type='text' name='" .  self::$answerB . "' value='$answerB' />
 		</br>
 		</br>		
 
-		" . $this->alphabets[2] . ")
+		<strong>" . $this->alphabets[2] . "</strong>)
+		</br>
 		<input type='radio' name='" . self::$rightAnswerLocation . "' value='" . $this->alphabets[2] . "'>
 		<input type='text' name='" . self::$answerC . "' value='$answerC' />
 		</br>
 		</br>	
 
-		<input type='submit' name='" . $this->addAnswersLocation . "' value='Lägg till' />
-		</form> 
-		$message";
+		<input type='submit' class='btn btn-default' name='" . $this->addAnswersLocation . "' value='Lägg till' />
+		</form>";
 		return $html;
 	}
 

@@ -134,7 +134,7 @@ class LoginModel{
     }
 
     public function setCookieExpireTime(){
-        $this->cookieExpireTime = time()+250;
+        $this->cookieExpireTime = time()+3600*24;
     }
 
    public function getCookieExpireTime(){

@@ -22,7 +22,7 @@ class LoginView {
     private $usernameLocation = "username";
     private $passwordLocation = "password";
 
-    public function __construct(){
+    public function __construct() {
         $this->htmlView = new HTMLView();
         $this->model = new LoginModel();
         $this->cookie = new CookieStorage();
@@ -36,16 +36,15 @@ class LoginView {
     /**
      * @return string with html-code
      */
-    public function showLoginpage(){
+    public function showLoginpage() {
         $username = "";
-        if(isset($_POST[$this->submitLocation]) || $this->register == true){
+        if (isset($_POST[$this->submitLocation]) || $this->register == true) {
             $username = $this->username;
         }
 
-        $html = "
+        $html = "</br>
         <a href='?$this->registerLocation' name='$this->registerLocation'>Registrera ny användare</a>
                    <h1>MyQuiz</h1>
-                   <H3>Ej Inloggad</H3>
                     <form action=?login class='form-horizontal' method=post enctype=multipart/form-data>
                        <fieldset>
 					      <legend>Skriv in användarnamn och lösenord</legend>
@@ -86,7 +85,7 @@ class LoginView {
     /**
      * @return bool true uf user has pressed login else false
      */
-    public function didUserPressLogin(){
+    public function didUserPressLogin() {
         if(isset($_POST[$this->submitLocation])){
             return true;
         }
@@ -103,7 +102,7 @@ class LoginView {
     /**
      * @return bool true if user has checked remember me else false
      */
-    public function userHasCheckedKeepMeLoggedIn(){
+    public function userHasCheckedKeepMeLoggedIn() {
         if(isset($_POST[$this->checkBoxLocation])){
             return true;
         }
@@ -111,7 +110,7 @@ class LoginView {
 
     }
 
-    public function getAuthentication(){
+    public function getAuthentication() {
         $this->username = $_POST[$this->usernameLocation];
         $this->password = $_POST['password'];
 
@@ -128,7 +127,7 @@ class LoginView {
     /**
      * @return bool true if there is cookie to load, else false
      */
-    public function loadCookie(){
+    public function loadCookie() {
         if (isset($_COOKIE[$this->usernameLocation])) {
             $cookieUser = $this->cookie->load($this->usernameLocation);
             $this->cookiePassword = $this->cookie->load($this->passwordLocation);
@@ -142,7 +141,7 @@ class LoginView {
     /**
      * Delete cookies
      */
-    public function unsetCookies(){
+    public function unsetCookies() {
         $this->cookie->save($this->usernameLocation, null, time()-1);
         $this->cookie->save($this->passwordLocation, null, time()-1);
     }
@@ -150,7 +149,7 @@ class LoginView {
     /**
      * @param $message string message with feedback
      */
-    public function setMessage($message){
+    public function setMessage($message) {
         $this->message = $message;
 
     }
@@ -158,7 +157,7 @@ class LoginView {
     /**
      * @return string username
      */
-    public function getUsername(){
+    public function getUsername() {
         return $this->username;
     }
 
@@ -166,28 +165,28 @@ class LoginView {
      * @return string password
      */
 
-    public function getPassword(){
+    public function getPassword() {
         return $this->password;
     }
 
-    public function getEncryptedPassword(){
+    public function getEncryptedPassword() {
         return $this->encryptedPassword;
     }
 
-    public function setEncryptedPassword($pwd){
+    public function setEncryptedPassword($pwd) {
         $this->encryptedPassword = $pwd;
 
     }
 
-    public function setDecryptedPassword($pwd){
+    public function setDecryptedPassword($pwd) {
         $this->password = $pwd;
     }
 
-    public function setCookieExpireTime($expireTime){
+    public function setCookieExpireTime($expireTime) {
         $this->cookieExpireTime = $expireTime;
     }
 
-    public function getCookiePassword(){
+    public function getCookiePassword() {
         return $this->cookiePassword;
     }
 }

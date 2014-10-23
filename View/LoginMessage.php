@@ -10,31 +10,30 @@ class LoginMessage {
                               'Registrering av ny användare lyckades', "Inloggning lyckades via cookies"
     );
 
-    public function __construct($messageId){
+    public function __construct($messageId) {
         $this->messageId = $messageId;
     }
 
     /**
      * @return string html with feedback
      */
-    public function getMessage(){
+    public function getMessage() {
         $message = $this->messages[$this->messageId];
 
-        if($this->messageId <10){
+        if($this->messageId < 9) {
             $alert = "<div class='alert alert-danger alert-error'>";
         }   
         else{
             $alert = "<div class='alert alert-success'>";
         }
-        if(!empty($message)){
-            $ret = "
-                  $alert
+        if(!empty($message)) {
+          $ret = "
+          $alert
+          <a href='#' class='close' data-dismiss='alert'>&times;</a>        
 					<p>$message</p>
-					</div>
-
-            ";
+					</div>";
         }
-        else{
+        else {
             $ret = "<p>$message</p>";
         }
         return $ret;

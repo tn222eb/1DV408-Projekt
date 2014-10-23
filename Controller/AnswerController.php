@@ -44,8 +44,7 @@ class AnswerController {
 				$this->quizView->saveMessage($message);
 				$this->answerView->redirectToAddAnswers($this->answerView->getId());	
 				return false;
-		}	
-
+		}
 		return true;
 	}
 
@@ -84,8 +83,8 @@ class AnswerController {
 					$this->quizView->redirectToShowQuiz($question->getQuizId());	
 				}
 			}
-			else {
-				$this->rememberAnswers($answerA, $answerB, $answerC);
+			else {		
+				$this->rememberAnswers(strip_tags($answerA), strip_tags($answerB), strip_tags($answerC));
 			}			
 		}
 	}

@@ -39,7 +39,7 @@ class MasterController {
 
 	public function doControll() {
         try {	
-            if ($this->playQuizView->didUserPressGoToShowAllQuizToPlay() || $this->playQuizView->hasChosenQuiz()) {
+            if ($this->playQuizView->didUserPressGoToShowAllQuizToPlay() && $this->loginController->isAuthenticated() || $this->playQuizView->hasChosenQuiz() && $this->loginController->isAuthenticated()) {
                 if ($this->playQuizView->hasChosenQuiz() && $this->quizRepository->isValidQuizId($this->playQuizView->getChosenQuiz())) {
                     $this->quizController->playQuiz($this->loginController->getId());
                 }
@@ -48,7 +48,7 @@ class MasterController {
                 }
             }
 
-            else if ($this->resultView->didUserPressGoToShowAllQuizToPlay()) {
+            else if ($this->resultView->didUserPressGoToShowResults() && $this->loginController->isAuthenticated()) {
                 $this->quizController->showMyResults($this->loginController->getId());
             }            
 

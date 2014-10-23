@@ -18,19 +18,21 @@ class QuestionView extends BaseView{
 		$this->quizView->unsetMessage($string);	
 		return $value;
 	}
-
 	public function showAddQuestionForm(Quiz $quiz) {
 		$message = $this->renderCookieMessage($this->messageLocation);
 
 		$userUnique = $quiz->getQuizId();
-		$html = "
+		$html = "</br>
 		<a href='?" . $this->showQuizLocation . "&" . $this->id . "=" . $quiz->getQuizId() . "' name='returnToPage'>Tillbaka</a>
-		<h1>MyQuiz</h1>
-		<h3>Lägg till fråga till " . $quiz->getName() . "</h3> 
+		</br> </br>
+		<legend>Lägg till fråga till " . $quiz->getName() . "</legend>
+		$message 
 		<form action='' method='post'>
 		<input type='text' name='" . $this->questionName . "' />
-		<input type='submit' name='" . $this->addQuestionLocation . "' value='Lägg till' />
-		</form> $message";
+		</br>
+		</br>
+		<input type='submit' class='btn btn-default' name='" . $this->addQuestionLocation . "' value='Lägg till' />
+		</form>";
 		return $html;
 	}
 
@@ -44,10 +46,12 @@ class QuestionView extends BaseView{
 	public function showQuestion(Question $question) {
 		$i = 0;
 		$html = "<form action='' method='post'>
+		</br>
 		<a href='?" . $this->showQuizLocation . "&" . $this->id . "=" . $question->getQuizId() . "' name='returnToPage'>Tillbaka</a> </br> 
 		<h1>" . $question->getName() . "</h1>
-		<h3>Svar</h3>
-		<ul>";
+		</br>
+		<legend>Svar</legend>
+		<ul style='list-style-type: none;'>";
 
 		if (count($question->toArray()) > 0) {
 			foreach($question->toArray() as $answersObj) {
@@ -57,7 +61,7 @@ class QuestionView extends BaseView{
 				}
 			}
 
-			$html .= "Rätt svar: " . $answersObj->getRightAnswer() . "";
+			$html .= "Rätt svar: <strong style='color: green;'>" . $answersObj->getRightAnswer() . "</strong>";
 		}
 
 		if (count($question->toArray()) > 0) {
@@ -71,7 +75,7 @@ class QuestionView extends BaseView{
 	}
 
 	public function getQuestionMenu($id) {
-		return $html = "<a href='?" . $this->addAnswersLocation . "&" . $this->id . "=$id'>Lägg till svar</a>";
+		return $html = "<a href='?" . $this->addAnswersLocation . "&" . $this->id . "=$id' class='btn btn-default'>Lägg till svar</a>";
 	}		
 
 	public function didUserSubmitAddQuestion() {

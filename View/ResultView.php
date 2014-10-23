@@ -11,7 +11,7 @@ class ResultView extends BaseView {
 		$this->quizModel = new QuizModel();
 	}
 
-	public function didUserPressGoToShowAllQuizToPlay() {
+	public function didUserPressGoToShowResults() {
 		if (isset($_GET[$this->showResultsLocation])) {
 			return true;
 		}
@@ -22,10 +22,11 @@ class ResultView extends BaseView {
 		$results = $this->quizModel->getQuizResults($userId);
 
 		$html = "
-		<a href='?' name='returnToPage'>Tillbaka</a> </br> 
-		<h1>Mina resultat</h1>
+		</br>
+		<a href='?' name='returnToPage'>Tillbaka</a> </br> </br>
+		<legend>Mina resultat</legend>
 
-		<ul>";
+		<ul style='list-style-type: none;'>";
 
 		if ($results == NULL) {
 			$html .= "Du har inga resultat";
@@ -33,7 +34,7 @@ class ResultView extends BaseView {
 		else {
 			foreach($results as $result) {
 				$quiz = $this->quizModel->getQuiz($result->getQuizId());
-				$html .= "<li><h3>" . $quiz->getName() . "</h3>" . $result->getScore() . " rätt svar av totalt ". $result->getNumOfQuestions() ."</li>";
+				$html .= "<li><h4>" . $quiz->getName() . "</h4>" . $result->getScore() . " rätt svar av totalt ". $result->getNumOfQuestions() ."</li>";
 			}
 		}
 

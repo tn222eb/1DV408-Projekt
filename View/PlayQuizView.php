@@ -64,11 +64,10 @@ class PlayQuizView extends BaseView {
 	}
 
 	public function showAllQuizToPlay() {
-		$html = "
+		$html = "</br>
 		<a href='?'>Tillbaka</a>
-		<h1>MyQuiz</h1>
-		<h3>Välj quiz att spela</h3>
-		<ul>";
+		<h2>Välj quiz att spela</h2>
+		<ul style='list-style-type: none;'>";
 
 		$quizList = $this->quizModel->getAllQuiz();
 		foreach ($quizList->ToArray() as $quiz) {
@@ -83,12 +82,14 @@ class PlayQuizView extends BaseView {
 		$questions = $quiz->getQuestions();
 		$questionNr = 1;
 
-		$html = "<a href='?$this->showAllQuizToPlayLocation' >Tillbaka</a>
-		<h1>" . $quiz->getName() . "</h1>
+		$html = "
+		</br>
+		<a href='?$this->showAllQuizToPlayLocation' >Tillbaka</a>
+		<h2>" . $quiz->getName() . "</h2>
 		<form action ='' method='post'>";
 
 			foreach ($questions->ToArray() as $question) {
-				$html .= "<h3>$questionNr. " . $question->getName() . "</h3>";
+				$html .= "<h4>$questionNr. " . $question->getName() . "</h4>";
 				$question = $this->questionModel->getQuestion($question->getQuestionId());
 
 				foreach ($question->toArray() as $answer) {
@@ -100,7 +101,7 @@ class PlayQuizView extends BaseView {
 						$html .=
 						"<div>
 						<input type='radio' name='answers[$questionNr]' id='$label' value='" . $this->alphabets[$foo] . "'> 
-						<label for='$label'>" . $this->alphabets[$foo] . ") " . $answerName . "</label>
+						<small><label for='$label'>" . $this->alphabets[$foo] . ") " . $answerName . "</label></small>
 						</div>";
 						
 						$foo++;
@@ -110,8 +111,10 @@ class PlayQuizView extends BaseView {
 			}
 
 		return $html .= "</br>
-		<input type='submit' name='$this->submitQuizLocation' value='Skicka quiz' />
-		</form>";
+		<input type='submit' class='btn btn-default' name='$this->submitQuizLocation' value='Skicka quiz' />
+		</form>
+		</br>
+		";
 	}
 
 	public function showResult ($score = 0, $quizId) {
@@ -120,7 +123,8 @@ class PlayQuizView extends BaseView {
 		$questions = $quiz->getQuestions();		
 		$questionNr = 1;
 
-		$html = "<a href='?$this->showAllQuizToPlayLocation' >Tillbaka</a>
+		$html = "</br>
+		<a href='?$this->showAllQuizToPlayLocation' >Tillbaka</a>
 		</br>
 		<a href='?$this->playQuizLocation=$quizId' >Spela igen</a>
 		<h1>" . $quiz->getName() . "</h1>";				
@@ -136,13 +140,13 @@ class PlayQuizView extends BaseView {
 						 	$label = 'question-' . $questionNr . '-answers-'. $answer->getRightAnswer();
 						 	$html .= "<div>
 						 	<input type='radio' name='answers[$questionNr]' id='$label' value='" . $answer->getAnswer($num) . "' disabled>
-						 	<label style='color :red;' for='$label'>" . $userAnswers[$questionNr] . ") " . $answer->getAnswer($num) .  "</label>
+						 	<small><label style='color :red;' for='$label'>" . $userAnswers[$questionNr] . ") " . $answer->getAnswer($num) .  "</label></small>
 					     	</div>";
 	        			} else {
 	        			 	$label = 'question-' . $questionNr . '-answers-'.  $answer->getRightAnswer();
 	            		 	$html .= "<div>
 					 		<input type='radio' name='answers[$questionNr]' id='$label' value='" . $answer->getAnswer($num) . "' disabled>
-					 		<label style='color: green;' for='$label'>" . $userAnswers[$questionNr] . ") " . $answer->getAnswer($num) .  "</label>
+					 		</small><label style='color: green;' for='$label'>" . $userAnswers[$questionNr] . ") " . $answer->getAnswer($num) .  "</label></small>
 					 		</div>";
 	        			}
 					}
@@ -153,6 +157,6 @@ class PlayQuizView extends BaseView {
 
 		return $html .= "
 		</br>
-		Du fick $score rätt svar av totalt " . count($questions->ToArray());
+		Du fick $score rätt svar av totalt " . count($questions->ToArray()) . "</br></br>";
 	}
 }

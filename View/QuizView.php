@@ -53,11 +53,16 @@ class QuizView extends BaseView {
 	public function showCreateQuizForm() {
 		$message = $this->renderCookieMessage($this->messageLocation);
 		
-		$html = "<a href='?" . $this->showAllQuizLocation . "' name='returnToPage'>Tillbaka</a> <h1>MyQuiz</h1> <h3>Skapa quiz</h3>
+		$html = "</br>
+		<a href='?" . $this->showAllQuizLocation . "' name='returnToPage'>Tillbaka</a>
+		</br>	
+		</br>
+		<legend>Skapa quiz</legend>
+		$message
 		<form action='?" . $this->createQuizLocation . "' method='post'>
 		<input type='text' name='" . $this->quizNameLocation . "' maxlength='60'/>
-		</br> </br> <input type='submit' name='" . $this->createQuizLocation . "' value='Skapa quiz'/>
-		</form> $message";
+		</br> </br> <input type='submit' a class='btn btn-default' name='" . $this->createQuizLocation . "' value='Skapa quiz'/>
+		</form> ";
 
 		return $html;
 	}
@@ -72,14 +77,17 @@ class QuizView extends BaseView {
 	public function showAll(QuizList $quizList) {	
 		$message = $this->renderCookieMessage($this->messageLocation);
 
-		$html = "<a href='?' name='returnToPage'>Tillbaka</a> <h1>MyQuiz</h1> <h3>Lista av alla quiz</h3>";
-		$html .= "<ul>";
+		$html = "</br>
+		<a href='?' name='returnToPage'>Tillbaka</a> </br> </br>
+		<legend>Lista av alla quiz</legend>
+		$message
+		<ul style='list-style-type: none;'>";
 		foreach ($quizList->toArray() as $quiz) {
 			$html .= "<li><a href='?" . $this->showQuizLocation . "&" . $this->id . "=" .
 			urlencode($quiz->getQuizId()) . "'>" .
 			$quiz->getName() . "</a></li>";
 		}
-		$html .= "</ul> <a class='btn btn-default' name='" . $this->createQuizLocation . "' href='?" . $this->createQuizLocation . "'>Skapa quiz</a> </br> $message";
+		$html .= "</ul> <a class='btn btn-default' name='" . $this->createQuizLocation . "' href='?" . $this->createQuizLocation . "'>Skapa quiz</a> </br>";
 		return $html;
 	}	
 
@@ -139,24 +147,29 @@ class QuizView extends BaseView {
 	}
 
 	public function showEditQuizForm(Quiz $quiz) {
-		return $html = "<a href='?" . $this->showQuizLocation . "&" . $this->id . "=" . $quiz->getQuizId() . "' name='returnToPage'>Tillbaka</a>
+		return $html = "</br>
+		<a href='?" . $this->showQuizLocation . "&" . $this->id . "=" . $quiz->getQuizId() . "' name='returnToPage'>Tillbaka</a>
 		</br>
 		</br>
-		<h1>Redigera " 	. $quiz->getName() . "</1>
+		<legend>Redigera " 	. $quiz->getName() . "</legend>
 		<form action='' method='post'>
 		<input type='text' name='" . $this->quizNameLocation . "' value='" . $quiz->getName() . "'>
-		<input type='submit' name='" . $this->saveEditQuizLocation . "' value='Spara'>
+		</br>
+		</br>
+		<input type='submit' class='btn btn-default' name='" . $this->saveEditQuizLocation . "' value='Spara'>
 		</form>
 		 ";
 	}
 
 	public function showConfirmToRemoveQuiz(Quiz $quiz) {
-		return $html = "<a href='?" . $this->showQuizLocation . "&" . $this->id . "=" . $quiz->getQuizId() . "' name='returnToPage'>Tillbaka</a>
+		return $html = "</br>
+		<a href='?" . $this->showQuizLocation . "&" . $this->id . "=" . $quiz->getQuizId() . "' name='returnToPage'>Tillbaka</a>
 		</br>
 		</br>
-		<h1>Är du säker att du vill ta bort " . $quiz->getName() . "</1>
+		<legend>Radera " . $quiz->getName() . "</legend>
+
 		<form action='' method='post'>
-		<input type='submit' name='" . $this->confirmRemoveQuizLocation . "' value='Ja, Ta bort'>
+		<input type='submit' class='btn btn-default' name='" . $this->confirmRemoveQuizLocation . "' value='Ta bort'>
 		</form>
 		 ";
 	}
@@ -165,22 +178,25 @@ class QuizView extends BaseView {
 		$message = $this->renderCookieMessage($this->messageLocation);
 
 		$html = "<form action='' method='post'>
+		</br>
 		<a href='?" . $this->showAllQuizLocation . "' name='returnToPage'>Tillbaka</a> </br> 
 		<h1>" . $quiz->getName() . "</h1>
-		<input type='submit' name='" . $this->editQuizLocation . "' value='Redigera " . $quiz->getName() . "'> <input type='submit' name='" . $this->removeQuizLocation . "' value='Radera " . $quiz->getName() . "'>
-		<h3>Frågor</h3>
-		<ul>";
+		<input type='submit' class='btn btn-default' name='" . $this->editQuizLocation . "' value='Redigera " . $quiz->getName() . "'> <input type='submit' class='btn btn-default' name='" . $this->removeQuizLocation . "' value='Radera " . $quiz->getName() . "'>
+		</br> </br>
+		<legend>Frågor</legend>
+		$message
+		<ul style='list-style-type: none;'>";
 		foreach($quiz->getQuestions()->toArray() as $question) {
 			$html .= "<li><a href='?" . $this->showQuestionLocation . "&" . $this->id . "=" . $question->getQuestionId() . "'>". $question->getName() ."</a></li>";
 		}
 
-		$html .= "</ul>" . $this->getQuizMenu($quiz->getQuizId()) . "</form> $message";
+		$html .= "</ul>" . $this->getQuizMenu($quiz->getQuizId()) . "</form>";
 		return $html;		
 	}
 
 	public function getQuizMenu($id) {
 		return $html = "
-		<a href='?" . $this->addQuestionLocation . "&" . $this->id . "=$id'>Lägg till fråga</a>";
+		<a href='?" . $this->addQuestionLocation . "&" . $this->id . "=$id' class='btn btn-default'>Lägg till fråga</a>";
 	}
 
 	public function getId() {

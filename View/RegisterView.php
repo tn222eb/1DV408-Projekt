@@ -54,12 +54,12 @@ class RegisterView {
         }
 
 		$html = "
+		</br>
 		<a href='?$this->loginLocation'>Tillbaka</a>
 			   <h1>MyQuiz</h1>
-               <H3>Ej Inloggad, Registrerar användare</H3>
                     <form action='' class='form-horizontal' method=post enctype=multipart/form-data>
                        <fieldset>
-					      <legend>Registrerar ny användare - Skriv in användarnamn och lösenord</legend>
+					      <legend>Registrera ny användare</legend>
 					      $this->message
 					      <div class='form-group'>
 					        <label class='col-sm-2 control-label' for='$this->usernameLocation'>Användarnamn: </label>

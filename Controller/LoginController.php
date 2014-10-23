@@ -167,6 +167,13 @@ class LoginController {
         }
     }
 
+    public function isAuthenticated() {
+        if ($this->model->isLoggedIn()) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * checks if we have logged in session and checks so the session isnt hacked
      */
