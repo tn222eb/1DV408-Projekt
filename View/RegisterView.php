@@ -9,10 +9,16 @@ class RegisterView {
 	private $loginLocation = 'login';
 	private $message;
 
+	/**
+  	* Function to render message
+  	*/
     public function setMessage($message){
         $this->message .= $message;
-    }	
+    }
 
+    /**
+  	* Function to see where user wants to go and do
+  	*/	
 	public function didUserPressReturnToLoginPage() {
 		if (isset($_GET[$this->loginLocation])) {
 			return true;
@@ -27,6 +33,9 @@ class RegisterView {
 		return false;
 	}
 
+    /**
+  	* Functions to get register information
+  	*/	
 	public function getUserName() {
 		if (isset($_POST[$this->usernameLocation])) {
 			return $_POST[$this->usernameLocation];
@@ -46,6 +55,11 @@ class RegisterView {
 		}
 	}
 
+	/**
+  	* Show register page
+  	*
+  	* @return string Returns String HTML
+  	*/	
 	public function showRegisterPage() {
         $username = "";
         if(isset($_POST[$this->registerLocation])){
@@ -85,8 +99,7 @@ class RegisterView {
 					       </div>
 					     </div>
 					   </fieldset>
-			       </form>
-		";
+			       </form>";
 
 		return $html;
 	}

@@ -16,6 +16,25 @@ class PlayQuizView extends BaseView {
 		$this->questionModel = new QuestionModel();
 	}
 
+	public function getChosenQuiz() {
+		if (isset($_GET[$this->playQuizLocation])) {
+			return $_GET[$this->playQuizLocation];
+		}
+	}	
+
+	public function getUserAnswers() {
+		if(isset($_POST[$this->answersLocation])) {
+			return $_POST[$this->answersLocation];
+		}
+	}	
+
+	/**
+  	* Get a specific number based on char
+  	*
+  	* @param char from user answers from quiz
+  	*
+  	* @return string Returns a number 
+  	*/	
 	public function getNumber($string) {
 		if ($string == $this->alphabets[0]) {
 			return 0;
@@ -30,6 +49,9 @@ class PlayQuizView extends BaseView {
 		}		
 	}	
 
+	/**
+  	* Functions to see where user wants to go and do
+  	*/
 	public function hasUserSubmitQuiz () {
 		if (isset($_POST[$this->submitQuizLocation])) {
 			return true;
@@ -44,18 +66,6 @@ class PlayQuizView extends BaseView {
 		return false;
 	}
 
-	public function getUserAnswers() {
-		if(isset($_POST[$this->answersLocation])) {
-			return $_POST[$this->answersLocation];
-		}
-	}
-
-	public function getChosenQuiz() {
-		if (isset($_GET[$this->playQuizLocation])) {
-			return $_GET[$this->playQuizLocation];
-		}
-	}
-
 	public function hasChosenQuiz() {
 		if (isset($_GET[$this->playQuizLocation])) {
 			return true;
@@ -63,10 +73,16 @@ class PlayQuizView extends BaseView {
 		return false;
 	}
 
+	/**
+  	* Show all quizzes possible to play
+  	*
+  	* @return string Returns String HTML
+  	*/
 	public function showAllQuizToPlay() {
 		$html = "</br>
 		<a href='?'>Tillbaka</a>
-		<h2>Välj quiz att spela</h2>
+		</br> </br>
+		<legend>Välj quiz att spela</legend>
 		<ul style='list-style-type: none;'>";
 
 		$quizList = $this->quizModel->getAllQuiz();
@@ -77,6 +93,13 @@ class PlayQuizView extends BaseView {
 		return $html .= "</ul>";
 	}
 
+	/**
+  	* Show form to play chosen quiz
+  	*
+  	* @param Id of quiz to play 
+  	*
+  	* @return string Returns String HTML
+  	*/
 	public function showPlayQuiz($quizId) {
 		$quiz = $this->quizModel->getQuiz($quizId);
 		$questions = $quiz->getQuestions();
@@ -117,6 +140,15 @@ class PlayQuizView extends BaseView {
 		";
 	}
 
+	/**
+  	* Show result from quiz
+  	*
+  	* @param score of user quiz
+  	*
+  	* @param Id of quiz user played 
+  	*  	
+  	* @return string Returns String HTML
+  	*/
 	public function showResult ($score = 0, $quizId) {
 		$userAnswers = $this->getUserAnswers();
 		$quiz = $this->quizModel->getQuiz($quizId);
@@ -146,7 +178,7 @@ class PlayQuizView extends BaseView {
 	        			 	$label = 'question-' . $questionNr . '-answers-'.  $answer->getRightAnswer();
 	            		 	$html .= "<div>
 					 		<input type='radio' name='answers[$questionNr]' id='$label' value='" . $answer->getAnswer($num) . "' disabled>
-					 		</small><label style='color: green;' for='$label'>" . $userAnswers[$questionNr] . ") " . $answer->getAnswer($num) .  "</label></small>
+					 		<small><label style='color: green;' for='$label'>" . $userAnswers[$questionNr] . ") " . $answer->getAnswer($num) .  "</label></small>
 					 		</div>";
 	        			}
 					}

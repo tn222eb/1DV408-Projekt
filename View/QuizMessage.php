@@ -9,6 +9,9 @@ class QuizMessage {
         $this->messageId = $messageId;
     }
 
+    /**
+     * @return string html with feedback
+     */
     public function getMessage(){
         $message = $this->messages[$this->messageId];
 

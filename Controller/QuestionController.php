@@ -29,6 +29,9 @@ class QuestionController {
 		$this->validateInput = new ValidateInput();
 	}
 
+    /**
+     * validate if input is valid
+     */
 	public function validate($questionName) {
 		if ($this->validateInput->validateLength($questionName) == false) {
 				$this->quizMessage = new QuizMessage(8);
@@ -57,6 +60,9 @@ class QuestionController {
 		return true;
 	}	
 
+    /**
+     * add a question to quiz
+     */
 	public function addQuestion() {
 		if ($this->questionView->didUserSubmitAddQuestion() == false) {
 				$quiz = $this->quizRepository->getQuiz($this->questionView->getId());
@@ -75,6 +81,9 @@ class QuestionController {
 		}
 	}
 
+    /**
+     * show a chosen question
+     */
 	public function showQuestion() {
 		$question = $this->questionRepository->getQuestion($this->questionView->getId());
 		$this->htmlView->echoHTML($this->questionView->showQuestion($question));

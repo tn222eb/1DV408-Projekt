@@ -6,7 +6,7 @@ class HTMLView {
      * @param string $body HTML-code
      * @throws \Exception if $body is null
      */
-    Public function echoHTML($body){
+    public function echoHTML($body){
         if($body == NULL){
             throw new \Exception("Body is null");
         }
@@ -26,9 +26,8 @@ class HTMLView {
                   </div>
 				</body>
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
-        <script type='text/javascript' src='js/bootstrap.js'>
-        <script type='text/javascript' src='js/bootstrap.min.js'>
-        </script> 
+        <script type='text/javascript' src='js/bootstrap.js'></script>
+        <script type='text/javascript' src='js/bootstrap.min.js'></script> 
 				</html>";
 
     }

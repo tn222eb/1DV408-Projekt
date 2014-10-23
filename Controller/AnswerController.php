@@ -29,6 +29,9 @@ class AnswerController {
 		$this->validateInput = new ValidateInput();
 	}
 
+    /**
+     * validate if input is valid
+     */
 	public function validate($string) {
 		if ($this->validateInput->validateLength($string) == false) {
 				$this->quizMessage = new QuizMessage(12);
@@ -48,12 +51,18 @@ class AnswerController {
 		return true;
 	}
 
+    /**
+     * save answers to cookie to show as message after header location 
+     */
 	public function rememberAnswers($answerA, $answerB, $answerC) {
 		$this->quizView->saveValueMessage($this->CookieValueA, $answerA);
 		$this->quizView->saveValueMessage($this->CookieValueB, $answerB);
 		$this->quizView->saveValueMessage($this->CookieValueC, $answerC);
 	}	
 
+    /**
+     * add answers to  a question
+     */
 	public function addAnswers() {
 		if ($this->answerView->hasSubmitAddAnswers() == false) {
 			$question = $this->questionRepository->getQuestion($this->answerView->getId());
@@ -89,6 +98,11 @@ class AnswerController {
 		}
 	}
 
+    /**
+     * check if question has any answers
+     *
+     * @return true or false based on if has any answers
+     */
 	public function hasNoAnswers() {
 		$question = $this->questionRepository->getQuestion($this->answerView->getId());
 		if (count($question->toArray()) > 0) {

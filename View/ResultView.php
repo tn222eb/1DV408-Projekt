@@ -11,6 +11,9 @@ class ResultView extends BaseView {
 		$this->quizModel = new QuizModel();
 	}
 
+	/**
+  	* Function to see where user wants to do
+  	*/
 	public function didUserPressGoToShowResults() {
 		if (isset($_GET[$this->showResultsLocation])) {
 			return true;
@@ -18,6 +21,13 @@ class ResultView extends BaseView {
 		return false;
 	}
 
+	/**
+  	* Show users quiz results
+  	*
+  	* @param string Id of Authenticated User
+  	*
+  	* @return string Returns String HTML
+  	*/	
 	public function showMyResults($userId) {
 		$results = $this->quizModel->getQuizResults($userId);
 

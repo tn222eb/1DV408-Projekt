@@ -13,36 +13,39 @@ class QuestionView extends BaseView{
 		$this->cookieStorage = new CookieStorage();
 	}
 
+	public function getQuestionName() {
+		if (isset($_POST[$this->questionName])) {
+			return $_POST[$this->questionName];
+		}
+	}
+
+	public function getId() {
+		if (isset($_GET[$this->id])) {
+			return $_GET[$this->id];
+		}
+		return NULL;
+	}	
+
+	public function getQuestionMenu($id) {
+		return $html = "<a href='?" . $this->addAnswersLocation . "&" . $this->id . "=$id' class='btn btn-default'>Lägg till svar</a>";
+	}		
+
+	/**
+  	* Function to render message
+  	*/
 	public function renderCookieMessage($string) {
 		$value = $this->cookieStorage->load($string);
 		$this->quizView->unsetMessage($string);	
 		return $value;
 	}
-	public function showAddQuestionForm(Quiz $quiz) {
-		$message = $this->renderCookieMessage($this->messageLocation);
 
-		$userUnique = $quiz->getQuizId();
-		$html = "</br>
-		<a href='?" . $this->showQuizLocation . "&" . $this->id . "=" . $quiz->getQuizId() . "' name='returnToPage'>Tillbaka</a>
-		</br> </br>
-		<legend>Lägg till fråga till " . $quiz->getName() . "</legend>
-		$message 
-		<form action='' method='post'>
-		<input type='text' name='" . $this->questionName . "' />
-		</br>
-		</br>
-		<input type='submit' class='btn btn-default' name='" . $this->addQuestionLocation . "' value='Lägg till' />
-		</form>";
-		return $html;
-	}
-
-	public function didUserPressToShowQuestion() {
-		if (isset($_GET[$this->showQuestionLocation])) {
-			return true;
-		}
-		return false;
-	}
-
+	/**
+  	* Show a compilation of quizzes
+  	*
+  	* @param Object that contains a question
+  	*
+  	* @return string Returns String HTML
+  	*/		
 	public function showQuestion(Question $question) {
 		$i = 0;
 		$html = "<form action='' method='post'>
@@ -74,10 +77,34 @@ class QuestionView extends BaseView{
 		return $html;		
 	}
 
-	public function getQuestionMenu($id) {
-		return $html = "<a href='?" . $this->addAnswersLocation . "&" . $this->id . "=$id' class='btn btn-default'>Lägg till svar</a>";
-	}		
+	/**
+  	* Show add question form
+  	*
+  	* @param Quiz that question gets added to
+  	*
+  	* @return string Returns String HTML
+  	*/	
+	public function showAddQuestionForm(Quiz $quiz) {
+		$message = $this->renderCookieMessage($this->messageLocation);
 
+		$userUnique = $quiz->getQuizId();
+		$html = "</br>
+		<a href='?" . $this->showQuizLocation . "&" . $this->id . "=" . $quiz->getQuizId() . "' name='returnToPage'>Tillbaka</a>
+		</br> </br>
+		<legend>Lägg till fråga till " . $quiz->getName() . "</legend>
+		$message 
+		<form action='' method='post'>
+		<input type='text' name='" . $this->questionName . "' />
+		</br>
+		</br>
+		<input type='submit' class='btn btn-default' name='" . $this->addQuestionLocation . "' value='Lägg till' />
+		</form>";
+		return $html;
+	}	
+
+	/**
+  	* Functions to see where user wants to do
+  	*/	
 	public function didUserSubmitAddQuestion() {
 		if (isset($_POST[$this->addQuestionLocation])) {
 			return true;
@@ -85,24 +112,17 @@ class QuestionView extends BaseView{
 		return false;
 	}
 
-	public function getQuestionName() {
-		if (isset($_POST[$this->questionName])) {
-			return $_POST[$this->questionName];
-		}
-	}
-
 	public function didUserPressToAddQuestion() {
 		if (isset($_GET[$this->addQuestionLocation])) {
 			return true;
 		}
 		return false;
-	}
+	}	
 
-	public function getId() {
-		if (isset($_GET[$this->id])) {
-			return $_GET[$this->id];
+	public function didUserPressToShowQuestion() {
+		if (isset($_GET[$this->showQuestionLocation])) {
+			return true;
 		}
-		return NULL;
-	}
-
+		return false;
+	}	
 }

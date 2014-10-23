@@ -28,11 +28,6 @@ class LoginView {
         $this->cookie = new CookieStorage();
     }
 
-    public function setRegister($username) {
-        $this->register = true;
-        $this->username = $username;
-    }   
-
     /**
      * @return string with html-code
      */
@@ -189,4 +184,9 @@ class LoginView {
     public function getCookiePassword() {
         return $this->cookiePassword;
     }
+
+    public function setRegister($username) {
+        $this->register = true;
+        $this->username = $username;
+    }    
 }

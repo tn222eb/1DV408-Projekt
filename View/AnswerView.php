@@ -16,12 +16,60 @@ class AnswerView extends BaseView {
 		$this->cookieStorage = new CookieStorage();
 	}
 
+	public function getAnswerA() {
+		if (isset($_POST[self::$answerA])) {
+			return $_POST[self::$answerA];
+		}		
+	}
+
+	public function getAnswerB() {
+		if (isset($_POST[self::$answerB])) {
+			return $_POST[self::$answerB];
+		}		
+	}
+
+	public function getAnswerC() {
+		if (isset($_POST[self::$answerC])) {
+			return $_POST[self::$answerC];
+		}		
+	}
+
+	public function getRightAnswerCheckBox() {
+		if (isset($_POST[self::$rightAnswerLocation])) {
+			return $_POST[self::$rightAnswerLocation];
+		}
+	}
+
+	public function getId() {
+		if (isset($_GET[$this->id])) {
+			return $_GET[$this->id];
+		}
+	}
+
+
+	/**
+  	* Function to redirect
+  	*/
+	public function redirectToAddAnswers($questionId) {
+		header("Location: ?" . $this->addAnswersLocation . "&" . $this->id . "=" . $questionId);		
+	}			
+
+	/**
+  	* Function to render message
+  	*/
 	public function renderCookieMessage($string) {
 		$value = $this->cookieStorage->load($string);
 		$this->quizView->unsetMessage($string);	
 		return $value;
 	}
 
+	/**
+  	* Show add answers form
+  	*
+  	* @param Question that answers is added to
+  	*
+  	* @return string Returns String HTML
+  	*/		
 	public function showAddAnswersForm(Question $question) {		
 		$message = $this->renderCookieMessage($this->messageLocation);
 		$answerA = $this->renderCookieMessage($this->messageALocation);
@@ -60,10 +108,9 @@ class AnswerView extends BaseView {
 		return $html;
 	}
 
-	public function redirectToAddAnswers($questionId) {
-		header("Location: ?" . $this->addAnswersLocation . "&" . $this->id . "=" . $questionId);		
-	}	
-
+	/**
+  	* Functions to see where user wants to do
+  	*/	
 	public function hasSubmitAddAnswers() {
 		if (isset($_POST[$this->addAnswersLocation])) {
 			return true;
@@ -71,40 +118,10 @@ class AnswerView extends BaseView {
 		return false;
 	}
 
-	public function getAnswerA() {
-		if (isset($_POST[self::$answerA])) {
-			return $_POST[self::$answerA];
-		}		
-	}
-
-	public function getAnswerB() {
-		if (isset($_POST[self::$answerB])) {
-			return $_POST[self::$answerB];
-		}		
-	}
-
-	public function getAnswerC() {
-		if (isset($_POST[self::$answerC])) {
-			return $_POST[self::$answerC];
-		}		
-	}
-
-	public function getRightAnswerCheckBox() {
-		if (isset($_POST[self::$rightAnswerLocation])) {
-			return $_POST[self::$rightAnswerLocation];
-		}
-	}
-
 	public function didUserPressToAddAnswers() {
 		if (isset($_GET[$this->addAnswersLocation])) {
 			return true;
 		}
 		return false;
-	}
-
-	public function getId() {
-		if (isset($_GET[$this->id])) {
-			return $_GET[$this->id];
-		}
 	}
 }

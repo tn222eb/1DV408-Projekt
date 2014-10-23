@@ -55,6 +55,9 @@ class LoginController {
             $this->renderPage();
     }
 
+    /**
+     * functions to see what user wants to do
+     */
     public function doGoToRegisterPage() {
         if ($this->loginView->didUserPressGoToRegisterPage()) {
             $this->showRegisterPage = true;
@@ -167,6 +170,9 @@ class LoginController {
         }
     }
 
+    /**
+     * checks if is logged in
+     */
     public function isAuthenticated() {
         if ($this->model->isLoggedIn()) {
             return true;
@@ -226,6 +232,9 @@ class LoginController {
 
     }
 
+    /**
+     * checks if is admin
+     */
     public function isAdmin() {
         if ($this->model->isAdmin()) {
             return true;
@@ -257,6 +266,9 @@ class LoginController {
         $this->loginView->setCookieExpireTime($this->model->getCookieExpireTime());
     }
 
+    /**
+     * register a user
+     */
     public function registerNewUser() {
         if ($this->registerView->didUserPressSubmit()) {
             $validationErrors = 0;
