@@ -19,7 +19,7 @@ class QuizRepository extends Repository{
 		$this->db = $this->connection();
 	}
 
-	public function isValidQuizId($id) {
+	public function isValidPlayableQuizId($id) {
 			$sql = "SELECT * FROM $this->dbTable WHERE " . $this->quizId . " = ?";
 			$params = array($id);
 			$query = $this->db->prepare($sql);
@@ -47,6 +47,20 @@ class QuizRepository extends Repository{
 				return true;
 			}
 			return false;
+	}
+
+	public function isValidQuizId($id) {
+			$sql = "SELECT * FROM $this->dbTable WHERE " . $this->quizId . " = ?";
+			$params = array($id);
+			$query = $this->db->prepare($sql);
+			$query->execute($params);
+
+			$dbQuizObj = $query->fetch();
+
+			if ($dbQuizObj == null) {
+				return false;
+			}
+			return true;
 	}
 
 	public function quizExists($quizName) {
