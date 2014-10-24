@@ -112,11 +112,14 @@ class PlayQuizView extends BaseView {
 		<form action ='' method='post'>";
 
 			foreach ($questions->ToArray() as $question) {
-				$html .= "<h4>$questionNr. " . $question->getName() . "</h4>";
 				$question = $this->questionModel->getQuestion($question->getQuestionId());
 
 				foreach ($question->toArray() as $answer) {
 					$foo = 0;
+
+					if ($answer != null) {
+						$html .= "<h4>$questionNr. " . $question->getName() . "</h4>";
+					}
 
 					foreach ($answer->getAnswers() as $answerName) {
 						$label = 'question-' . $questionNr . '-answers-'. $this->alphabets[$foo];
