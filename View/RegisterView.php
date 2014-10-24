@@ -12,7 +12,7 @@ class RegisterView {
 	/**
   	* Function to render message
   	*/
-    public function setMessage($message){
+    public function setMessage($message) {
         $this->message .= $message;
     }
 

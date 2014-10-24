@@ -6,7 +6,7 @@ class HTMLView {
      * @param string $body HTML-code
      * @throws \Exception if $body is null
      */
-    public function echoHTML($body){
+    public function echoHTML($body) {
         if($body == NULL){
             throw new \Exception("Body is null");
         }

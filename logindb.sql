@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Värd: 10.209.1.118
--- Skapad: 24 okt 2014 kl 13:53
+-- Skapad: 24 okt 2014 kl 17:27
 -- Serverversion: 5.5.32
 -- PHP-version: 5.3.10-1ubuntu3.4
 
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `answer` (
   `QuestionId` int(11) NOT NULL,
   PRIMARY KEY (`AnswerId`),
   KEY `QuestionId` (`QuestionId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=53 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=82 ;
 
 --
 -- Dumpning av Data i tabell `answer`
@@ -70,7 +70,30 @@ INSERT INTO `answer` (`AnswerId`, `AnswerA`, `AnswerB`, `AnswerC`, `RightAnswer`
 (42, 'Norge', 'Danmark', 'Sverige', 'C', 49),
 (43, 'Anakin', 'Gandalf', 'Sam', 'A', 50),
 (44, 'Micke och Molle', 'Timon och Pumba', 'Tim och Tumba', 'B', 51),
-(45, 'Ronnie Coleman', 'Flex Wheeler', 'Dorian Yates', 'A', 54);
+(45, 'Ronnie Coleman', 'Flex Wheeler', 'Dorian Yates', 'A', 54),
+(58, 'Deep Blue', 'AC/DC', 'Queen', 'A', 82),
+(59, 'Tjeckien och Georgien', 'Montenegro och Serbien', 'Azerbajdzjan och San Marino', 'C', 83),
+(60, 'Elvis Presley', 'James Brown', 'Ray Charles', 'B', 84),
+(61, 'Avicii', 'Armin Van Buuren', 'David Guetta', 'A', 85),
+(62, 'Max Mio Mozart', 'Wolfgang Armani Mozart', 'Wolfgang Amadeus Mozart', 'C', 87),
+(63, 'Eagles', 'Led Zeppelin', 'Dire Straits', 'C', 88),
+(64, 'The Rolling Stones', 'Alice Cooper', 'Boddy Holly', 'A', 89),
+(66, 'London Marathon', 'Great Wall Marathon', 'Copenhagen Marathon', 'B', 92),
+(67, 'Frankie Campbell', 'James J Braddock', 'John Henry Lewis', 'B', 93),
+(68, 'Zinedine Zidane', 'David Trezeguet', 'Eric Abida', 'A', 94),
+(69, 'Tyskland', 'Ryssland', 'Kina', 'C', 95),
+(70, '2,37 m', '2,34 m', '2,48 m', 'A', 96),
+(71, 'SlagsmÃ¥l', 'Doping', 'Han missade tidsgrÃ¤nsen', 'A', 97),
+(72, 'BlÃ¥ och vit', 'Lila och vit', 'Gul och vit', 'C', 98),
+(73, 'La Scala', 'La Academia', 'La Masia', 'C', 99),
+(74, '1974', '1904', '1954', 'B', 100),
+(75, 'Kriget mot Sparta', 'Kriget mot Troja', 'Kriget mot Fenicierna', 'B', 101),
+(76, 'Oden', 'Tyr', 'Balder', 'B', 102),
+(77, '3 mÃ¥nader', '23 dagar', '11 dagar', 'C', 103),
+(78, 'Ackne', 'Psoriasis', 'SpetÃ¤lska', 'C', 104),
+(79, 'Fiskar och fÃ¥glar', 'VÃ¤xterna', 'Himlen', 'A', 105),
+(80, 'Ett pÃ¤ron', 'Ett Ã¤pple', 'En banan', 'B', 106),
+(81, 'Mars', 'Oktober', 'December', 'B', 107);
 
 -- --------------------------------------------------------
 
@@ -85,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `question` (
   PRIMARY KEY (`QuestionId`),
   UNIQUE KEY `QuestionName` (`QuestionName`),
   KEY `QuizId` (`QuizId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=76 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=108 ;
 
 --
 -- Dumpning av Data i tabell `question`
@@ -120,7 +143,30 @@ INSERT INTO `question` (`QuestionId`, `QuestionName`, `QuizId`) VALUES
 (49, 'FrÃ¥n vilket land kommer regissÃ¶ren Ingmar Bergman', 8),
 (50, 'Vem av fÃ¶ljande karaktÃ¤rer Ã¤r inte med i Sagan om ringen-trilogin', 8),
 (51, 'Vad heter Simbas vÃ¤nner i den tecknade filmen "Lejonkungen"', 8),
-(54, 'Vem Ã¤r kÃ¤nd fÃ¶r detta citatet "Everybody wants to be a bodybuilder, but don''t nobody wanna lift no heavy ass weights"', 3);
+(54, 'Vem Ã¤r kÃ¤nd fÃ¶r detta citatet "Everybody wants to be a bodybuilder, but don''t nobody wanna lift no heavy ass weights"', 3),
+(82, 'Vilket band slÃ¤ppte albumet "Machine Head" Ã¥r 1972', 25),
+(83, 'Vilka lÃ¤nder debuterade i Eurovision Song Contest Ã¥r 2008', 25),
+(84, 'Denna amerikanska sÃ¥ngare fÃ¶ddes i South Carolina Ã¥r 1933 och har gjort hits som "Sex Machine" och "I Feel Good". Vad heter han', 25),
+(85, 'De populÃ¤ra hitsen "Hey Brother" och "Wake Me Up" finns med pÃ¥ 2013-Ã¥rsalbumet "True". Vem Ã¤r artisten bakom detta album', 25),
+(87, 'Vad Ã¤r kompositÃ¶ren Mozarts fullstÃ¤ndiga namn', 25),
+(88, 'Vilket brittiskt rockband slog igenom med hiten "Sultans of Swing" Ã¥r 1978', 25),
+(89, 'Vilket band Ã¤r kÃ¤nt som "The biggest rock and roll band in the world"', 25),
+(92, 'Vilket av fÃ¶ljande marathonlopp Ã¤r yngst', 26),
+(93, 'Vilken historisk amerikansk boxare Ã¤r kÃ¤nd som "Cinderella Man"', 26),
+(94, 'Vilken fransk landslagsspelare gjorde Frankrikes enda mÃ¥l under ordinarie speltid fÃ¶r 2006-Ã¥rs VM-finalmatch i fotboll', 26),
+(95, 'Vilken nation vann flest guldmedaljer under de olympiska spelen Ã¥r 2008', 26),
+(96, 'Den svenske hÃ¶jdhopparen Stefan Holm har vunnit VM-guld, EM-guld och till och med OS-guld, men vad Ã¤r hans personliga rekord i hÃ¶jdhopp', 26),
+(97, 'VarfÃ¶r blev Gonzales Arrieta utkastad ur Vuelta a EspaÃ±a Ã¥r 1995', 26),
+(98, 'Vilken fÃ¤rg har boll nummer 9 i ett vanligt biljardspel', 26),
+(99, 'Vad heter FC Barcelonas fotbollskola', 26),
+(100, 'NÃ¤r grundades fotbollens vÃ¤rldsorganisation FIFA', 26),
+(101, 'I vilket av fÃ¶ljande krig var kung Agamemnon ledare', 27),
+(102, 'Vilken fornnordisk gud fick sin hand avbiten av Fenrisulven', 27),
+(103, 'Varje Ã¥r flyttas starttiden fÃ¶r den islamiska Ramadan. Med hur mÃ¥nga dagar dÃ¥', 27),
+(104, 'Vilken sjukdom kan Moses enligt Bibeln bota genom handpÃ¥lÃ¤ggelse som en tecken att han Ã¤r sÃ¤nd av Gud', 27),
+(105, 'Vad skapade Gud pÃ¥ den fjÃ¤rde dagen enligt Bibeln', 27),
+(106, 'Vad var det som Eva och Adam Ã¥t av trots att Gud hade fÃ¶rbjudit dem till det', 27),
+(107, 'I vilken mÃ¥nad firas den hinduiska ljusfesten Diwali', 27);
 
 -- --------------------------------------------------------
 
@@ -133,7 +179,7 @@ CREATE TABLE IF NOT EXISTS `quiz` (
   `QuizName` varchar(60) NOT NULL,
   PRIMARY KEY (`QuizId`),
   UNIQUE KEY `QuizName` (`QuizName`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
 
 --
 -- Dumpning av Data i tabell `quiz`
@@ -143,7 +189,10 @@ INSERT INTO `quiz` (`QuizId`, `QuizName`) VALUES
 (6, 'Blandat'),
 (3, 'Bodybuilding'),
 (7, 'Datorer och Internet'),
-(8, 'Film');
+(8, 'Film'),
+(25, 'Musik'),
+(27, 'Religion'),
+(26, 'Sport');
 
 -- --------------------------------------------------------
 
@@ -160,14 +209,18 @@ CREATE TABLE IF NOT EXISTS `results` (
   PRIMARY KEY (`ResultId`),
   KEY `QuizId` (`QuizId`),
   KEY `UserId` (`UserId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=111 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=126 ;
 
 --
 -- Dumpning av Data i tabell `results`
 --
 
 INSERT INTO `results` (`ResultId`, `Result`, `NumberOfQuestions`, `UserId`, `QuizId`) VALUES
-(110, 0, 8, 4, 7);
+(110, 0, 8, 4, 7),
+(114, 0, 7, 4, 6),
+(118, 0, 7, 4, 6),
+(122, 0, 7, 4, 6),
+(123, 7, 8, 4, 8);
 
 -- --------------------------------------------------------
 

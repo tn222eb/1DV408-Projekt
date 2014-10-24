@@ -5,7 +5,7 @@ require_once("View/QuizView.php");
 require_once("helper/CookieStorage.php");
 require_once("View/BaseView.php");
 
-class QuestionView extends BaseView{
+class QuestionView extends BaseView {
 	private $questionName = 'questionName';
 
 	public function __construct() {

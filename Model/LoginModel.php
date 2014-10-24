@@ -159,7 +159,7 @@ class LoginModel{
 
     public function setAdmin() {
         if (isset($_SESSION['admin']) == false) {
-            $_SESSION['admin'] = $this->role;
+            $_SESSION['admin'] = $this->roleNr;
         }        
     }
 
