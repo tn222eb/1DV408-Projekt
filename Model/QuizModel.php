@@ -67,4 +67,8 @@ class QuizModel {
 	public function getQuizResults($userId) {
 		return $this->quizRepository->getQuizResults($userId);
 	}
+
+	public function getOnlyPlayableQuizzes() {
+		return $this->quizRepository->getOnlyPlayableQuizzes();
+	}
 }

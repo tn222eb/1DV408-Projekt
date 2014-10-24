@@ -85,7 +85,7 @@ class PlayQuizView extends BaseView {
 		<legend>Välj quiz att spela</legend>
 		<ul style='list-style-type: none;'>";
 
-		$quizList = $this->quizModel->getAllQuiz();
+		$quizList = $this->quizModel->getOnlyPlayableQuizzes();
 		foreach ($quizList->ToArray() as $quiz) {
 			$html .= "<li><a href='?$this->playQuizLocation=" . $quiz->getQuizId() . "'>" . $quiz->getName() . "</a></li>";
 		}

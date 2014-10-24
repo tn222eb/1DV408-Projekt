@@ -10,6 +10,7 @@ class QuizRepository extends Repository{
 	private $db;
 	private $questionTable = "question";
 	private $resultTable = "results";
+	private $answerTable = "answer";
 	private $results = array();
 
 	public function __construct() {
@@ -132,4 +133,34 @@ class QuizRepository extends Repository{
 		}
 		return NULL;
 	}
+
+	public function getOnlyPlayableQuizzes() {
+		$sql = "SELECT * FROM $this->dbTable";
+		$query = $this->db->prepare($sql);
+		$query->execute();
+
+		foreach ($query->fetchAll() as $dbQuizObj) {
+			$quizId = $dbQuizObj[$this->quizId];
+			$quizName = $dbQuizObj[$this->quizName];
+			$quiz = new Quiz($quizName, $quizId);
+
+			$sql = "SELECT * FROM " . $this->questionTable . " WHERE " . $this->quizId . " = ?";
+			$query = $this->db->prepare($sql);
+			$query->execute (array($dbQuizObj[$this->quizId]));
+
+			$question = $query->fetch();
+			$question = new Question($question[$this->questionName], $question[$this->quizId], $question[$this->questionId]);
+
+			$sql = "SELECT * FROM " . $this->answerTable . " WHERE " . $this->questionId . " = ?";
+			$query = $this->db->prepare($sql);
+			$query->execute (array($question->getQuestionId()));
+			$answers = $query->fetch();
+
+			if ($answers != NULL) {
+				$this->quizList->add($quiz);	
+			}
+		}
+
+		return $this->quizList;
+	}	
 }
