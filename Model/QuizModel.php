@@ -71,4 +71,17 @@ class QuizModel {
 	public function getOnlyPlayableQuizzes() {
 		return $this->quizRepository->getOnlyPlayableQuizzes();
 	}
+
+	public function numOfQuestions(Questions $questions) {
+		$numOfQuestions = 0;
+		foreach ($questions->toArray() as $question) {
+			$question = $this->questionModel->getQuestion($question->getQuestionId());
+			foreach ($question->toArray() as $answer) {
+				if ($answer != null) {
+					$numOfQuestions++;
+				}	
+			}
+		}
+		return $numOfQuestions;	
+	}
 }

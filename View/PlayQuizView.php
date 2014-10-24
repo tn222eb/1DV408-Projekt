@@ -171,6 +171,7 @@ class PlayQuizView extends BaseView {
 
 					foreach ($question->toArray() as $answer) {
 						$num = $this->getNumber($userAnswers[$questionNr]);
+						
 						if ($userAnswers[$questionNr] != $answer->getRightAnswer()) {
 						 	$label = 'question-' . $questionNr . '-answers-'. $answer->getRightAnswer();
 						 	$html .= "<div>
@@ -190,8 +191,10 @@ class PlayQuizView extends BaseView {
 			}
 		}
 
+		$numOfQuestions = $this->quizModel->numOfQuestions($questions);
+
 		return $html .= "
 		</br>
-		Du fick $score rätt svar av totalt " . count($questions->ToArray()) . "</br></br>";
+		Du fick $score rätt svar av totalt $numOfQuestions</br></br>";
 	}
 }

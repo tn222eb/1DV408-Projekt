@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.4
+-- version 3.4.10.1deb1
 -- http://www.phpmyadmin.net
 --
--- Värd: 127.0.0.1
--- Tid vid skapande: 24 okt 2014 kl 13:33
--- Serverversion: 5.6.15-log
--- PHP-version: 5.5.8
+-- Värd: 10.209.1.118
+-- Skapad: 24 okt 2014 kl 13:53
+-- Serverversion: 5.5.32
+-- PHP-version: 5.3.10-1ubuntu3.4
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Databas: `logindb`
+-- Databas: `198897-logindb`
 --
 
 -- --------------------------------------------------------
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `answer` (
   `QuestionId` int(11) NOT NULL,
   PRIMARY KEY (`AnswerId`),
   KEY `QuestionId` (`QuestionId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=51 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=53 ;
 
 --
 -- Dumpning av Data i tabell `answer`
@@ -70,8 +70,7 @@ INSERT INTO `answer` (`AnswerId`, `AnswerA`, `AnswerB`, `AnswerC`, `RightAnswer`
 (42, 'Norge', 'Danmark', 'Sverige', 'C', 49),
 (43, 'Anakin', 'Gandalf', 'Sam', 'A', 50),
 (44, 'Micke och Molle', 'Timon och Pumba', 'Tim och Tumba', 'B', 51),
-(45, 'Ronnie Coleman', 'Flex Wheeler', 'Dorian Yates', 'A', 54),
-(50, 'hej', 'hej', 'hej', 'C', 73);
+(45, 'Ronnie Coleman', 'Flex Wheeler', 'Dorian Yates', 'A', 54);
 
 -- --------------------------------------------------------
 
@@ -86,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `question` (
   PRIMARY KEY (`QuestionId`),
   UNIQUE KEY `QuestionName` (`QuestionName`),
   KEY `QuizId` (`QuizId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=75 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=76 ;
 
 --
 -- Dumpning av Data i tabell `question`
@@ -96,7 +95,7 @@ INSERT INTO `question` (`QuestionId`, `QuestionName`, `QuizId`) VALUES
 (3, 'Vem kallas The Predator', 3),
 (4, 'Vem kallas The Oak', 3),
 (5, 'Vem vann Mr Olympia 2003', 3),
-(6, 'Vem spelade Hulken i TV-Serien Den otrolige Hulken', 3),
+(6, 'Vem spelade Hulken i TV-Serien "Den otrolige Hulken"', 3),
 (22, 'Vem vann Mr Olympia 2014', 3),
 (27, 'Vilket band stod pÃ¥ scen under 2010-Ã¥rs Roskildefestival dÃ¥ nio mÃ¤nniskor klÃ¤mdes ihjÃ¤l', 6),
 (28, 'Vad av fÃ¶ljande saker hÃ¶r inte hemma i ett barnrum', 6),
@@ -121,9 +120,7 @@ INSERT INTO `question` (`QuestionId`, `QuestionName`, `QuizId`) VALUES
 (49, 'FrÃ¥n vilket land kommer regissÃ¶ren Ingmar Bergman', 8),
 (50, 'Vem av fÃ¶ljande karaktÃ¤rer Ã¤r inte med i Sagan om ringen-trilogin', 8),
 (51, 'Vad heter Simbas vÃ¤nner i den tecknade filmen "Lejonkungen"', 8),
-(54, 'Vem Ã¤r kÃ¤nd fÃ¶r detta citatet "Everybody wants to be a bodybuilder, but don''t nobody wanna lift no heavy ass weights"', 3),
-(73, 'hej', 21),
-(74, 'hejs', 21);
+(54, 'Vem Ã¤r kÃ¤nd fÃ¶r detta citatet "Everybody wants to be a bodybuilder, but don''t nobody wanna lift no heavy ass weights"', 3);
 
 -- --------------------------------------------------------
 
@@ -146,8 +143,7 @@ INSERT INTO `quiz` (`QuizId`, `QuizName`) VALUES
 (6, 'Blandat'),
 (3, 'Bodybuilding'),
 (7, 'Datorer och Internet'),
-(8, 'Film'),
-(21, 'hej');
+(8, 'Film');
 
 -- --------------------------------------------------------
 

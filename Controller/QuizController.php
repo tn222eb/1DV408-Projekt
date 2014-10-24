@@ -189,7 +189,8 @@ class QuizController {
 
 			$quiz = $this->quizModel->getQuiz($chosenQuiz);
 			$questions = $quiz->getQuestions();
-			$quizResult = new Result($score, count($questions->toArray()), $userId, $chosenQuiz);
+			
+			$quizResult = new Result($score, $this->quizModel->numOfQuestions($questions), $userId, $chosenQuiz);
 			$this->quizModel->saveQuizResult($quizResult);
 			$this->htmlView->echoHTML($this->playQuizView->showResult($score, $chosenQuiz));
 		}
