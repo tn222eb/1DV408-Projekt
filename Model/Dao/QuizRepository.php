@@ -25,12 +25,28 @@ class QuizRepository extends Repository{
 			$query = $this->db->prepare($sql);
 			$query->execute($params);
 
-			$results = $query->fetch();
+			$dbQuizObj = $query->fetch();
+			
+			$quizId = $dbQuizObj[$this->quizId];
+			$quizName = $dbQuizObj[$this->quizName];
+			$quiz = new Quiz($quizName, $quizId);
 
-			if ($results == false) {
-				return false;
+			$sql = "SELECT * FROM " . $this->questionTable . " WHERE " . $this->quizId . " = ?";
+			$query = $this->db->prepare($sql);
+			$query->execute (array($dbQuizObj[$this->quizId]));
+
+			$question = $query->fetch();
+			$question = new Question($question[$this->questionName], $question[$this->quizId], $question[$this->questionId]);
+
+			$sql = "SELECT * FROM " . $this->answerTable . " WHERE " . $this->questionId . " = ?";
+			$query = $this->db->prepare($sql);
+			$query->execute (array($question->getQuestionId()));
+			$answers = $query->fetch();
+
+			if ($answers != NULL) {
+				return true;
 			}
-			return true;
+			return false;
 	}
 
 	public function quizExists($quizName) {
