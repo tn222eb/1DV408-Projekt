@@ -85,21 +85,21 @@ class AnswerView extends BaseView {
 		<strong>" . $this->alphabets[0] . "</strong>)
 		</br>
 		<input type='radio' name='" . self::$rightAnswerLocation . "' value='" . $this->alphabets[0] . "'>		
-		<input type='text' name='" . self::$answerA . "' value='$answerA' />
+		<input type='text' name='" . self::$answerA . "' value='$answerA' maxlength='28'/>
 		</br>
 		</br>
 
 		<strong>" . $this->alphabets[1] . "</strong>)
 		</br>
 		<input type='radio' name='" . self::$rightAnswerLocation . "' value='" . $this->alphabets[1] . "'>
-		<input type='text' name='" .  self::$answerB . "' value='$answerB' />
+		<input type='text' name='" .  self::$answerB . "' value='$answerB' maxlength='28'/>
 		</br>
 		</br>		
 
 		<strong>" . $this->alphabets[2] . "</strong>)
 		</br>
 		<input type='radio' name='" . self::$rightAnswerLocation . "' value='" . $this->alphabets[2] . "'>
-		<input type='text' name='" . self::$answerC . "' value='$answerC' />
+		<input type='text' name='" . self::$answerC . "' value='$answerC' maxlength='28'/>
 		</br>
 		</br>	
 

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Värd: 127.0.0.1
--- Tid vid skapande: 24 okt 2014 kl 01:23
+-- Tid vid skapande: 24 okt 2014 kl 13:33
 -- Serverversion: 5.6.15-log
 -- PHP-version: 5.5.8
 
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `answer` (
   `QuestionId` int(11) NOT NULL,
   PRIMARY KEY (`AnswerId`),
   KEY `QuestionId` (`QuestionId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=50 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=51 ;
 
 --
 -- Dumpning av Data i tabell `answer`
@@ -70,7 +70,8 @@ INSERT INTO `answer` (`AnswerId`, `AnswerA`, `AnswerB`, `AnswerC`, `RightAnswer`
 (42, 'Norge', 'Danmark', 'Sverige', 'C', 49),
 (43, 'Anakin', 'Gandalf', 'Sam', 'A', 50),
 (44, 'Micke och Molle', 'Timon och Pumba', 'Tim och Tumba', 'B', 51),
-(45, 'Ronnie Coleman', 'Flex Wheeler', 'Dorian Yates', 'A', 54);
+(45, 'Ronnie Coleman', 'Flex Wheeler', 'Dorian Yates', 'A', 54),
+(50, 'hej', 'hej', 'hej', 'C', 73);
 
 -- --------------------------------------------------------
 
@@ -85,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `question` (
   PRIMARY KEY (`QuestionId`),
   UNIQUE KEY `QuestionName` (`QuestionName`),
   KEY `QuizId` (`QuizId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=73 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=75 ;
 
 --
 -- Dumpning av Data i tabell `question`
@@ -120,7 +121,9 @@ INSERT INTO `question` (`QuestionId`, `QuestionName`, `QuizId`) VALUES
 (49, 'FrÃ¥n vilket land kommer regissÃ¶ren Ingmar Bergman', 8),
 (50, 'Vem av fÃ¶ljande karaktÃ¤rer Ã¤r inte med i Sagan om ringen-trilogin', 8),
 (51, 'Vad heter Simbas vÃ¤nner i den tecknade filmen "Lejonkungen"', 8),
-(54, 'Vem Ã¤r kÃ¤nd fÃ¶r detta citatet "Everybody wants to be a bodybuilder, but don''t nobody wanna lift no heavy ass weights"', 3);
+(54, 'Vem Ã¤r kÃ¤nd fÃ¶r detta citatet "Everybody wants to be a bodybuilder, but don''t nobody wanna lift no heavy ass weights"', 3),
+(73, 'hej', 21),
+(74, 'hejs', 21);
 
 -- --------------------------------------------------------
 
@@ -133,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `quiz` (
   `QuizName` varchar(60) NOT NULL,
   PRIMARY KEY (`QuizId`),
   UNIQUE KEY `QuizName` (`QuizName`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
 
 --
 -- Dumpning av Data i tabell `quiz`
@@ -143,7 +146,8 @@ INSERT INTO `quiz` (`QuizId`, `QuizName`) VALUES
 (6, 'Blandat'),
 (3, 'Bodybuilding'),
 (7, 'Datorer och Internet'),
-(8, 'Film');
+(8, 'Film'),
+(21, 'hej');
 
 -- --------------------------------------------------------
 

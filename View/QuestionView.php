@@ -94,7 +94,7 @@ class QuestionView extends BaseView{
 		<legend>Lägg till fråga till " . $quiz->getName() . "</legend>
 		$message 
 		<form action='' method='post'>
-		<input type='text' name='" . $this->questionName . "' />
+		<input type='text' name='" . $this->questionName . "' maxlength='60'/>
 		</br>
 		</br>
 		<input type='submit' class='btn btn-default' name='" . $this->addQuestionLocation . "' value='Lägg till' />

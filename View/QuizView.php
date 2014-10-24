@@ -23,7 +23,7 @@ class QuizView extends BaseView {
 	}
 
 	public function getQuizMenu($id) {
-		return $html = "<a href='?" . $this->addQuestionLocation . "&" . $this->id . "=$id' class='btn btn-default'>Lägg till fråga</a>";
+		return $html = "<a href='?" . $this->addQuestionLocation . "&" . $this->id . "=$id' class='btn btn-default'>Lägg till fråga</a> </br></br>";
 	}
 
 	public function getId() {
@@ -192,7 +192,7 @@ class QuizView extends BaseView {
 		</br>
 		<legend>Redigera " 	. $quiz->getName() . "</legend>
 		<form action='' method='post'>
-		<input type='text' name='" . $this->quizNameLocation . "' value='" . $quiz->getName() . "'>
+		<input type='text' name='" . $this->quizNameLocation . "' value='" . $quiz->getName() . "' maxlength='60'>
 		</br>
 		</br>
 		<input type='submit' class='btn btn-default' name='" . $this->saveEditQuizLocation . "' value='Spara'>
@@ -232,7 +232,7 @@ class QuizView extends BaseView {
 		$html = "<form action='' method='post'> </br>
 		<a href='?" . $this->showAllQuizLocation . "' name='returnToPage'>Tillbaka</a> </br> 
 		<h2>" . $quiz->getName() . "</h2>
-		<input type='submit' class='btn btn-default' name='" . $this->editQuizLocation . "' value='Redigera " . $quiz->getName() . "'> <input type='submit' class='btn btn-default' name='" . $this->removeQuizLocation . "' value='Radera " . $quiz->getName() . "'>
+		<input type='submit' class='btn btn-default' name='" . $this->editQuizLocation . "' value='Redigera'> <input type='submit' class='btn btn-default' name='" . $this->removeQuizLocation . "' value='Radera'>
 		</br> </br>
 		<legend>Frågor</legend>
 		$message
