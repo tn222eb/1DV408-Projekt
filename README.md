@@ -7,11 +7,14 @@ Projekt i kursen webbutveckling med PHP.
 Installation 
 ===============
 
-Öppna mappen Docs och läs Instruktioner för driftsättning för hur man återskapar databasen.
+Ã–ppna mappen Docs och lÃ¤s Instruktioner fÃ¶r driftsÃ¤ttning fÃ¶r hur man Ã¥terskapar databasen.
 
 
 Applikationen
 ===============
-Applikationen ligger på http://tommynguyen.se/MyQuiz/ och uppgifter för Admin är
+Applikationen ligger pÃ¥ http://tommynguyen.se/MyQuiz/
 
-Användarnamn: Admin </br> Lösenord: sahibätergodis
+Admin-upgifter
+==============
+AnvÃ¤ndarnamn: Admin
+LÃ¶senord: sahibÃ¤tergodis
