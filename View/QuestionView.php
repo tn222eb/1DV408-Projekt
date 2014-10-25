@@ -52,13 +52,16 @@ class QuestionView extends BaseView {
   	*/		
 	public function showQuestion(Question $question) {
 		$i = 0;
+		$message = $this->renderCookieMessage($this->messageLocation);
+
 		$html = "<form action='' method='post'>
 		</br>
 		<a href='?" . $this->showQuizLocation . "&" . $this->id . "=" . $question->getQuizId() . "' name='returnToPage'>Tillbaka</a> </br> 
 		<h2>" . $question->getName() . "</h2>
-		<input type='submit' class='btn btn-default' name='" . $this->editQuestionLocation . "' value='Redigera'> <input type='submit' class='btn btn-default' name='" . $this->removeQuestionLocation . "' value='Radera'>
+		<input type='submit' class='btn btn-default' name='" . $this->editQuestionLocation . "' value='Redigera fråga'> <input type='submit' class='btn btn-default' name='" . $this->removeQuestionLocation . "' value='Radera fråga'>
 		</br> </br>
 		<legend>Svar</legend>
+		$message
 		<ul style='list-style-type: none;'>";
 
 		if (count($question->toArray()) > 0) {
@@ -73,7 +76,7 @@ class QuestionView extends BaseView {
 		}
 
 		if (count($question->toArray()) > 0) {
-			$html .= "</ul> <input type='submit' class='btn btn-default' name='" . $this->editAnswersLocation . "' value='Redigera'> <input type='submit' class='btn btn-default' name='" . $this->removeAnswersLocation . "' value='Radera'></form>";			
+			$html .= "</ul><input type='submit' class='btn btn-default' name='" . $this->removeAnswersLocation . "' value='Radera svar'></form>";			
 		}
 		else {
 			$html .= "</ul>" . $this->getQuestionMenu($question->getQuestionId()) . "</form>";			

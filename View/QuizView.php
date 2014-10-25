@@ -44,6 +44,10 @@ class QuizView extends BaseView {
 		header("Location: ?" . $this->showQuizLocation . "&" . $this->id . "=" . $quizId);		
 	}
 
+	public function redirectToShowQuestion($questionId) {
+		header("Location: ?" . $this->showQuestionLocation . "&" . $this->id . "=" . $questionId);		
+	}
+
 	public function redirectToShowCreateQuizForm() {
 		header("Location: ?" . $this->createQuizLocation . "");
 	}
@@ -232,7 +236,7 @@ class QuizView extends BaseView {
 		$html = "<form action='' method='post'> </br>
 		<a href='?" . $this->showAllQuizLocation . "' name='returnToPage'>Tillbaka</a> </br> 
 		<h2>" . $quiz->getName() . "</h2>
-		<input type='submit' class='btn btn-default' name='" . $this->editQuizLocation . "' value='Redigera'> <input type='submit' class='btn btn-default' name='" . $this->removeQuizLocation . "' value='Radera'>
+		<input type='submit' class='btn btn-default' name='" . $this->editQuizLocation . "' value='Redigera quiz'> <input type='submit' class='btn btn-default' name='" . $this->removeQuizLocation . "' value='Radera quiz'>
 		</br> </br>
 		<legend>Frågor</legend>
 		$message

@@ -3,6 +3,7 @@
 require_once("Model/Validation/ValidateInput.php");
 require_once("View/AnswerView.php");
 require_once("Model/Dao/QuestionRepository.php");
+require_once("Model/Dao/AnswerRepository.php");
 require_once("View/HTMLView.php");
 require_once("Model/Answers.php");
 require_once("Model/AnswerModel.php");
@@ -12,6 +13,7 @@ require_once("View/BaseView.php");
 class AnswerController {
 
 	private $answerView;
+	private $answerRepository;
 	private $questionRepository;
 	private $quizMessage;
 	private $quizView;
@@ -27,6 +29,7 @@ class AnswerController {
 		$this->answerModel = new AnswerModel();
 		$this->quizView = new QuizView;
 		$this->validateInput = new ValidateInput();
+		$this->answerRepository = new AnswerRepository();
 	}
 
     /**
@@ -88,8 +91,7 @@ class AnswerController {
 					$this->quizMessage = new QuizMessage(6);
 					$message = $this->quizMessage->getMessage();
 					$this->quizView->saveMessage($message);
-					$question = $this->questionRepository->getQuestion($this->answerView->getId());
-					$this->quizView->redirectToShowQuiz($question->getQuizId());	
+					$this->quizView->redirectToShowQuestion($this->answerView->getId());	
 				}
 			}
 			else {		
@@ -97,6 +99,26 @@ class AnswerController {
 			}			
 		}
 	}
+
+    /**
+    * renders confirm page for remove
+    */
+	public function confirmRemoveAnswers() {
+		$answers = $this->answerRepository->getAnswers($this->answerView->getId());
+		$this->htmlView->echoHTML($this->answerView->showConfirmToRemoveAnswers($answers));
+	}
+
+    /**
+    * remove answers
+    */	
+	public function removeAnswers() {
+		$answers = $this->answerRepository->getAnswers($this->answerView->getId());
+		$this->answerModel->removeAnswers($answers);
+		$this->quizMessage = new QuizMessage(8);
+		$message = $this->quizMessage->getMessage();
+		$this->quizView->saveMessage($message);
+		$this->quizView->redirectToShowQuestion($this->answerView->getId());		
+	}		
 
     /**
      * check if question has any answers

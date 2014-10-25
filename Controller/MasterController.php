@@ -22,6 +22,7 @@ class MasterController {
     private $quizRepository;
     private $answerView;
     private $resultView;
+    private $answerRepository;
 
 	public function __construct() {
 		$this->loginController = new LoginController();
@@ -29,6 +30,7 @@ class MasterController {
         $this->playQuizView = new PlayQuizView();
         $this->quizView = new QuizView();
         $this->quizRepository = new QuizRepository();
+        $this->answerRepository = new AnswerRepository();
         $this->questionRepository = new QuestionRepository();
         $this->questionView = new QuestionView();
         $this->questionController = new QuestionController();
@@ -59,6 +61,14 @@ class MasterController {
             else if ($this->quizView->didUserPressToEditQuiz() && $this->loginController->isAdmin()) {
                 $quiz = $this->quizRepository->getQuiz($this->quizView->getId());
                 $this->quizController->editQuiz($quiz);
+            }
+
+            else if ($this->answerView->didUserPressToRemoveAnswers() && $this->loginController->isAdmin()) {
+                $this->answerController->confirmRemoveAnswers();
+            }
+
+            else if ($this->answerView->didUserConfirmToRemoveAnswers() && $this->loginController->isAdmin()) {
+                $this->answerController->removeAnswers();
             }
 
             else if ($this->questionView->didUserPressToEditQuestion() && $this->loginController->isAdmin()) {

@@ -16,5 +16,30 @@ class AnswerRepository extends Repository {
 		$params = array($answers->getAnswer(0), $answers->getAnswer(1), $answers->getAnswer(2), $answers->getRightAnswer(), $answers->getQuestionId());
 		$query = $this->db->prepare($sql);
 		$query->execute($params);
-	}	
+	}
+
+	public function removeAnswers(Answers $answers) {
+		$sql = "DELETE FROM $this->dbTable WHERE " . $this->answerId . " = ?";
+		$params = array($answers->getAnswerId());
+		$query = $this->db->prepare($sql);
+		$query->execute($params);
+	}
+
+	public function getAnswers($questionId) {
+		$sql = "SELECT * FROM $this->dbTable WHERE " . $this->questionId . " = ?";
+		$params = array($questionId);
+		$query = $this->db->prepare($sql);
+		$query->execute($params);
+		$answerObj = $query->fetch();
+
+		if ($answerObj != null) {
+			$answers = new Answers($answerObj[$this->answerA], $answerObj[$this->answerB], $answerObj[$this->answerC], $answerObj[$this->rightAnswer], 
+						$answerObj[$this->questionId], $answerObj[$this->answerId]);
+
+			return $answers;
+		}
+
+		return null;
+	}
+
 }

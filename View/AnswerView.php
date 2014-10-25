@@ -10,7 +10,6 @@ class AnswerView extends BaseView {
 	private static $answerA = "answerA";
 	private static $answerB = "answerB";
 	private static $answerC = "answerC";
-	private $saveEditAnswersLocation = 'saveEditAnswers';
 	private $confirmRemoveAnswersLocation = 'confirmRemoveAnswers';
 
 	public function __construct() {
@@ -63,45 +62,6 @@ class AnswerView extends BaseView {
 		$value = $this->cookieStorage->load($string);
 		$this->quizView->unsetMessage($string);	
 		return $value;
-	}
-
-	/**
-  	* Show edit answers form
-  	*
-  	* @param Object that contains a answers
-  	*
-  	* @return string Returns String HTML
-  	*/	
-	public function showEditAnswersForm(Answers $answers) {
-		return $html = "</br>
-		<a href='?" . $this->showQuestionLocation . "&" . $this->id . "=" . $answers->getQuestionId() . "' name='returnToPage'>Tillbaka</a>
-		</br>
-		</br>
-		<legend>Redigera " 	. $answers->getName() . "</legend>
-		</br> </br>
-		<strong>" . $this->alphabets[0] . "</strong>)
-		</br>
-		<input type='radio' name='" . self::$rightAnswerLocation . "' value='" . $this->alphabets[0] . "'>		
-		<input type='text' name='" . self::$answerA . "' value='" . $answers->getAnswerA() . "' maxlength='28'/>
-		</br>
-		</br>
-
-		<strong>" . $this->alphabets[1] . "</strong>)
-		</br>
-		<input type='radio' name='" . self::$rightAnswerLocation . "' value='" . $this->alphabets[1] . "'>
-		<input type='text' name='" .  self::$answerB . "' value='" . $answers->getAnswerB() . "' maxlength='28'/>
-		</br>
-		</br>		
-
-		<strong>" . $this->alphabets[2] . "</strong>)
-		</br>
-		<input type='radio' name='" . self::$rightAnswerLocation . "' value='" . $this->alphabets[2] . "'>
-		<input type='text' name='" . self::$answerC . "' value='" . $answers->getAnswerC() . "' maxlength='28'/>
-		</br>
-		</br>
-		<input type='submit' class='btn btn-default' name='" . $this->saveEditAnswersLocation . "' value='Spara'>
-		</form>
-		 ";
 	}
 
 	/**
@@ -188,20 +148,6 @@ class AnswerView extends BaseView {
 
 	public function didUserPressToRemoveAnswers() {
 		if (isset($_POST[$this->removeAnswersLocation])) {
-			return true;
-		}
-		return false;
-	}
-
-	public function didUserPressToEditAnswers() {
-		if (isset($_POST[$this->editAnswersLocation])) {
-			return true;
-		}
-		return false;
-	}
-
-	public function didUserPressToSaveEditAnswers() {
-		if (isset($_POST[$this->saveEditAnswersLocation])) {
 			return true;
 		}
 		return false;

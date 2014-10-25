@@ -6,7 +6,6 @@ require_once("Model/Dao/AnswerRepository.php");
 class AnswerModel {
 	
 	private $answerRepository;
-	private $sessionMessages = array();
 
 	public function __construct() {
 		$this->answerRepository = new AnswerRepository();
@@ -14,5 +13,9 @@ class AnswerModel {
 
 	public function addAnswers(Answers $answers) {
 		$this->answerRepository->addAnswers($answers);
+	}
+
+	public function removeAnswers(Answers $answers) {
+		$this->answerRepository->removeAnswers($answers);
 	}
 }
