@@ -194,8 +194,8 @@ class LoginController {
     /**
      * decides which view that should be rendered
      */
-    public function renderPage(){
-        if($this->showLoggedInPage) {
+    public function renderPage() {
+        if ($this->showLoggedInPage) {
             $this->htmlView->echoHTML($this->loggedInView->showLoggedInPage());    
         }
 
@@ -209,11 +209,11 @@ class LoginController {
         }
     }
 
-    public function encryptPassword(){
+    public function encryptPassword() {
         $this->loginView->setEncryptedPassword($this->model->encryptedPassword($this->loginView->getPassword()));
     }
 
-    public function setMessage(){
+    public function setMessage() {
         $message = new LoginMessage($this->model->getMessage());
 
         if (!$this->model->isLoggedIn()) {
@@ -227,9 +227,8 @@ class LoginController {
         }
     }
 
-    public function setUsername(){
+    public function setUsername() {
         $this->username = $this->loginView->getUsername();
-
     }
 
     /**
@@ -242,19 +241,19 @@ class LoginController {
         return false;
     }
 
-    public function setPassword(){
+    public function setPassword() {
         $this->password = $this->loginView->getPassword();
     }
 
-    public function setDecryptedPassword(){
+    public function setDecryptedPassword() {
         $this->password = $this->model->decryptPassword($this->loginView->getCookiePassword());
     }
 
-    public function getUserAgent(){
+    public function getUserAgent() {
         return $this->userAgent;
     }
 
-    public function getUserAgent2(){
+    public function getUserAgent2() {
         return $this->userAgent2;
     }
 
@@ -262,7 +261,7 @@ class LoginController {
         return $this->model->getId();
     }
 
-    public function getCookieExpireTime(){
+    public function getCookieExpireTime() {
         $this->loginView->setCookieExpireTime($this->model->getCookieExpireTime());
     }
 

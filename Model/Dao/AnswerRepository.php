@@ -41,5 +41,4 @@ class AnswerRepository extends Repository {
 
 		return null;
 	}
-
 }

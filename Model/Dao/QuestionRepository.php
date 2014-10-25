@@ -14,6 +14,11 @@ class QuestionRepository extends Repository {
 		$this->db = $this->connection();
 	}
 
+     /** 
+     * check if is valid question id
+     * @param id from url
+     * @return bool based if exists or not in db
+     */
 	public function isValidQuestionId($id) {
 			$sql = "SELECT * FROM $this->dbTable WHERE " . $this->questionId . " = ?";
 			$params = array($id);
@@ -28,6 +33,11 @@ class QuestionRepository extends Repository {
 			return true;
 	}	
 
+     /** 
+     * check if is question already exists
+     * @param question name that user input
+     * @return bool based if exists or not in db
+     */
 	public function questionExists($questionName) {
 			$sql = "SELECT * FROM $this->dbTable WHERE " . $this->questionName . " = ?";
 			$params = array($questionName);
@@ -86,6 +96,6 @@ class QuestionRepository extends Repository {
 			}
 			return $question;
 		}
-		return NULL;
+		return null;
 	}	
 }

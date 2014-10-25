@@ -19,6 +19,11 @@ class QuizRepository extends Repository{
 		$this->db = $this->connection();
 	}
 
+     /** 
+     * check if is a id of a quiz that has answers and questions
+     * @param id from url
+     * @return bool based if true or false
+     */
 	public function isValidPlayableQuizId($id) {
 			$sql = "SELECT * FROM $this->dbTable WHERE " . $this->quizId . " = ?";
 			$params = array($id);
@@ -43,12 +48,17 @@ class QuizRepository extends Repository{
 			$query->execute (array($question->getQuestionId()));
 			$answers = $query->fetch();
 
-			if ($answers != NULL) {
+			if ($answers != null) {
 				return true;
 			}
 			return false;
 	}
 
+     /** 
+     * check if is valid quiz id
+     * @param id from url
+     * @return bool based if exists or not in db
+     */
 	public function isValidQuizId($id) {
 			$sql = "SELECT * FROM $this->dbTable WHERE " . $this->quizId . " = ?";
 			$params = array($id);
@@ -125,6 +135,10 @@ class QuizRepository extends Repository{
 			$query->execute($params);	
 	}
 
+     /** 
+     * gets quizlist
+     * @return return list of all quizzes
+     */
 	public function getQuizList() {
 		$sql = "SELECT * FROM $this->dbTable";
 		$query = $this->db->prepare($sql);
@@ -134,6 +148,7 @@ class QuizRepository extends Repository{
 			$quizId = $dbQuizObj[$this->quizId];
 			$quizName = $dbQuizObj[$this->quizName];
 			$quiz = new Quiz($quizName, $quizId);
+
 			$this->quizList->add($quiz);
 		}
 
@@ -161,9 +176,13 @@ class QuizRepository extends Repository{
 			}
 			return $quiz;			
 		}
-		return NULL;
+		return null;
 	}
 
+     /** 
+     * gets quizzes that has questions and answers
+     * @return return list of playable quizzes
+     */
 	public function getOnlyPlayableQuizzes() {
 		$sql = "SELECT * FROM $this->dbTable";
 		$query = $this->db->prepare($sql);

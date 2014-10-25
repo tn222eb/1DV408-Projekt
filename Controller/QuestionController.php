@@ -60,7 +60,6 @@ class QuestionController {
 		return true;
 	}	
 
-
     /**
     * renders confirm page for remove
     */
