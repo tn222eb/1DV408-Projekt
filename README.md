@@ -14,5 +14,4 @@ Applikationen
 ===============
 Applikationen ligger på http://tommynguyen.se/MyQuiz/ och uppgifter för Admin är
 
-Användarnamn: Admin
-Lösenord: sahibätergodis
+Användarnamn: Admin </br> Lösenord: sahibätergodis
