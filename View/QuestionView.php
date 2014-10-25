@@ -7,6 +7,10 @@ require_once("View/BaseView.php");
 
 class QuestionView extends BaseView {
 	private $questionName = 'questionName';
+	private $removeQuestionLocation = 'removeQuestion';
+	private $editQuestionLocation = 'editQuestion';
+	private $saveEditQuestionLocation = 'saveEditQuestion';
+	private $confirmRemoveQuestionLocation = 'confirmRemoveQuestion';
 
 	public function __construct() {
 		$this->quizView = new QuizView();
@@ -51,8 +55,9 @@ class QuestionView extends BaseView {
 		$html = "<form action='' method='post'>
 		</br>
 		<a href='?" . $this->showQuizLocation . "&" . $this->id . "=" . $question->getQuizId() . "' name='returnToPage'>Tillbaka</a> </br> 
-		<h1>" . $question->getName() . "</h1>
-		</br>
+		<h2>" . $question->getName() . "</h2>
+		<input type='submit' class='btn btn-default' name='" . $this->editQuestionLocation . "' value='Redigera'> <input type='submit' class='btn btn-default' name='" . $this->removeQuestionLocation . "' value='Radera'>
+		</br> </br>
 		<legend>Svar</legend>
 		<ul style='list-style-type: none;'>";
 
@@ -68,7 +73,7 @@ class QuestionView extends BaseView {
 		}
 
 		if (count($question->toArray()) > 0) {
-			$html .= "</ul> </form>";			
+			$html .= "</ul> <input type='submit' class='btn btn-default' name='" . $this->editAnswersLocation . "' value='Redigera'> <input type='submit' class='btn btn-default' name='" . $this->removeAnswersLocation . "' value='Radera'></form>";			
 		}
 		else {
 			$html .= "</ul>" . $this->getQuestionMenu($question->getQuestionId()) . "</form>";			
@@ -100,7 +105,48 @@ class QuestionView extends BaseView {
 		<input type='submit' class='btn btn-default' name='" . $this->addQuestionLocation . "' value='Lägg till' />
 		</form>";
 		return $html;
-	}	
+	}
+
+	/**
+  	* Show edit question form
+  	*
+  	* @param Object that contains a question
+  	*
+  	* @return string Returns String HTML
+  	*/	
+	public function showEditQuestionForm(Question $question) {
+		return $html = "</br>
+		<a href='?" . $this->showQuestionLocation . "&" . $this->id . "=" . $question->getQuestionId() . "' name='returnToPage'>Tillbaka</a>
+		</br>
+		</br>
+		<legend>Redigera " 	. $question->getName() . "</legend>
+		<form action='' method='post'>
+		<input type='text' name='" . $this->questionName . "' value='" . $question->getName() . "' maxlength='150'>
+		</br>
+		</br>
+		<input type='submit' class='btn btn-default' name='" . $this->saveEditQuestionLocation . "' value='Spara'>
+		</form>
+		 ";
+	}
+
+	/**
+  	* Confirmation remove page
+  	*
+  	* @param Object that contains a question
+  	*
+  	* @return string Returns String HTML
+  	*/	
+	public function showConfirmToRemoveQuestion(Question $question) {
+		return $html = "</br>
+		<a href='?" . $this->showQuestionLocation . "&" . $this->id . "=" . $question->getQuestionId() . "' name='returnToPage'>Tillbaka</a>
+		</br>
+		</br>
+		<legend>Radera " . $question->getName() . "</legend>
+
+		<form action='' method='post'>
+		<input type='submit' class='btn btn-default' name='" . $this->confirmRemoveQuestionLocation . "' value='Ta bort'>
+		</form>";
+	}			
 
 	/**
   	* Functions to see where user wants to do
@@ -124,5 +170,33 @@ class QuestionView extends BaseView {
 			return true;
 		}
 		return false;
-	}	
+	}
+
+	public function didUserPressToRemoveQuestion() {
+		if (isset($_POST[$this->removeQuestionLocation])) {
+			return true;
+		}
+		return false;
+	}
+
+	public function didUserPressToEditQuestion() {
+		if (isset($_POST[$this->editQuestionLocation])) {
+			return true;
+		}
+		return false;
+	}
+
+	public function didUserPressToSaveEditQuestion() {
+		if (isset($_POST[$this->saveEditQuestionLocation])) {
+			return true;
+		}
+		return false;
+	}
+
+	public function didUserConfirmToRemoveQuestion() {
+		if (isset($_POST[$this->confirmRemoveQuestionLocation])) {
+			return true;
+		}
+		return false;
+	}		
 }

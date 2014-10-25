@@ -34,7 +34,7 @@ class AnswerController {
      */
 	public function validate($string) {
 		if ($this->validateInput->validateLength($string) == false) {
-				$this->quizMessage = new QuizMessage(12);
+				$this->quizMessage = new QuizMessage(16);
 				$message = $this->quizMessage->getMessage();
 				$this->quizView->saveMessage($message);
 				$this->answerView->redirectToAddAnswers($this->answerView->getId());		
@@ -42,7 +42,7 @@ class AnswerController {
 		}
 
 		if ($this->validateInput->validateCharacters($string) == false) {
-				$this->quizMessage = new QuizMessage(13);
+				$this->quizMessage = new QuizMessage(17);
 				$message = $this->quizMessage->getMessage();
 				$this->quizView->saveMessage($message);
 				$this->answerView->redirectToAddAnswers($this->answerView->getId());	
@@ -76,7 +76,7 @@ class AnswerController {
 			if ($this->validate($answerA) && $this->validate($answerB) && $this->validate($answerC)) {
 				$checkedStatus = $this->answerView->getRightAnswerCheckBox();
 				if (empty($checkedStatus)) {
-					$this->quizMessage = new QuizMessage(11);
+					$this->quizMessage = new QuizMessage(15);
 					$message = $this->quizMessage->getMessage();
 					$this->quizView->saveMessage($message);
 					$this->rememberAnswers($answerA, $answerB, $answerC);
@@ -85,7 +85,7 @@ class AnswerController {
 				else {
 					$answers = new Answers($answerA, $answerB, $answerC, $this->answerView->getRightAnswerCheckBox(), $this->answerView->getId());
 					$this->answerModel->addAnswers($answers);
-					$this->quizMessage = new QuizMessage(4);
+					$this->quizMessage = new QuizMessage(6);
 					$message = $this->quizMessage->getMessage();
 					$this->quizView->saveMessage($message);
 					$question = $this->questionRepository->getQuestion($this->answerView->getId());

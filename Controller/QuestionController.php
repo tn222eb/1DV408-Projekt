@@ -34,7 +34,7 @@ class QuestionController {
      */
 	public function validate($questionName) {
 		if ($this->validateInput->validateLength($questionName) == false) {
-				$this->quizMessage = new QuizMessage(8);
+				$this->quizMessage = new QuizMessage(12);
 				$message = $this->quizMessage->getMessage();
 				$this->quizView->saveMessage($message);
 				$this->quizView->redirectToAddQuestion($this->quizView->getId());
@@ -42,7 +42,7 @@ class QuestionController {
 		}
 
 		if ($this->validateInput->validateCharacters($questionName) == false) {
-				$this->quizMessage = new QuizMessage(9);
+				$this->quizMessage = new QuizMessage(13);
 				$message = $this->quizMessage->getMessage();
 				$this->quizView->saveMessage($message);
 				$this->quizView->redirectToAddQuestion($this->quizView->getId());		
@@ -50,7 +50,7 @@ class QuestionController {
 		}
 
 		if ($this->questionRepository->questionExists($questionName)) {
-				$this->quizMessage = new QuizMessage(10);
+				$this->quizMessage = new QuizMessage(14);
 				$message = $this->quizMessage->getMessage();
 				$this->quizView->saveMessage($message);
 				$this->quizView->redirectToAddQuestion($this->quizView->getId());		
@@ -59,6 +59,62 @@ class QuestionController {
 
 		return true;
 	}	
+
+
+    /**
+    * renders confirm page for remove
+    */
+	public function confirmRemoveQuestion() {
+		$question = $this->questionRepository->getQuestion($this->questionView->getId());
+		$this->htmlView->echoHTML($this->questionView->showConfirmToRemoveQuestion($question));
+	}
+
+    /**
+    * remove question
+    */	
+	public function removeQuestion() {
+		$question = $this->questionRepository->getQuestion($this->questionView->getId());
+		$this->questionModel->removeQuestion($question);
+		$this->quizMessage = new QuizMessage(3);
+		$message = $this->quizMessage->getMessage();
+		$this->quizView->saveMessage($message);
+		$this->quizView->redirectToShowQuiz($question->getQuizId());		
+	}		
+
+    /**
+    * show edit question form
+    */	
+	public function editQuestion(Question $question) {
+		$this->htmlView->echoHTML($this->questionView->showEditQuestionForm($question));
+	}
+
+    /**
+    * save edit of question
+    */
+	public function saveEditQuestion() {
+		$currentQuestion = $this->questionRepository->getQuestion($this->questionView->getId());
+		$questionName = $this->questionView->getQuestionName();
+		if ($currentQuestion != null) {
+			if ($currentQuestion->getName() != $questionName) {
+				if ($this->validate($questionName)) {
+					if ($this->questionRepository->questionExists($questionName) == false) {
+						$editQuestion = new Question($questionName, $currentQuestion->getQuizId(), $this->questionView->getId());
+						$this->questionModel->saveEditQuestion($editQuestion);
+						$this->quizMessage = new QuizMessage(4);
+						$message = $this->quizMessage->getMessage();
+						$this->quizView->saveMessage($message);
+					}
+					else {
+						$this->quizMessage = new QuizMessage(14);
+						$message = $this->quizMessage->getMessage();
+						$this->quizView->saveMessage($message);					
+					}
+				}
+			}
+		}
+
+		$this->quizView->redirectToShowQuiz($currentQuestion->getQuizId());	
+	}
 
     /**
      * add a question to quiz
@@ -73,14 +129,14 @@ class QuestionController {
 			if ($this->validate($questionName)) {
 				$question = new Question ($questionName, $this->questionView->getId());
 				$this->questionModel->addQuestion($question);
-				$this->quizMessage = new QuizMessage(3);
+				$this->quizMessage = new QuizMessage(5);
 				$message = $this->quizMessage->getMessage();
 				$this->quizView->saveMessage($message);
 				$this->quizView->redirectToShowQuiz($this->quizView->getId());	
 			}			
 		}
 	}
-
+	
     /**
      * show a chosen question
      */

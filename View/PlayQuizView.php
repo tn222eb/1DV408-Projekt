@@ -118,7 +118,7 @@ class PlayQuizView extends BaseView {
 					$foo = 0;
 
 					if ($answer != null) {
-						$html .= "<h4>$questionNr. " . $question->getName() . "</h4>";
+						$html .= "<h4>$questionNr.&nbsp;" . $question->getName() . "</h4>";
 					}
 
 					foreach ($answer->getAnswers() as $answerName) {

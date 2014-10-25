@@ -19,6 +19,8 @@ abstract class BaseView {
     protected $messageALocation = "CookieValueA";
     protected $messageBLocation = "CookieValueB";
     protected $messageCLocation = "CookieValueC";
+    protected $removeAnswersLocation = 'removeAnswers';
+    protected $editAnswersLocation = 'editAnswers';
 
     public static function redirectToErrorPage() {
         header("Location: /". Settings::$ROOT_PATH . "/error.html");

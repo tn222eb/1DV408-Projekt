@@ -71,8 +71,7 @@ class LoginView {
 					       </div>
 					     </div>
 					   </fieldset>
-			       </form>
-        ";
+			       </form>";
 
         return $html;
     }
@@ -81,14 +80,14 @@ class LoginView {
      * @return bool true uf user has pressed login else false
      */
     public function didUserPressLogin() {
-        if(isset($_POST[$this->submitLocation])){
+        if (isset($_POST[$this->submitLocation])) {
             return true;
         }
         return false;
     }
 
     public function didUserPressGoToRegisterPage() {
-        if(isset($_GET[$this->registerLocation])) {
+        if (isset($_GET[$this->registerLocation])) {
             return true;
         }
         return false;
@@ -98,11 +97,10 @@ class LoginView {
      * @return bool true if user has checked remember me else false
      */
     public function userHasCheckedKeepMeLoggedIn() {
-        if(isset($_POST[$this->checkBoxLocation])){
+        if (isset($_POST[$this->checkBoxLocation])){
             return true;
         }
         return false;
-
     }
 
     public function getAuthentication() {
@@ -159,7 +157,6 @@ class LoginView {
     /**
      * @return string password
      */
-
     public function getPassword() {
         return $this->password;
     }

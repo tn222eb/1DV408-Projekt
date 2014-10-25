@@ -61,6 +61,23 @@ class MasterController {
                 $this->quizController->editQuiz($quiz);
             }
 
+            else if ($this->questionView->didUserPressToEditQuestion() && $this->loginController->isAdmin()) {
+                $question = $this->questionRepository->getQuestion($this->questionView->getId());
+                $this->questionController->editQuestion($question);
+            }
+
+            else if ($this->questionView->didUserPressToSaveEditQuestion() && $this->loginController->isAdmin()) {
+                $this->questionController->saveEditQuestion();
+            }
+
+            else if ($this->questionView->didUserPressToRemoveQuestion() && $this->loginController->isAdmin()) {
+                $this->questionController->confirmRemoveQuestion();
+            }
+
+            else if ($this->questionView->didUserConfirmToRemoveQuestion() && $this->loginController->isAdmin()) {
+                $this->questionController->removeQuestion();
+            }
+
             else if ($this->quizView->didUserPressToSaveEditQuiz() && $this->loginController->isAdmin()) {
                 $this->quizController->saveEditQuiz();
             }

@@ -51,19 +51,21 @@ class QuizController {
 	public function saveEditQuiz() {
 		$currentQuiz = $this->quizRepository->getQuiz($this->quizView->getId());
 		$quizName = $this->quizView->getQuizName();
-		if ($currentQuiz->getName() != $quizName) {
-			if ($this->validation($quizName)) {
-				if ($this->quizRepository->quizExists($quizName) == false) {
-					$editQuiz = new Quiz($quizName, $this->quizView->getId());
-					$this->quizModel->saveEditQuiz($editQuiz);
-					$this->quizMessage = new QuizMessage(2);
-					$message = $this->quizMessage->getMessage();
-					$this->quizView->saveMessage($message);
-				}
-				else {
-					$this->quizMessage = new QuizMessage(5);
-					$message = $this->quizMessage->getMessage();
-					$this->quizView->saveMessage($message);					
+		if ($currentQuiz != null) {
+			if ($currentQuiz->getName() != $quizName) {
+				if ($this->validation($quizName)) {
+					if ($this->quizRepository->quizExists($quizName) == false) {
+						$editQuiz = new Quiz($quizName, $this->quizView->getId());
+						$this->quizModel->saveEditQuiz($editQuiz);
+						$this->quizMessage = new QuizMessage(2);
+						$message = $this->quizMessage->getMessage();
+						$this->quizView->saveMessage($message);
+					}
+					else {
+						$this->quizMessage = new QuizMessage(9);
+						$message = $this->quizMessage->getMessage();
+						$this->quizView->saveMessage($message);					
+					}
 				}
 			}
 		}
@@ -113,7 +115,7 @@ class QuizController {
     */
 	public function validation($quizName) {
 		if ($this->validateInput->validateLength($quizName) == false) {
-				$this->quizMessage = new QuizMessage(6);
+				$this->quizMessage = new QuizMessage(10);
 				$message = $this->quizMessage->getMessage();
 				$this->quizView->saveMessage($message);
 				$this->quizView->redirectToShowCreateQuizForm();
@@ -121,7 +123,7 @@ class QuizController {
 		}
 
 		if ($this->validateInput->validateCharacters($quizName) == false) {
-				$this->quizMessage = new QuizMessage(7);
+				$this->quizMessage = new QuizMessage(11);
 				$message = $this->quizMessage->getMessage();
 				$this->quizView->saveMessage($message);
 				return false;
@@ -152,7 +154,7 @@ class QuizController {
 				}
 			}
 			else {
-				$this->quizMessage = new QuizMessage(5);
+				$this->quizMessage = new QuizMessage(9);
 				$message = $this->quizMessage->getMessage();
 				$this->quizView->saveMessage($message);
 				$this->quizView->redirectToShowCreateQuizForm();

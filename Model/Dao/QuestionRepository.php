@@ -49,6 +49,20 @@ class QuestionRepository extends Repository {
 		$query->execute($params);
 	}
 
+	public function removeQuestion(Question $question) {
+		$sql = "DELETE FROM $this->dbTable WHERE " . $this->questionId . " = ?";
+		$params = array($question->getQuestionId());
+		$query = $this->db->prepare($sql);
+		$query->execute($params);
+	}
+
+	public function saveEditQuestion(Question $question) {
+			$sql = "UPDATE $this->dbTable SET " . $this->questionName . " = ? WHERE " . $this->questionId . " = ?";
+			$params = array($question->getName(), $question->getQuestionId());
+			$query = $this->db->prepare($sql);
+			$query->execute($params);
+	}	
+
 	public function getQuestion($questionId) {
 		$sql = "SELECT * FROM $this->dbTable WHERE " . $this->questionId . " = ?";
 		$params = array($questionId);

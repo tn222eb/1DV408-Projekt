@@ -11,6 +11,14 @@ class QuestionModel {
 		$this->questionRepository = new QuestionRepository();
 	}
 
+	public function removeQuestion(Question $question) {
+		$this->questionRepository->removeQuestion($question);
+	}
+
+	public function saveEditQuestion(Question $question) {
+		$this->questionRepository->saveEditQuestion($question);
+	}	
+
 	public function addQuestion(Question $question) {
 		$this->questionRepository->addQuestion($question);
 	}

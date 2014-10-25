@@ -10,6 +10,8 @@ class AnswerView extends BaseView {
 	private static $answerA = "answerA";
 	private static $answerB = "answerB";
 	private static $answerC = "answerC";
+	private $saveEditAnswersLocation = 'saveEditAnswers';
+	private $confirmRemoveAnswersLocation = 'confirmRemoveAnswers';
 
 	public function __construct() {
 		$this->quizView = new QuizView();
@@ -62,6 +64,65 @@ class AnswerView extends BaseView {
 		$this->quizView->unsetMessage($string);	
 		return $value;
 	}
+
+	/**
+  	* Show edit answers form
+  	*
+  	* @param Object that contains a answers
+  	*
+  	* @return string Returns String HTML
+  	*/	
+	public function showEditAnswersForm(Answers $answers) {
+		return $html = "</br>
+		<a href='?" . $this->showQuestionLocation . "&" . $this->id . "=" . $answers->getQuestionId() . "' name='returnToPage'>Tillbaka</a>
+		</br>
+		</br>
+		<legend>Redigera " 	. $answers->getName() . "</legend>
+		</br> </br>
+		<strong>" . $this->alphabets[0] . "</strong>)
+		</br>
+		<input type='radio' name='" . self::$rightAnswerLocation . "' value='" . $this->alphabets[0] . "'>		
+		<input type='text' name='" . self::$answerA . "' value='" . $answers->getAnswerA() . "' maxlength='28'/>
+		</br>
+		</br>
+
+		<strong>" . $this->alphabets[1] . "</strong>)
+		</br>
+		<input type='radio' name='" . self::$rightAnswerLocation . "' value='" . $this->alphabets[1] . "'>
+		<input type='text' name='" .  self::$answerB . "' value='" . $answers->getAnswerB() . "' maxlength='28'/>
+		</br>
+		</br>		
+
+		<strong>" . $this->alphabets[2] . "</strong>)
+		</br>
+		<input type='radio' name='" . self::$rightAnswerLocation . "' value='" . $this->alphabets[2] . "'>
+		<input type='text' name='" . self::$answerC . "' value='" . $answers->getAnswerC() . "' maxlength='28'/>
+		</br>
+		</br>
+		<input type='submit' class='btn btn-default' name='" . $this->saveEditAnswersLocation . "' value='Spara'>
+		</form>
+		 ";
+	}
+
+	/**
+  	* Confirmation remove page
+  	*
+  	* @param Object that contains answers
+  	*
+  	* @return string Returns String HTML
+  	*/	
+	public function showConfirmToRemoveAnswers(Answers $answers) {
+		return $html = "</br>
+		<a href='?" . $this->showQuestionLocation . "&" . $this->id . "=" . $answers->getQuestionId() . "' name='returnToPage'>Tillbaka</a>
+		</br>
+		</br>
+		<legend>Radera svarsalternativ</legend>
+
+		<form action='' method='post'>
+		<input type='submit' class='btn btn-default' name='" . $this->confirmRemoveAnswersLocation . "' value='Ta bort'>
+		</form>";
+	}			
+
 
 	/**
   	* Show add answers form
@@ -124,4 +185,32 @@ class AnswerView extends BaseView {
 		}
 		return false;
 	}
+
+	public function didUserPressToRemoveAnswers() {
+		if (isset($_POST[$this->removeAnswersLocation])) {
+			return true;
+		}
+		return false;
+	}
+
+	public function didUserPressToEditAnswers() {
+		if (isset($_POST[$this->editAnswersLocation])) {
+			return true;
+		}
+		return false;
+	}
+
+	public function didUserPressToSaveEditAnswers() {
+		if (isset($_POST[$this->saveEditAnswersLocation])) {
+			return true;
+		}
+		return false;
+	}
+
+	public function didUserConfirmToRemoveAnswers() {
+		if (isset($_POST[$this->confirmRemoveAnswersLocation])) {
+			return true;
+		}
+		return false;
+	}	
 }
