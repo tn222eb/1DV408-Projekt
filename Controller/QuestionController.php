@@ -111,9 +111,12 @@ class QuestionController {
 					}
 				}
 			}
+			$this->quizView->redirectToShowQuiz($currentQuestion->getQuizId());
 		}
-
-		$this->quizView->redirectToShowQuiz($currentQuestion->getQuizId());	
+		else {
+			// If question is removed or does not exists after wanting to edit for some reason
+			$this->quizView->redirectToMenu();
+		}
 	}
 
     /**

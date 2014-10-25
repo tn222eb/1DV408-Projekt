@@ -54,7 +54,11 @@ class QuizView extends BaseView {
 
 	public function redirectToAddQuestion($quizId) {
 		header("Location: ?" . $this->addQuestionLocation . "&" . $this->id . "=" . $quizId);		
-	}	
+	}
+
+	public function redirectToMenu() {
+		header("Location: ?");				
+	}
 
 	/**
   	* Functions to render message
