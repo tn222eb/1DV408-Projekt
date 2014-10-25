@@ -17,4 +17,4 @@ Applikationen ligger på http://tommynguyen.se/MyQuiz/
 Admin-upgifter
 ==============
 Användarnamn: Admin
-Lösenord: sahibätergodis
+Lösenord: ettbralösenord
