@@ -205,7 +205,7 @@ class QuizRepository extends Repository{
 			$query->execute (array($question->getQuestionId()));
 			$answers = $query->fetch();
 
-			if ($answers != NULL) {
+			if ($answers != null) {
 				$this->quizList->add($quiz);	
 			}
 		}

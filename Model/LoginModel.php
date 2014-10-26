@@ -49,6 +49,12 @@ class LoginModel{
                 $_SESSION['loggedIn'] = $username;
             }
 
+            if ($this->role == $this->roleNr) {
+                $this->setAdmin();
+            }
+
+            $this->setId();
+
             $this->messageId = $messageId;
 
             return true;
@@ -183,12 +189,6 @@ class LoginModel{
         $this->username = $data[1];
         $this->hash = $data[2];
         $this->role = $data[3];
-
-        if ($this->role == $this->roleNr) {
-            $this->setAdmin();
-        }
-
-        $this->setId();
     }
 
 }
