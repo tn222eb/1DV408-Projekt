@@ -281,7 +281,17 @@ class LoginController {
                 $this->model->setMessage($msgId);
                 $this->setMessage();
             }
-            else {
+            
+            else if (preg_match("/[^a-z0-9]/i", $username)) 
+            {
+                $msgId = 4;
+                $validationErrors++;
+                $this->model->setMessage($msgId);
+                $this->setMessage();  
+            }
+
+            else 
+            {
                 if($this->validateUsername->validateCharacters($username) == false) {
                     $msgId = 4;
                     $validationErrors++;
