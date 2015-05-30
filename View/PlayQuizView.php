@@ -24,15 +24,22 @@ class PlayQuizView extends BaseView {
 				return $_GET[$this->playQuizLocation];
 			}
 		}
-	}	
+	}		
 
 	public function getUserAnswers() {
 		if (isset($_POST[$this->answersLocation])) 
 		{
-			if ($_POST[$this->answersLocation] === "A" || $_POST[$this->answersLocation] === "B" || $_POST[$this->answersLocation] === "C") 
+			$listOfAnswers = array();
+			
+			foreach($_POST[$this->answersLocation] as $key => $value) 
 			{
-				return $_POST[$this->answersLocation];
+				if ($value === "A" || $value === "B" || $value === "C") 
+				{
+					$listOfAnswers[$key] = $value;
+				}
 			}
+
+			return $listOfAnswers;
 		}
 	}	
 
@@ -169,8 +176,8 @@ class PlayQuizView extends BaseView {
 		$html = "</br>
 		<a href='?$this->showAllQuizToPlayLocation' >Tillbaka</a>
 		</br>
-		<a href='?$this->playQuizLocation=" . $this->escape($quizId) . "'>Spela igen</a>
-		<h1>" . $this->escape($quiz->getName()) . "</h1>";				
+		<a href='?$this->playQuizLocation=" . $this->escape($quizId) . "' >Spela igen</a>
+		<h1>" . $quiz->getName() . "</h1>";				
 		if ($userAnswers > 0) {
 			foreach ($questions->ToArray() as $questionObj) {
 				if (isset($userAnswers[$questionNr])) {	
@@ -181,16 +188,16 @@ class PlayQuizView extends BaseView {
 						$num = $this->getNumber($userAnswers[$questionNr]);
 						
 						if ($userAnswers[$questionNr] != $answer->getRightAnswer()) {
-						 	$label = 'question-' . $questionNr . '-answers-'. $this->escape($answer->getRightAnswer());
+						 	$label = 'question-' . $questionNr . '-answers-'. $this->escape($userAnswers[$questionNr]);
 						 	$html .= "<div>
-						 	<input type='radio' name='answers[$questionNr]' id='$label' value='" . $answer->getAnswer($num) . "' disabled>
-						 	<small><label style='color :red;' for='$label'>" . $userAnswers[$questionNr] . ") " . $answer->getAnswer($num) .  "</label></small>
+						 	<input type='radio' name='answers[$questionNr]' id='$label' value='" . $this->escape($answer->getAnswer($num)) . "' disabled>
+						 	<small><label style='color :red;' for='$label'>" . $this->escape($userAnswers[$questionNr]) . ") " . $this->escape($answer->getAnswer($num)) .  "</label></small>
 					     	</div>";
 	        			} else {
-	        			 	$label = 'question-' . $questionNr . '-answers-'.  $answer->getRightAnswer();
+	        			 	$label = 'question-' . $questionNr . '-answers-'.  $this->escape($userAnswers[$questionNr]);
 	            		 	$html .= "<div>
-					 		<input type='radio' name='answers[$questionNr]' id='$label' value='" . $answer->getAnswer($num) . "' disabled>
-					 		<small><label style='color: green;' for='$label'>" . $userAnswers[$questionNr] . ") " . $answer->getAnswer($num) .  "</label></small>
+					 		<input type='radio' name='answers[$questionNr]' id='$label' value='" . $this->escape($answer->getAnswer($num)) . "' disabled>
+					 		<small><label style='color: green;' for='$label'>" . $this->escape($userAnswers[$questionNr]) . ") " . $this->escape($answer->getAnswer($num)) .  "</label></small>
 					 		</div>";
 	        			}
 					}
