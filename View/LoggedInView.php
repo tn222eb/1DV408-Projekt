@@ -19,7 +19,7 @@ class LoggedInView extends BaseView {
      * @return string with html
      */
     public function showLoggedInPage() {
-        $this->username = $this->model->getUsername();
+        $this->username = $this->escape($this->model->getUsername());
 
         if ($this->model->isAdmin()) {
             $this->menu .= "<li><a name='" . $this->showAllQuizLocation . "' href='?" . $this->showAllQuizLocation . "'>Visa alla quiz</a></li>";

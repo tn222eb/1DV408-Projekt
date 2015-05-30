@@ -37,13 +37,19 @@ class AnswerView extends BaseView {
 
 	public function getRightAnswerCheckBox() {
 		if (isset($_POST[self::$rightAnswerLocation])) {
-			return $_POST[self::$rightAnswerLocation];
+			if ($_POST[self::$rightAnswerLocation] === "A" || $_POST[self::$rightAnswerLocation] === "B" || $_POST[self::$rightAnswerLocation] === "C")
+			{
+				return $_POST[self::$rightAnswerLocation];
+			}
 		}
 	}
 
 	public function getId() {
 		if (isset($_GET[$this->id])) {
-			return $_GET[$this->id];
+			if (preg_match('/^[0-9]+$/', $_GET[$this->id])) 
+			{
+				return $_GET[$this->id];
+			}
 		}
 	}
 
@@ -73,7 +79,7 @@ class AnswerView extends BaseView {
   	*/	
 	public function showConfirmToRemoveAnswers(Answers $answers) {
 		return $html = "</br>
-		<a href='?" . $this->showQuestionLocation . "&" . $this->id . "=" . $answers->getQuestionId() . "' name='returnToPage'>Tillbaka</a>
+		<a href='?" . $this->showQuestionLocation . "&" . $this->id . "=" . $this->escape($answers->getQuestionId()) . "' name='returnToPage'>Tillbaka</a>
 		</br>
 		</br>
 		<legend>Radera svarsalternativ</legend>
@@ -98,29 +104,29 @@ class AnswerView extends BaseView {
 		$answerC = $this->renderCookieMessage($this->messageCLocation);
 
 		$html = "</br>
-		<a href='?" . $this->showQuestionLocation . "&" . $this->id . "=" . $question->getQuestionId() . "' name='returnToPage'>Tillbaka</a>
+		<a href='?" . $this->showQuestionLocation . "&" . $this->id . "=" . $this->escape($question->getQuestionId()) . "' name='returnToPage'>Tillbaka</a>
 		</br> </br>
-		<legend>Lägg till svar till " . $question->getName() . "</legend> 
+		<legend>Lägg till svar till " . $this->escape($question->getName()) . "</legend> 
 		$message
 		<form action='' method='post'>
 		<strong>" . $this->alphabets[0] . "</strong>)
 		</br>
 		<input type='radio' name='" . self::$rightAnswerLocation . "' value='" . $this->alphabets[0] . "'>		
-		<input type='text' name='" . self::$answerA . "' value='$answerA' maxlength='28'/>
+		<input type='text' name='" . self::$answerA . "' value='" . $this->escape($answerA) . "' maxlength='28'/>
 		</br>
 		</br>
 
 		<strong>" . $this->alphabets[1] . "</strong>)
 		</br>
 		<input type='radio' name='" . self::$rightAnswerLocation . "' value='" . $this->alphabets[1] . "'>
-		<input type='text' name='" .  self::$answerB . "' value='$answerB' maxlength='28'/>
+		<input type='text' name='" .  self::$answerB . "' value='". $this->escape($answerB) . "' maxlength='28'/>
 		</br>
 		</br>		
 
 		<strong>" . $this->alphabets[2] . "</strong>)
 		</br>
 		<input type='radio' name='" . self::$rightAnswerLocation . "' value='" . $this->alphabets[2] . "'>
-		<input type='text' name='" . self::$answerC . "' value='$answerC' maxlength='28'/>
+		<input type='text' name='" . self::$answerC . "' value='" . $this->escape($answerC) . "' maxlength='28'/>
 		</br>
 		</br>	
 

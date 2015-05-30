@@ -1,6 +1,6 @@
 <?php
 
-class RegisterView {
+class RegisterView extends BaseView {
 
 	private $usernameLocation = "username";
 	private $passwordLocation = "password";
@@ -64,7 +64,7 @@ class RegisterView {
         $username = "";
         if(isset($_POST[$this->registerLocation])){
             $usernameInput = $this->getUserName();
-            $username .= strip_tags($usernameInput);
+            $username .= $this->escape($usernameInput);
         }
 
 		$html = "

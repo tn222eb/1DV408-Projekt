@@ -47,13 +47,13 @@ class LoginModel{
         if ($username === $this->username && crypt($password, $this->hash) === $this->hash) {          
             if (isset($_SESSION['loggedIn']) == false) {
                 $_SESSION['loggedIn'] = $username;
-            }
 
-            if ($this->role == $this->roleNr) {
-                $this->setAdmin();
-            }
+                if ($this->role == $this->roleNr) {
+                    $this->setAdmin();
+                }
 
-            $this->setId();
+                $this->setId();
+            }
 
             $this->messageId = $messageId;
 
@@ -82,6 +82,8 @@ class LoginModel{
         if (isset($_SESSION['loggedIn'])) {
             $this->messageId = 11;
             session_unset("loggedIn");
+            session_unset("admin");
+            session_unset("id");
         }
     }
 

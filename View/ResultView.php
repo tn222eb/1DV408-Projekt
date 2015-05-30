@@ -44,7 +44,7 @@ class ResultView extends BaseView {
 		else {
 			foreach($results as $result) {
 				$quiz = $this->quizModel->getQuiz($result->getQuizId());
-				$html .= "<li><h4>" . $quiz->getName() . "</h4>" . $result->getScore() . " rätt svar av totalt ". $result->getNumOfQuestions() ."</li>";
+				$html .= "<li><h4>" . $this->escape($quiz->getName()) . "</h4>" . $this->escape($result->getScore()) . " rätt svar av totalt " . $this->escape($result->getNumOfQuestions()) . "</li>";
 			}
 		}
 

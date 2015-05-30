@@ -4,7 +4,7 @@ require_once("HTMLView.php");
 require_once("./Model/LoginModel.php");
 require_once("./helper/CookieStorage.php");
 
-class LoginView {
+class LoginView extends BaseView {
 
     private $username;
     private $password;
@@ -34,7 +34,7 @@ class LoginView {
     public function showLoginpage() {
         $username = "";
         if (isset($_POST[$this->submitLocation]) || $this->register == true) {
-            $username = $this->username;
+            $username = $this->escape($this->username);
         }
 
         $html = "</br>

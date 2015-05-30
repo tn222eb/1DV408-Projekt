@@ -24,14 +24,17 @@ class QuestionView extends BaseView {
 	}
 
 	public function getId() {
-		if (isset($_GET[$this->id])) {
-			return $_GET[$this->id];
+		if (isset($_GET[$this->id])) 
+		{
+			if (preg_match('/^[0-9]+$/', $_GET[$this->id])) 
+			{
+				return $_GET[$this->id];
+			}
 		}
-		return NULL;
 	}	
 
 	public function getQuestionMenu($id) {
-		return $html = "<a href='?" . $this->addAnswersLocation . "&" . $this->id . "=$id' class='btn btn-default'>Lägg till svar</a>";
+		return $html = "<a href='?" . $this->addAnswersLocation . "&" . $this->id . "=" . $this->escape($id) . "' class='btn btn-default'>Lägg till svar</a>";
 	}		
 
 	/**
@@ -56,7 +59,7 @@ class QuestionView extends BaseView {
 
 		$html = "<form action='' method='post'>
 		</br>
-		<a href='?" . $this->showQuizLocation . "&" . $this->id . "=" . $question->getQuizId() . "' name='returnToPage'>Tillbaka</a> </br> 
+		<a href='?" . $this->showQuizLocation . "&" . $this->id . "=" . $this->escape($question->getQuizId()) . "' name='returnToPage'>Tillbaka</a> </br> 
 		<h2>" . $question->getName() . "</h2>
 		<input type='submit' class='btn btn-default' name='" . $this->editQuestionLocation . "' value='Redigera fråga'> <input type='submit' class='btn btn-default' name='" . $this->removeQuestionLocation . "' value='Radera fråga'>
 		</br> </br>
@@ -95,11 +98,10 @@ class QuestionView extends BaseView {
 	public function showAddQuestionForm(Quiz $quiz) {
 		$message = $this->renderCookieMessage($this->messageLocation);
 
-		$userUnique = $quiz->getQuizId();
 		$html = "</br>
-		<a href='?" . $this->showQuizLocation . "&" . $this->id . "=" . $quiz->getQuizId() . "' name='returnToPage'>Tillbaka</a>
+		<a href='?" . $this->showQuizLocation . "&" . $this->id . "=" . $this->escape($quiz->getQuizId()) . "' name='returnToPage'>Tillbaka</a>
 		</br> </br>
-		<legend>Lägg till fråga till " . $quiz->getName() . "</legend>
+		<legend>Lägg till fråga till " . $this->escape($quiz->getName()) . "</legend>
 		$message 
 		<form action='' method='post'>
 		<input type='text' name='" . $this->questionName . "' maxlength='150'/>
@@ -119,12 +121,12 @@ class QuestionView extends BaseView {
   	*/	
 	public function showEditQuestionForm(Question $question) {
 		return $html = "</br>
-		<a href='?" . $this->showQuestionLocation . "&" . $this->id . "=" . $question->getQuestionId() . "' name='returnToPage'>Tillbaka</a>
+		<a href='?" . $this->showQuestionLocation . "&" . $this->id . "=" . $this->escape($question->getQuestionId()) . "' name='returnToPage'>Tillbaka</a>
 		</br>
 		</br>
-		<legend>Redigera " 	. $question->getName() . "</legend>
+		<legend>Redigera " 	. $this->escape($question->getName()) . "</legend>
 		<form action='' method='post'>
-		<input type='text' name='" . $this->questionName . "' value='" . $question->getName() . "' maxlength='150'>
+		<input type='text' name='" . $this->questionName . "' value='" . $this->escape($question->getName()) . "' maxlength='150'>
 		</br>
 		</br>
 		<input type='submit' class='btn btn-default' name='" . $this->saveEditQuestionLocation . "' value='Spara'>
@@ -141,10 +143,10 @@ class QuestionView extends BaseView {
   	*/	
 	public function showConfirmToRemoveQuestion(Question $question) {
 		return $html = "</br>
-		<a href='?" . $this->showQuestionLocation . "&" . $this->id . "=" . $question->getQuestionId() . "' name='returnToPage'>Tillbaka</a>
+		<a href='?" . $this->showQuestionLocation . "&" . $this->id . "=" . $this->escape($question->getQuestionId()) . "' name='returnToPage'>Tillbaka</a>
 		</br>
 		</br>
-		<legend>Radera " . $question->getName() . "</legend>
+		<legend>Radera " . $this->escape($question->getName()) . "</legend>
 
 		<form action='' method='post'>
 		<input type='submit' class='btn btn-default' name='" . $this->confirmRemoveQuestionLocation . "' value='Ta bort'>

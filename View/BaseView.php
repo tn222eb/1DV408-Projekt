@@ -2,7 +2,8 @@
 
 require_once("Settings.php");
 
-abstract class BaseView {
+abstract class BaseView 
+{
     protected $logOutLocation = 'logOut';
     protected $showAllQuizToPlayLocation = 'showAllQuizToPlay';
     protected $showAllQuizLocation = 'showAllQuiz';	
@@ -24,5 +25,10 @@ abstract class BaseView {
 
     public static function redirectToErrorPage() {
         header("Location: /". Settings::$ROOT_PATH . "/error.html");
+    }
+
+    public static function escape($string) 
+    {
+        return htmlspecialchars($string, ENT_QUOTES, 'utf-8');   
     }
 }

@@ -17,14 +17,22 @@ class PlayQuizView extends BaseView {
 	}
 
 	public function getChosenQuiz() {
-		if (isset($_GET[$this->playQuizLocation])) {
-			return $_GET[$this->playQuizLocation];
+		if (isset($_GET[$this->playQuizLocation])) 
+		{
+			if (preg_match('/^[0-9]+$/', $_GET[$this->playQuizLocation])) 
+			{
+				return $_GET[$this->playQuizLocation];
+			}
 		}
 	}	
 
 	public function getUserAnswers() {
-		if(isset($_POST[$this->answersLocation])) {
-			return $_POST[$this->answersLocation];
+		if (isset($_POST[$this->answersLocation])) 
+		{
+			if ($_POST[$this->answersLocation] === "A" || $_POST[$this->answersLocation] === "B" || $_POST[$this->answersLocation] === "C") 
+			{
+				return $_POST[$this->answersLocation];
+			}
 		}
 	}	
 
@@ -87,7 +95,7 @@ class PlayQuizView extends BaseView {
 
 		$quizList = $this->quizModel->getOnlyPlayableQuizzes();
 		foreach ($quizList->ToArray() as $quiz) {
-			$html .= "<li><a href='?$this->playQuizLocation=" . $quiz->getQuizId() . "'>" . $quiz->getName() . "</a></li>";
+			$html .= "<li><a href='?$this->playQuizLocation=" . $this->escape($quiz->getQuizId()) . "'>" . $this->escape($quiz->getName()) . "</a></li>";
 		}
 
 		return $html .= "</ul>";
@@ -108,7 +116,7 @@ class PlayQuizView extends BaseView {
 		$html = "
 		</br>
 		<a href='?$this->showAllQuizToPlayLocation' >Tillbaka</a>
-		<h2>" . $quiz->getName() . "</h2>
+		<h2>" . $this->escape($quiz->getName()) . "</h2>
 		<form action ='' method='post'>";
 
 			foreach ($questions->ToArray() as $question) {
@@ -118,7 +126,7 @@ class PlayQuizView extends BaseView {
 					$foo = 0;
 
 					if ($answer != null) {
-						$html .= "<h4>$questionNr.&nbsp;" . $question->getName() . "</h4>";
+						$html .= "<h4>$questionNr.&nbsp;" . $this->escape($question->getName()) . "</h4>";
 					}
 
 					foreach ($answer->getAnswers() as $answerName) {
@@ -127,7 +135,7 @@ class PlayQuizView extends BaseView {
 						$html .=
 						"<div>
 						<input type='radio' name='answers[$questionNr]' id='$label' value='" . $this->alphabets[$foo] . "'> 
-						<small><label for='$label'>" . $this->alphabets[$foo] . ") " . $answerName . "</label></small>
+						<small><label for='$label'>" . $this->alphabets[$foo] . ") " . $this->escape($answerName) . "</label></small>
 						</div>";
 						
 						$foo++;
@@ -161,19 +169,19 @@ class PlayQuizView extends BaseView {
 		$html = "</br>
 		<a href='?$this->showAllQuizToPlayLocation' >Tillbaka</a>
 		</br>
-		<a href='?$this->playQuizLocation=$quizId' >Spela igen</a>
-		<h1>" . $quiz->getName() . "</h1>";				
+		<a href='?$this->playQuizLocation=" . $this->escape($quizId) . "'>Spela igen</a>
+		<h1>" . $this->escape($quiz->getName()) . "</h1>";				
 		if ($userAnswers > 0) {
 			foreach ($questions->ToArray() as $questionObj) {
 				if (isset($userAnswers[$questionNr])) {	
-					$html .= "<h3>$questionNr. " . $questionObj->getName() . "</h3>";
+					$html .= "<h3>$questionNr. " . $this->escape($questionObj->getName()) . "</h3>";
 					$question = $this->questionModel->getQuestion($questionObj->getQuestionId());
 
 					foreach ($question->toArray() as $answer) {
 						$num = $this->getNumber($userAnswers[$questionNr]);
 						
 						if ($userAnswers[$questionNr] != $answer->getRightAnswer()) {
-						 	$label = 'question-' . $questionNr . '-answers-'. $answer->getRightAnswer();
+						 	$label = 'question-' . $questionNr . '-answers-'. $this->escape($answer->getRightAnswer());
 						 	$html .= "<div>
 						 	<input type='radio' name='answers[$questionNr]' id='$label' value='" . $answer->getAnswer($num) . "' disabled>
 						 	<small><label style='color :red;' for='$label'>" . $userAnswers[$questionNr] . ") " . $answer->getAnswer($num) .  "</label></small>
